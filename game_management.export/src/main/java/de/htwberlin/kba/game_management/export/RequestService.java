@@ -8,4 +8,13 @@ public interface RequestService {
      * @param gives information about whether the request was accepted (1) or rejected (0)
      */
     public void changeStatus(Boolean accept);
+
+    /**
+     * Request is pending in the beginning, or accepted or rejected when the receiver answers the request
+     */
+    public enum Category {
+        PENDING
+        ACCEPTED
+        REJECTED
+    }
 }
