@@ -1,59 +1,70 @@
 package de.htwberlin.kba.game_management.export;
 
+import de.htwberlin.kba.user_management.export.User;
+
 public class Game {
 
-    private Long GameId;
-    private int PointsRequester;
-    private int PointsReceiver;
-    private Long Requester;
-    private Long Receiver;
-    private int CurrentRound;
+    private long gameId;
+    private int pointsRequester;
+    private int pointsReceiver;
+    private User requester;
+    private User receiver;
+    private int currentRound;
+
+    public Game(long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
+        this.gameId = gameId;
+        this.pointsRequester = pointsRequester;
+        this.pointsReceiver = pointsReceiver;
+        this.requester = requester;
+        this.receiver = receiver;
+        this.currentRound = currentRound;
+    }
 
     public Long getGameId() {
-        return GameId;
+        return gameId;
     }
 
     public void setGameId(Long gameId) {
-        GameId = gameId;
+        this.gameId = gameId;
     }
 
     public int getPointsRequester() {
-        return PointsRequester;
+        return pointsRequester;
     }
 
     public void setPointsRequester(int pointsRequester) {
-        PointsRequester = pointsRequester;
+        this.pointsRequester = pointsRequester;
     }
 
     public int getPointsReceiver() {
-        return PointsReceiver;
+        return pointsReceiver;
     }
 
     public void setPointsReceiver(int pointsReceiver) {
-        PointsReceiver = pointsReceiver;
+        this.pointsReceiver = pointsReceiver;
     }
 
-    public Long getRequester() {
-        return Requester;
+    public User getRequester() {
+        return requester;
     }
 
-    public void setRequester(Long requester) {
-        Requester = requester;
+    public void setRequester(User requester) {
+        this.requester = requester;
     }
 
-    public Long getReceiver() {
-        return Receiver;
+    public User getReceiver() {
+        return receiver;
     }
 
-    public void setReceiver(Long receiver) {
-        Receiver = receiver;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public int getCurrentRound() {
-        return CurrentRound;
+        return currentRound;
     }
 
     public void setCurrentRound(int currentRound) {
-        CurrentRound = currentRound;
+        this.currentRound = currentRound;
     }
 }

@@ -6,14 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="user_management.export" />
         <module name="Configuration" />
         <module name="configuration" />
-        <module name="vocab_management.impl" />
+        <module name="GameManagementExport" />
         <module name="game_management.impl" />
+        <module name="vocab-management.impl" />
+        <module name="user_management.impl" />
+        <module name="user_management.export" />
+        <module name="user-management.impl" />
+        <module name="vocab_management.impl" />
+        <module name="UserManagement" />
+        <module name="GameManagement" />
         <module name="vocab_management.export" />
         <module name="game_management.export" />
-        <module name="user_management.impl" />
+        <module name="VocabManagement" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -9,14 +9,15 @@
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <modules>
-    <module>GameManagement</module>
-    <module>UserManagement</module>
-    <module>VocabManagement</module>
-      <module>GameManagementExport</module>
-      <module>GameManagementTest</module>
+    <module>game_management.export</module>
+    <module>game_management.impl</module>
+    <module>user_management.export</module>
+      <module>user_management.impl</module>
+      <module>vocab_management.export</module>
+    <module>vocab_management.export</module>
       <module>Configuration</module>
-      <module>vocab-management.impl</module>
-    <module>user-management.impl</module>
+      <module>vocab_management.impl</module>
+    <module>vocab_management.export</module>
   </modules>
 
   <name>Vokabelduell</name>
