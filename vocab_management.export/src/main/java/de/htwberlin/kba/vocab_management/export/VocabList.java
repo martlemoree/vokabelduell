@@ -1,17 +1,21 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import java.util.List;
+
 public class VocabList {
 
     private long vocablistId;
     private String category;
     private String name;
     private String language;
+    private List<Vocab> vocabs;
 
-    public VocabList(long vocablistId, String category, String name, String language) {
+    public VocabList(long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
         this.category = category;
         this.name = name;
         this.language = language;
+        this.vocabs = vocabs;
     }
 
     public long getVocablistId() {
@@ -44,5 +48,13 @@ public class VocabList {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public List<Vocab> getVocabs() {
+        return vocabs;
+    }
+
+    public void setVocabs(List<Vocab> vocabs) {
+        this.vocabs = vocabs;
     }
 }

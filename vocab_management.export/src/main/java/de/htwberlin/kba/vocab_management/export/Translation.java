@@ -8,10 +8,12 @@ public class Translation {
 
     private long translationId;
     private List<String> translations;
+    private Vocab vocab;
 
-    public Translation(long translationId, List<String> translations) {
+    public Translation(long translationId, List<String> translations, Vocab vocab) {
         this.translationId = translationId;
         this.translations = translations;
+        this.vocab = vocab;
     }
 
     public long getTranslationId() {
@@ -28,5 +30,13 @@ public class Translation {
 
     public void setTranslations(List<String> translations) {
         this.translations = translations;
+    }
+
+    public Vocab getVocab() {
+        return vocab;
+    }
+
+    public void setVocab(Vocab vocab) {
+        this.vocab = vocab;
     }
 }

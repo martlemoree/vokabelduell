@@ -20,7 +20,7 @@ public class Game {
         this.currentRound = currentRound;
     }
 
-    public Long getGameId() {
+    public long getGameId() {
         return gameId;
     }
 

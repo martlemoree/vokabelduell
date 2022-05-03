@@ -1,5 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
+import de.htwberlin.kba.user_management.export.User;
+
 public interface RequestService {
     /**
      * Processes the answer from a user to a request.
@@ -8,4 +10,16 @@ public interface RequestService {
      * @param accept gives information about whether the request was accepted (1) or rejected (0)
      */
     public void changeStatus(Boolean accept);
+
+    /**
+     * adds a new game request.
+     *
+     * @param requestId     is the unique identifier of the request
+     * @param requestStatus fives information about the status of the request
+     * @param requester     is the user who created the request
+     * @param receiver      is the user who receives the request
+     * @return a new game request
+     */
+    public Request createRequest(long requestId, Status requestStatus, User requester, User receiver);
+
 }

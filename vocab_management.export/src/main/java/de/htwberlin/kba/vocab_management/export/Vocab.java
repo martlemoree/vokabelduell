@@ -6,10 +6,13 @@ public class Vocab {
 
     private long vocabId;
     private List<String> vocabs;
+    private VocabList vocablist;
+    private Translation translation;
 
     public Vocab(long vocabId, List<String> vocabs) {
         this.vocabId = vocabId;
         this.vocabs = vocabs;
+        this.vocablist = vocablist;
     }
 
     public long getVocabId() {
@@ -26,5 +29,13 @@ public class Vocab {
 
     public void setVocabs(List<String> vocabs) {
         this.vocabs = vocabs;
+    }
+
+    public VocabList getVocablist() {
+        return vocablist;
+    }
+
+    public void setVocablist(VocabList vocablist) {
+        this.vocablist = vocablist;
     }
 }

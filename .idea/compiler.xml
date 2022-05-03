@@ -9,6 +9,7 @@
         <module name="Configuration" />
         <module name="configuration" />
         <module name="GameManagementExport" />
+        <module name="UserManagementExport" />
         <module name="game_management.impl" />
         <module name="vocab-management.impl" />
         <module name="user_management.impl" />
