@@ -3,7 +3,7 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.user_management.export.User;
 
 public class Game {
-    
+    //wdkjnwdlwed
     private Long gameId;
     private int pointsRequester;
     private int pointsReceiver;
