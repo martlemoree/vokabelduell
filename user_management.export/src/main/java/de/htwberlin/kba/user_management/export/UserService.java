@@ -16,10 +16,4 @@ public interface UserService {
      * @return userId of the chosen opponent
      */
     public Long chooseUser(List<User> users);
-
-    /**
-     * Calculates the total points of a user by adding up the points of every game he played so far
-     * @return total points
-     */
-    public int calculatePoints();
 }

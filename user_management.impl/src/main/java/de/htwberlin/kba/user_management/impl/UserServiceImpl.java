@@ -23,12 +23,4 @@ public class UserServiceImpl implements UserService {
     public Long chooseUser(List<User> users) {
         return null;
     }
-
-    /**
-     * Calculates the total points of a user by adding up the points of every game he played so far
-     * @return total points
-     */
-    public int calculatePoints() {
-        return 0;
-    }
 }
