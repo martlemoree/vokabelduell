@@ -4,6 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 
 public class Game {
 
+    //testddedd
     private Long gameId;
     private int pointsRequester;
     private int pointsReceiver;
