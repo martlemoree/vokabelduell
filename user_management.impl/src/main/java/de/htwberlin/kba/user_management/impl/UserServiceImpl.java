@@ -1,6 +1,9 @@
 package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.UserService;
+import de.htwberlin.kba.user_management.export.User;
+
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
     /**
@@ -14,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Let the user choose an opponent for a new game.
-     * @param List of all users to be able to choose an opponent
+     * @param users List of all users to be able to choose an opponent
      * @return userId of the chosen opponent
      */
     public Long chooseUser(List<User> users) {
@@ -26,6 +29,6 @@ public class UserServiceImpl implements UserService {
      * @return total points
      */
     public int calculatePoints() {
-        return null;
+        return 0;
     }
 }

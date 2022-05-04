@@ -5,7 +5,7 @@ import de.htwberlin.kba.user_management.export.User;
 
 public class QuestionServiceImpl implements QuestionService {
 
-    public Boolean answerQuestion(String givenAnswer, User user) {
-        return null;
+    public boolean answerQuestion(String givenAnswer, User user) {
+        return true;
     }
 }

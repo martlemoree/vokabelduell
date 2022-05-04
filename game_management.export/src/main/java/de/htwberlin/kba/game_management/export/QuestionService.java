@@ -9,5 +9,5 @@ public interface QuestionService {
      * @param user information on which user answered
      * @return gives information whether answer was correct (1) or not (0)
      */
-    public Boolean answerQuestion(String givenAnswer, User user);
+    public boolean answerQuestion(String givenAnswer, User user);
 }

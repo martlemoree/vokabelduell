@@ -4,7 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 
 public class Question {
-    // Vorschlag wurden in Kempas Beispiel liediglich in der Entitäten-Klasse umgesetzt (Category),
+    // Vorschlag wurden in Kempas Beispiel lediglich in der Entitäten-Klasse umgesetzt (Category),
     // nirgends anders (CategoryServiceImpl/CategoryService)
     // toString Methode überschreiben, um eine sinnvolle Frage hervorzubringen: z.B.
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";

@@ -1,5 +1,7 @@
 package de.htwberlin.kba.user_management.export;
 
+import java.util.List;
+
 public interface UserService {
     /**
      * Show the user a list of users without showing the user himself in the list.
@@ -10,7 +12,7 @@ public interface UserService {
 
     /**
      * Let the user choose an opponent for a new game.
-     * @param List of all users to be able to choose an opponent
+     * @param users List of all users to be able to choose an opponent
      * @return userId of the chosen opponent
      */
     public Long chooseUser(List<User> users);
