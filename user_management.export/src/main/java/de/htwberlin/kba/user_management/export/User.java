@@ -2,17 +2,17 @@ package de.htwberlin.kba.user_management.export;
 
 public class User {
 
-    private long userID;
+    private Long userID;
     private String userName;
     private String password;
 
-    public User(long userID, String userName, String password) {
+    public User(Long userID, String userName, String password) {
         this.userID = userID;
         this.userName = userName;
         this.password = password;
     }
 
-    public long getUserID() {
+    public Long getUserID() {
         return userID;
     }
 

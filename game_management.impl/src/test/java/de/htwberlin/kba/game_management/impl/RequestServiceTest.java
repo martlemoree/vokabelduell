@@ -51,7 +51,7 @@ public class RequestServiceTest {
         User martin = new User(234567,"MartinTheBrain", "lol123");
         User stella = new User(234568,"stellomello", "123lol");
 
-        long requestId = 123456;
+        Long requestId = Long.valueOf(123456);
         Status requestStatus = Status.PENDING;
         User requester = martin;
         User receiver = stella;
@@ -73,7 +73,7 @@ public class RequestServiceTest {
         User martin = new User(234567,"MartinTheBrain", "lol123");
         User stella = new User(234568,"stellomello", "123lol");
 
-        long requestId = 123456;
+        Long requestId = Long.valueOf(123456);
         Status requestStatus = Status.PENDING;
         User requester = martin;
         User receiver = stella;

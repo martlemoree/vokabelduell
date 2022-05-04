@@ -4,14 +4,14 @@ import de.htwberlin.kba.user_management.export.User;
 
 public class Game {
 
-    private long gameId;
+    private Long gameId;
     private int pointsRequester;
     private int pointsReceiver;
     private User requester;
     private User receiver;
     private int currentRound;
 
-    public Game(long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
+    public Game(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
         this.gameId = gameId;
         this.pointsRequester = pointsRequester;
         this.pointsReceiver = pointsReceiver;
@@ -20,7 +20,7 @@ public class Game {
         this.currentRound = currentRound;
     }
 
-    public long getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 

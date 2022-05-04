@@ -20,6 +20,6 @@ public interface RequestService {
      * @param receiver      is the user who receives the request
      * @return a new game request
      */
-    public Request createRequest(long requestId, Status requestStatus, User requester, User receiver);
+    public Request createRequest(Long requestId, Status requestStatus, User requester, User receiver);
 
 }

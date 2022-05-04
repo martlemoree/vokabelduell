@@ -18,5 +18,5 @@ public interface GameService {
      * @param receiver is the user who received and accepted the game request.
      * @return a new game
      */
-    public Game createGame(long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound);
+    public Game createGame(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound);
 }

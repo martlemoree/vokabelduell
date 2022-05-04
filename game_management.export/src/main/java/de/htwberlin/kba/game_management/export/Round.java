@@ -5,7 +5,7 @@ import de.htwberlin.kba.user_management.export.User;
 
 public class Round {
 
-    private long roundId;
+    private Long roundId;
     private Game game;
     private int pointsRequester;
     private int pointsReceiver;
@@ -13,7 +13,7 @@ public class Round {
     private User receiver;
     private int currentRound;
 
-    public Round(long roundId, Game game, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
+    public Round(Long roundId, Game game, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
         this.roundId = roundId;
         this.game = game;
         this.pointsRequester = pointsRequester;
@@ -23,7 +23,7 @@ public class Round {
         this.currentRound = currentRound;
     }
 
-    public long getRoundId() {
+    public Long getRoundId() {
         return roundId;
     }
 

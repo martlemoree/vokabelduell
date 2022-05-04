@@ -9,7 +9,7 @@ public class Question {
     // toString Methode überschreiben, um eine sinnvolle Frage hervorzubringen: z.B.
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
 
-    private long questionId;
+    private Long questionId;
     private User user;
     private Game game;
     private Round round;
@@ -19,7 +19,7 @@ public class Question {
     private Vocab rightAnswer;
     private boolean correctAnswered;
 
-    public Question(long questionId, User user, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
+    public Question(Long questionId, User user, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
         this.questionId = questionId;
         this.user = user;
         this.game = game;
@@ -34,7 +34,7 @@ public class Question {
         return questionId;
     }
 
-    public void setQuestionId(long questionId) {
+    public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
 

@@ -24,7 +24,7 @@ public class GameServiceTest {
     @Test
     public void testCreateGameServiceTest(){
         //1. Arrange
-        long gameId = 123456;
+        Long gameId = Long.valueOf(123456);
         int pointsRequester = 0;
         int pointsReceiver = 0;
         User requester= new User(234567,"MartinTheBrain", "lol123");;
