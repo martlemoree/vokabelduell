@@ -23,4 +23,14 @@ public class UserServiceImpl implements UserService {
     public Long chooseUser(List<User> users) {
         return null;
     }
+
+    public List<User> getListOfUsers() {
+
+        return null;
+    }
+
+    public Long getId() {
+
+        return null;
+    }
 }

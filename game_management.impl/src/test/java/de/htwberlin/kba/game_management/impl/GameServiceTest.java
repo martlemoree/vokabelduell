@@ -27,8 +27,8 @@ public class GameServiceTest {
         Long gameId = Long.valueOf(123456);
         int pointsRequester = 0;
         int pointsReceiver = 0;
-        User requester= new User(234567,"MartinTheBrain", "lol123");;
-        User receiver = new User(234568,"stellomello", "123lol");
+        User requester= new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
+        User receiver = new User(Long.valueOf(234568),"stellomello", "123lol");
         int currentRound = 1;
 
         //2. Act

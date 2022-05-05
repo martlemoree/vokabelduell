@@ -8,12 +8,20 @@ public interface UserService {
      * @param userId of the current user
      * @return userList of all users except the current user
      */
-    public List<User> getUserList(Long userId);
+    List<User> getUserList(Long userId);
 
     /**
      * Let the user choose an opponent for a new game.
      * @param users List of all users to be able to choose an opponent
      * @return userId of the chosen opponent
      */
-    public Long chooseUser(List<User> users);
+    Long chooseUser(List<User> users);
+
+    /**
+     * returns the list of every user registered
+     * @return List of all users
+     */
+    List<User> getListOfUsers();
+    public Long getId();
+
 }

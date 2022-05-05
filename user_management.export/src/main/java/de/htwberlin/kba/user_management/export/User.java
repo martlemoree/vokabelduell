@@ -1,23 +1,29 @@
 package de.htwberlin.kba.user_management.export;
 
+import java.util.List;
+
 public class User {
 //irgendeineänderungvkjdcsjkdnk
-    private Long userID;
+    private Long userId;
     private String userName;
     private String password;
 
-    public User(Long userID, String userName, String password) {
-        this.userID = userID;
+
+
+    private static List<User> users;
+
+    public User(Long userId, String userName, String password) {
+        this.userId = userId;
         this.userName = userName;
         this.password = password;
     }
 
-    public Long getUserID() {
-        return userID;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserID(long userID) {
-        this.userID = userID;
+    public void setUserId(long userID) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -34,5 +40,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 }
