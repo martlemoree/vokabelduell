@@ -7,13 +7,13 @@ public class Vocab {
     private Long vocabId;
     private List<String> vocabs;
     private VocabList vocablist;
-    private Translation translation;
+    private List<Translation> translations;
 
-    public Vocab(Long vocabId, List<String> vocabs, VocabList vocablist, Translation translation) {
+    public Vocab(Long vocabId, List<String> vocabs, VocabList vocablist, List<Translation> translations) {
         this.vocabId = vocabId;
         this.vocabs = vocabs;
         this.vocablist = vocablist;
-        this.translation = translation;
+        this.translations = translations;
     }
 
     public Long getVocabId() {
@@ -40,11 +40,11 @@ public class Vocab {
         this.vocablist = vocablist;
     }
 
-    public Translation getTranslation() {
-        return translation;
+    public List<Translation> getTranslations() {
+        return translations;
     }
 
-    public void setTranslation(Translation translation) {
-        this.translation = translation;
+    public void setTranslations(List<Translation> translations) {
+        this.translations = translations;
     }
 }

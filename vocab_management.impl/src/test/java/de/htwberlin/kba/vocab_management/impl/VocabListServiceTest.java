@@ -26,7 +26,7 @@ public class VocabListServiceTest {
     @Test
     public void testCreateVocabList() throws Exception {
         //1. Arrange
-        long vocablistId = 123456;
+        Long vocablistId = Long.valueOf(123456);
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -48,7 +48,7 @@ public class VocabListServiceTest {
     @Test
     public void testEditName() throws Exception{
         //1. Arrange
-        long vocablistId = 123456;
+        Long vocablistId = Long.valueOf(123456);
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -67,7 +67,7 @@ public class VocabListServiceTest {
     @Test
     public void testEditLanguage() throws Exception{
         //1. Arrange
-        long vocablistId = 123456;
+        Long vocablistId = Long.valueOf(123456);
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -87,7 +87,7 @@ public class VocabListServiceTest {
     @Test
     public void testEditCategory() throws Exception{
         //1. Arrange
-        long vocablistId = 123456;
+        Long vocablistId = Long.valueOf(123456);
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -107,7 +107,7 @@ public class VocabListServiceTest {
     @Test
     public void testAddVocab() throws Exception{
         //1. Arrange
-        long vocablistId = 123456;
+        Long vocablistId = Long.valueOf(123456);
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -135,14 +135,14 @@ public class VocabListServiceTest {
     @Test
     public void testRemoveVocab() throws Exception{
         //1. Arrange
-        long vocablistId = 123456;
+        Long vocablistId = Long.valueOf(123456);
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
         String newLang = "Spanisch";
         List<Vocab> vocabs = new ArrayList<Vocab>();
 
-        long vocabId = Long.valueOf(234567);
+        Long vocabId = Long.valueOf(234567);
         List<String> vocabularies = new ArrayList<String>();
         vocabularies.add("Hello");
 
@@ -165,5 +165,25 @@ public class VocabListServiceTest {
 
         //3. Act
         Assert.assertEquals(checkVocabList, vlist.getVocabs());
+    }
+
+    @DisplayName("checks whether the category of a vocab list is changed correctly.")
+    @Test
+    public void testChooseVocablist() throws Exception{
+        //1. Arrange
+        Long vocablistId = Long.valueOf(123456);
+        String category = "Unit 1";
+        String name = "Food & Drinks";
+        String language = "Englisch";
+        String newCat = "Unit 2";
+        List<Vocab> vocabs = new ArrayList<Vocab>();
+
+
+        //2. Act
+        VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
+        service.editLanguage(newCat);
+
+        //3. Act
+        Assert.assertEquals(newCat, vlist.getCategory());
     }
 }

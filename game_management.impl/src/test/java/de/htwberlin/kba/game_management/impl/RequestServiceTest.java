@@ -7,6 +7,7 @@ import de.htwberlin.kba.user_management.export.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 
 public class RequestServiceTest {
 
@@ -17,14 +18,12 @@ public class RequestServiceTest {
         this.service = new RequestServiceImpl();
     }
 
-    /**
-     * checks whether a request is created correctly.
-     */
+    @DisplayName("checks whether a request is created correctly.")
     @Test
     public void testCreateRequest(){
         //1. Arrange
-        User martin = new User(234567,"MartinTheBrain", "lol123");
-        User stella = new User(234568,"stellomello", "123lol");
+        User martin = new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
+        User stella = new User(Long.valueOf(234568),"stellomello", "123lol");
 
         long requestId = 123456;
         Status requestStatus = Status.PENDING;
@@ -42,14 +41,12 @@ public class RequestServiceTest {
         Assert.assertEquals(receiver, req.getReceiver());
     }
 
-    /**
-     * tests whether the Status is changing to ACCEPTED when the request is accepted.
-     */
+    @DisplayName("tests whether the Status is changing to ACCEPTED when the request is accepted.")
     @Test
     public void testAcceptRequest(){
         //1. Arrange
-        User martin = new User(234567,"MartinTheBrain", "lol123");
-        User stella = new User(234568,"stellomello", "123lol");
+        User martin = new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
+        User stella = new User(Long.valueOf(234568),"stellomello", "123lol");
 
         Long requestId = Long.valueOf(123456);
         Status requestStatus = Status.PENDING;
@@ -64,14 +61,12 @@ public class RequestServiceTest {
         Assert.assertEquals(Status.ACCEPTED, req.getRequestStatus() );
     }
 
-    /**
-     * tests whether the Status is changing to REJECTED when the request is rejected.
-     */
+    @DisplayName("tests whether the Status is changing to REJECTED when the request is rejected.")
     @Test
     public void testRejectRequest(){
         //1. Arrange
-        User martin = new User(234567,"MartinTheBrain", "lol123");
-        User stella = new User(234568,"stellomello", "123lol");
+        User martin = new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
+        User stella = new User(Long.valueOf(234568),"stellomello", "123lol");
 
         Long requestId = Long.valueOf(123456);
         Status requestStatus = Status.PENDING;

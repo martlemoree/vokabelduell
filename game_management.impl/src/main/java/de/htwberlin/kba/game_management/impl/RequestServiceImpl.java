@@ -11,7 +11,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request createRequest(long requestId, Status requestStatus, User requester, User receiver) {
+    public Request createRequest(Long requestId, Status requestStatus, User requester, User receiver) {
 
         return null;
     }
