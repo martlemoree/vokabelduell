@@ -1,13 +1,16 @@
 package de.htwberlin.kba.game_management.export;
 
+
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.Vocab;
 
 public interface QuestionService {
     /**
      * Takes the given answer from the user, validates if its correct and gives back if it was the correct answer or not
-     * @param givenAnswer given answer from the user
-     * @param user information on which user answered
+     * @param answer given answer from user
+     * @param requester information on who gave the answer
+     * @param receiver information on who gave the answer
      * @return gives information whether answer was correct (1) or not (0)
      */
-    public boolean answerQuestion(String givenAnswer, User user);
+    boolean answerQuestion(String answer, Vocab rigthAnswer, User requester, User receiver);
 }

@@ -10,7 +10,8 @@ public class Question {
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
 
     private Long questionId;
-    private User user;
+    private User requester;
+    private User receiver;
     private Game game;
     private Round round;
     private Vocab wrongA;
@@ -19,9 +20,10 @@ public class Question {
     private Vocab rightAnswer;
     private boolean correctAnswered;
 
-    public Question(Long questionId, User user, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
+    public Question(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
         this.questionId = questionId;
-        this.user = user;
+        this.requester = requester;
+        this.receiver = receiver;
         this.game = game;
         this.round = round;
         this.wrongA = wrongA;
@@ -38,12 +40,20 @@ public class Question {
         this.questionId = questionId;
     }
 
-    public User getUser() {
-        return user;
+    public User getRequester() {
+        return requester;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRequester(User requester) {
+        this.requester = requester;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public Game getGame() {

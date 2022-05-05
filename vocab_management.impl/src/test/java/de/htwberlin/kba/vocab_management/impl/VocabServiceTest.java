@@ -13,6 +13,7 @@ public class VocabServiceTest {
 
     private VocabServiceImpl service;
 
+    @Before
     public void setUp() {
         this.service = new VocabServiceImpl();
     }
