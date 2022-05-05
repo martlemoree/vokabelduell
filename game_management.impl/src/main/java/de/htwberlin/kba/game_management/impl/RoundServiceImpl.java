@@ -4,7 +4,7 @@ import de.htwberlin.kba.game_management.export.RoundService;
 
 public class RoundServiceImpl implements RoundService {
 
-    public long chooseVocabList() {
-        return 0;
+    public Long chooseVocabList() {
+        return null;
     }
 }
