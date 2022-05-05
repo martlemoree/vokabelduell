@@ -4,13 +4,13 @@ import java.util.List;
 
 public class VocabList {
 
-    private long vocablistId;
+    private Long vocablistId;
     private String category;
     private String name;
     private String language;
     private List<Vocab> vocabs;
 
-    public VocabList(long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
+    public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
         this.category = category;
         this.name = name;
@@ -18,11 +18,11 @@ public class VocabList {
         this.vocabs = vocabs;
     }
 
-    public long getVocablistId() {
+    public Long getVocablistId() {
         return vocablistId;
     }
 
-    public void setVocablistId(long vocablistId) {
+    public void setVocablistId(Long vocablistId) {
         this.vocablistId = vocablistId;
     }
 

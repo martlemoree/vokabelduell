@@ -6,21 +6,19 @@ public class Translation {
     // nirgends anders (CategoryServiceImpl/CategoryService)
     // sinnvoll equals-Methode überschreiben: so können vielleicht Synonyme Übersetzungen mit berücksichtigt werden?
 
-    private long translationId;
+    private Long translationId;
     private List<String> translations;
-    private Vocab vocab;
 
-    public Translation(long translationId, List<String> translations, Vocab vocab) {
+    public Translation(Long translationId, List<String> translations) {
         this.translationId = translationId;
         this.translations = translations;
-        this.vocab = vocab;
     }
 
-    public long getTranslationId() {
+    public Long getTranslationId() {
         return translationId;
     }
 
-    public void setTranslationId(long translationId) {
+    public void setTranslationId(Long translationId) {
         this.translationId = translationId;
     }
 
@@ -32,11 +30,4 @@ public class Translation {
         this.translations = translations;
     }
 
-    public Vocab getVocab() {
-        return vocab;
-    }
-
-    public void setVocab(Vocab vocab) {
-        this.vocab = vocab;
-    }
 }

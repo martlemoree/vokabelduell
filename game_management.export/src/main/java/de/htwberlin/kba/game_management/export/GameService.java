@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.VocabList;
 
 public interface GameService {
 
@@ -19,4 +20,12 @@ public interface GameService {
      * @return a new game
      */
     public Game createGame(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound);
+
+    /**
+     * the user chooses a Vocablist for the current round. The questions will be created from this vocablist
+     * @return the vocab
+     */
+    public VocabList chooseVocabList();
+
+    Game createGame(long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound);
 }
