@@ -122,13 +122,13 @@ public class VocabListServiceTest {
         String newLang = "Spanisch";
         List<Vocab> vocabs = new ArrayList<Vocab>();
 
-        long vocabId = 234567;
+        Long vocabId = Long.valueOf(234567);
         List<String> vocabularies = new ArrayList<String>();
         vocabularies.add("Hello");
 
 
         //2. Act
-        Vocab vocab = new Vocab(vocabId,vocabularies);
+        Vocab vocab = new Vocab(vocabId,vocabs);
         VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
         service.addVocab(vocab);
 
