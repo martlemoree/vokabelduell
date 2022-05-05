@@ -44,16 +44,29 @@ public class UserServiceTest {
         assertTrue(bol);
     }
 
-    /*
     @Test
-    @DisplayName("user chooses an opponent from list of users")
+    @DisplayName("user chooses an opponent from list of users without current user")
     public void testChooseUser() {
         // 1. Arrange
-        List<User> users = service.getListOfUsers();
+        Long exampleId = service.getListOfUsers().get(0).getUserId();
+        List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
+
+        boolean bol = false;
+
         // 2. Act
-        Long id = service.chooseUser(users);
+        Long chosenUserid = service.chooseUser(usersWithoutCurrentUser);
+
+        for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
+            if (chosenUserid.equals(usersWithoutCurrentUser.get(i).getUserId())) {
+                bol = true;
+                break;
+            }
+            i++;
+        }
+
+        // 3. Assert
+        assertTrue(bol);
 
         // 3. Assert ist id in users enthalten
     }
-     */
 }
