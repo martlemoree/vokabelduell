@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class UserServiceTest {
 
@@ -19,6 +20,21 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         this.service = new UserServiceImpl();
+    }
+
+    @Test
+    @DisplayName("getUserList gives back return parameter")
+    public void testGetUserListNotEmpty(){
+        // 1. Arrange
+        Long exampleId = service.getListOfUsers().get(0).getUserId();
+
+        boolean bol = false;
+
+        // 2. Act
+        List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
+
+        // 3. Assert
+        assertNotNull(usersWithoutCurrentUser);
     }
 
     @Test
@@ -45,6 +61,21 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("return parameter of chooseUser is not empty")
+    public void testChooseUserNotEmpty() {
+        // 1. Arrange
+        Long exampleId = service.getListOfUsers().get(0).getUserId();
+        List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
+
+        boolean bol = false;
+
+        // 2. Act
+        Long chosenUserid = service.chooseUser(usersWithoutCurrentUser);
+
+        // 3. Assert
+        assertNotNull(usersWithoutCurrentUser);
+    }
+    @Test
     @DisplayName("user chooses an opponent from list of users without current user")
     public void testChooseUser() {
         // 1. Arrange
@@ -66,7 +97,5 @@ public class UserServiceTest {
 
         // 3. Assert
         assertTrue(bol);
-
-        // 3. Assert ist id in users enthalten
     }
 }
