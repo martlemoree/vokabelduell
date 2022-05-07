@@ -19,11 +19,45 @@ public class VocabServiceTest {
     }
 
     /**
-     * Testfall für addVocabs
+     * Testfall für addVocabs ob Vocab erstellt wurde
      */
     @Test
     @DisplayName("new vocab created")
     public void testAddVocabs() {
+        // 1. Arrange
+        List<String> vocabs = new ArrayList<String>();
+        vocabs.add("go");
+
+        // 2. Act
+        Vocab vocab = service.addVocabs(vocabs);
+
+        // 3. Assert
+        Assert.assertNotNull(vocab);
+    }
+
+    /**
+     * Testfall für addVocabs ob Vocab erstellt wurde
+     */
+    @Test
+    @DisplayName("new single vocab created correctly")
+    public void testAddVocabsSingle() {
+        // 1. Arrange
+        List<String> vocabs = new ArrayList<String>();
+        vocabs.add("go");
+
+        // 2. Act
+        Vocab vocab = service.addVocabs(vocabs);
+
+        // 3. Assert
+        Assert.assertEquals(vocabs, vocab.getVocabs());
+    }
+
+    /**
+     * Testfall für addVocabs mit mehreren Vocabs
+     */
+    @Test
+    @DisplayName("new multiple vocab created correctly")
+    public void testAddVocabsMultiple() {
         // 1. Arrange
         List<String> vocabs = new ArrayList<String>();
         vocabs.add("go");
@@ -34,7 +68,6 @@ public class VocabServiceTest {
         Vocab vocab = service.addVocabs(vocabs);
 
         // 3. Assert
-        Assert.assertNotNull(vocab);
         Assert.assertEquals(vocabs, vocab.getVocabs());
     }
 }
