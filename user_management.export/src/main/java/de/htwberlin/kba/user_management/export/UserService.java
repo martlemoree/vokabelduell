@@ -6,9 +6,10 @@ public interface UserService {
     /**
      * Show the user a list of users without showing the user himself in the list.
      * @param userId of the current user
+     * @param users List of all registered users
      * @return userList of all users except the current user
      */
-    List<User> getUserList(Long userId);
+    List<User> getUserListWOcurrentUser(Long userId, List<User> users);
 
     /**
      * Let the user choose an opponent for a new game.
@@ -22,6 +23,6 @@ public interface UserService {
      * @return List of all users
      */
     List<User> getListOfUsers();
-    public Long getId();
+    Long getId();
 
 }

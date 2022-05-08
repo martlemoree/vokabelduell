@@ -11,7 +11,7 @@ public class UserServiceImpl implements UserService {
      * @param userId of the current user
      * @return userList of all users except the current user
      */
-    public List<User> getUserList(Long userId) {
+    public List<User> getUserListWOcurrentUser(Long userId, List<User> users) {
         return null;
     }
 
