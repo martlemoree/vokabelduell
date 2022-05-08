@@ -20,22 +20,18 @@ public class GameServiceTest {
 
     @DisplayName("checks whether a Game is created correctly.")
     @Test
-    public void testCreateGameServiceTest() {
+    public void testCreateGame() {
         //1. Arrange
         Long gameId = 123456L;
-        int pointsRequester = 0;
-        int pointsReceiver = 0;
         User requester = new User(234567L, "MartinTheBrain", "lol123");
         User receiver = new User(234568L, "stellomello", "123lol");
 
         //2. Act
-        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
+        Game game = service.createGame(gameId, requester, receiver);
 
         //3. Assert
         Assert.assertNotNull(game);
         Assert.assertEquals(gameId, game.getGameId());
-        Assert.assertEquals(pointsRequester, game.getPointsRequester());
-        Assert.assertEquals(pointsReceiver, game.getPointsReceiver());
         Assert.assertEquals(requester, game.getRequester());
         Assert.assertEquals(receiver, game.getReceiver());
     }
@@ -44,13 +40,11 @@ public class GameServiceTest {
     @Test
     public void testPlayGame() {
         Long gameId = 123456L;
-        int pointsRequester = 0;
-        int pointsReceiver = 0;
         User requester = new User(234567L, "MartinTheBrain", "lol123");
         User receiver = new User(234568L, "stellomello", "123lol");
 
         //2. Act
-        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
+        Game game = new Game(gameId, requester, receiver);
         service.playGame(game);
 
         //3. Act
@@ -59,20 +53,53 @@ public class GameServiceTest {
 
     @DisplayName("Rounds are being created during a game")
     @Test
-    public void testCreateRounds(){
+    public void testPlayGameRoundsAreCreated(){
         Long gameId = 123456L;
-        int pointsRequester = 0;
-        int pointsReceiver = 0;
         User requester= new User(234567L,"MartinTheBrain", "lol123");
         User receiver = new User(234568L,"stellomello", "123lol");
 
         //2. Act
-        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
+        Game game = new Game(gameId, requester, receiver);
         service.playGame(game);
 
         //3. Act
         Assert.assertNotNull(game.getRounds());
     }
 
+    @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
+    @Test
+    public void testCalculatePointsOnce() {
+        // 1. Arrange
+        Long gameId = 123456L;
+        User requester= new User(234567L,"MartinTheBrain", "lol123");
+        User receiver = new User(234568L,"stellomello", "123lol");
+        Game game = new Game(gameId, requester, receiver);
+        int newPoints = 500;
 
+        //2. Act
+        service.calculatePoints(game, requester, newPoints);
+
+        // 3. Assert
+        Assert.assertEquals(newPoints, game.getPointsRequester());
+    }
+
+    @DisplayName("checks whether points are calculated correctly if added multiple times + for the correct user")
+    @Test
+    public void testCalculatePointsMultipleTimes() {
+        // 1. Arrange
+        Long gameId = 123456L;
+        User requester= new User(234567L,"MartinTheBrain", "lol123");
+        User receiver = new User(234568L,"stellomello", "123lol");
+        Game game = new Game(gameId, requester, receiver);
+        int newPoints = 500;
+        int morePoints = 200;
+
+        //2. Act
+        service.calculatePoints(game, receiver, newPoints);
+        service.calculatePoints(game, receiver, morePoints);
+        int sum = newPoints+morePoints;
+
+        // 3. Assert
+        Assert.assertEquals(sum, game.getPointsReceiver());
+    }
 }

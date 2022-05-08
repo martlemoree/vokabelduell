@@ -12,10 +12,8 @@ public class Game {
     private User receiver;
     private List<Round> rounds;
 
-    public Game(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver) {
+    public Game(Long gameId,  User requester, User receiver) {
         this.gameId = gameId;
-        this.pointsRequester = pointsRequester;
-        this.pointsReceiver = pointsReceiver;
         this.requester = requester;
         this.receiver = receiver;
     }

@@ -20,20 +20,22 @@ public interface QuestionService {
     boolean answerQuestion(String answer, Vocab rightAnswer, User requester, User receiver, Question question);
 
     /**
-     * create a new question
+     * create a new question.
      * @param questionId the unique identifier of the question
      * @param requester the first user that answers the question
      * @param receiver the second user that answers the question
      * @param game the game in which the question was created
      * @param round the round of a game in which the question is created
-     * @param wrongA 1st false answer option in german
-     * @param wrongB 2nd false answer option in german
-     * @param wrongC 3rd false answer option in german
-     * @param rightAnswer is the right vocabulary for the question in german
-     * @param question is a translation to which the correct vocab should be found
-     * @return
+     * @return  a new question
      */
-    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer, Translation question);
+    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round);
+
+    /**
+     * A translation is randomly assigned for the question. The related vocabulary is assigned to the correctAnswer
+     * and 3 randomly selected vocabularies are set to be wrongA, wrongB, wrongC.
+     * @param question the question that should be updated
+     */
+    public void setAnswerOptions(Question question);
 
     /**
      * should show all answer options for the question

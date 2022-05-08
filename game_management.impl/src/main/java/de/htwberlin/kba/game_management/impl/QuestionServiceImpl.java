@@ -18,8 +18,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer, Translation question) {
+    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round) {
         return null;
+    }
+
+    @Override
+    public void setAnswerOptions(Question question) {
+
     }
 
     @Override

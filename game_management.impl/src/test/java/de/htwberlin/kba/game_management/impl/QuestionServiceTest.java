@@ -41,7 +41,7 @@ public class QuestionServiceTest {
         this.service = new QuestionServiceImpl();
         this.martin = new User(12345L, "MartinTheBrain", "lol123");
         this.stella = new User(934038L, "stellomello", "123lol");
-        this.game = new Game(430920L, 0, 0, martin, stella);
+        this.game = new Game(430920L,  martin, stella);
         this.round = new Round(583820L, game, martin, stella, 1);
 
         //Tranlation for wrongA  Set Up
@@ -107,9 +107,15 @@ public class QuestionServiceTest {
     public void testAnswerQuestionCorrect(){
         //1. Arrange
         String answer = new String("dach");
+        Question question = service.createQuestion(1L, martin, stella, game, round);
+        question.setQuestion(trans4);
+        question.setRightAnswer(dach);
+        question.setWrongA(baum);
+        question.setWrongB(haus);
+        question.setWrongC(garten);
+        question.setRightAnswer(dach);
 
         //2. Act
-        Question question = service.createQuestion(1L, martin, stella, game, round, baum, haus, garten, dach, trans4);
         boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella, question);
 
         //3. Assert
@@ -121,10 +127,16 @@ public class QuestionServiceTest {
     @DisplayName("question was answered false")
     public void testAnswerQuestionFalse() {
         //1. Arrange
-        String answer = new String("baum");
+        String answer = new String("dach");
+        Question question = service.createQuestion(1L, martin, stella, game, round);
+        question.setQuestion(trans4);
+        question.setRightAnswer(dach);
+        question.setWrongA(baum);
+        question.setWrongB(haus);
+        question.setWrongC(garten);
+        question.setRightAnswer(dach);
 
         //2. Act
-        Question question = service.createQuestion(1L, martin, stella, game, round, baum, haus, garten, dach, trans4);
         boolean givenAnswer = service.answerQuestion(answer, dach, martin, stella, question);
 
         //3. Assert
@@ -138,7 +150,7 @@ public class QuestionServiceTest {
         //1. Arrange --> see setup
 
         //2. Act
-        Question question = service.createQuestion(1L, martin, stella, game, round, baum, haus, garten, dach, trans4);
+        Question question = service.createQuestion(1L, martin, stella, game, round);
 
         //3. Assert
         Assert.assertNotNull(question);
@@ -147,11 +159,6 @@ public class QuestionServiceTest {
         Assert.assertEquals(stella, question.getRequester());
         Assert.assertEquals(game, question.getGame());
         Assert.assertEquals(round, question.getRound());
-        Assert.assertEquals(baum, question.getWrongA());
-        Assert.assertEquals(haus, question.getWrongB());
-        Assert.assertEquals(garten, question.getWrongC());
-        Assert.assertEquals(dach, question.getRightAnswer());
-        Assert.assertEquals(trans4, question.getQuestion());
     }
     @Test
     @DisplayName("The method returns a list with all answer options")
@@ -159,7 +166,13 @@ public class QuestionServiceTest {
         //1. Arrange --> see setup
 
         //2. Act
-        Question question = service.createQuestion(1L, martin, stella, game, round, baum, haus, garten, dach, trans4);
+        Question question = service.createQuestion(1L, martin, stella, game, round);
+        question.setQuestion(trans4);
+        question.setRightAnswer(dach);
+        question.setWrongA(baum);
+        question.setWrongB(haus);
+        question.setWrongC(garten);
+        question.setRightAnswer(dach);
         List<Vocab> answerOptions = service.getAllAnswers();
 
         //3. Assert
@@ -170,5 +183,24 @@ public class QuestionServiceTest {
         Assert.assertTrue(answerOptions.contains(garten));
         Assert.assertTrue(answerOptions.contains(dach));
     }
+
+    @Test
+    @DisplayName("The method generates a question and 4 answer options and saves these data in the question object")
+    public void testSetAnswerOption() {
+        //1. Arrange --> see setup
+        Question question = service.createQuestion(1L, martin, stella, game, round);
+
+        //2. Act
+        service.setAnswerOptions(question);
+
+        //3. Assert
+        Assert.assertNotNull(question.getRightAnswer());
+        Assert.assertNotNull(question.getWrongA());
+        Assert.assertNotNull(question.getWrongB());
+        Assert.assertNotNull(question.getWrongC());
+        Assert.assertNotNull(question.getQuestion());
+    }
+
+
 
 }
