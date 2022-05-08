@@ -8,7 +8,7 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 public class QuestionServiceImpl implements QuestionService {
 
     @Override
-    public boolean answerQuestion(String answer, Vocab rightAnswer, User requester, User receiver) {
+    public boolean answerQuestion(String answer, Vocab rightAnswer, User requester, User receiver, Question question) {
         return true;
     }
 

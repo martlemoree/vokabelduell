@@ -51,7 +51,7 @@ public class GameServiceTest {
 
         //2. Act
         Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
-        service.playGame();
+        service.playGame(game);
 
         //3. Act
         Assert.assertEquals(6, game.getRounds().size());
@@ -68,7 +68,7 @@ public class GameServiceTest {
 
         //2. Act
         Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
-        service.playGame();
+        service.playGame(game);
 
         //3. Act
         Assert.assertNotNull(game.getRounds());
