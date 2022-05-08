@@ -18,7 +18,8 @@ public class Question {
     private Vocab wrongB;
     private Vocab wrongC;
     private Vocab rightAnswer;
-    private boolean correctAnswered;
+    private boolean correctAnsweredRequester;
+    private boolean correctAnsweredReceiver;
 
     public Question(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
         this.questionId = questionId;
@@ -104,11 +105,19 @@ public class Question {
         this.rightAnswer = rightAnswer;
     }
 
-    public boolean isCorrectAnswered() {
-        return correctAnswered;
+    public boolean isCorrectAnsweredRequester() {
+        return correctAnsweredRequester;
     }
 
-    public void setCorrectAnswered(boolean correctAnswered) {
-        this.correctAnswered = correctAnswered;
+    public void setCorrectAnsweredRequester(boolean correctAnsweredRequester) {
+        this.correctAnsweredRequester = correctAnsweredRequester;
+    }
+
+    public boolean isCorrectAnsweredReceiver() {
+        return correctAnsweredReceiver;
+    }
+
+    public void setCorrectAnsweredReceiver(boolean correctAnsweredReceiver) {
+        this.correctAnsweredReceiver = correctAnsweredReceiver;
     }
 }

@@ -8,7 +8,8 @@ public class VocabList {
     private String category;
     private String name;
     private String language;
-    private List<Vocab> vocabs;
+    private  List<Vocab> vocabs;
+    private  static List<VocabList> vocablists;
 
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
@@ -56,5 +57,13 @@ public class VocabList {
 
     public void setVocabs(List<Vocab> vocabs) {
         this.vocabs = vocabs;
+    }
+
+    public static List<VocabList> getVocablists() {
+        return vocablists;
+    }
+
+    public static void setVocablists(List<VocabList> vocablists) {
+        VocabList.vocablists = vocablists;
     }
 }

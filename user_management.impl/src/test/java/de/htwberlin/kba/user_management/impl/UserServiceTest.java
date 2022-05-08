@@ -2,14 +2,10 @@ package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
@@ -27,8 +23,6 @@ public class UserServiceTest {
     public void testGetUserListNotEmpty(){
         // 1. Arrange
         Long exampleId = service.getListOfUsers().get(0).getUserId();
-
-        boolean bol = false;
 
         // 2. Act
         List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
@@ -67,13 +61,11 @@ public class UserServiceTest {
         Long exampleId = service.getListOfUsers().get(0).getUserId();
         List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
 
-        boolean bol = false;
-
         // 2. Act
         Long chosenUserid = service.chooseUser(usersWithoutCurrentUser);
 
         // 3. Assert
-        assertNotNull(usersWithoutCurrentUser);
+        assertNotNull(chosenUserid);
     }
     @Test
     @DisplayName("user chooses an opponent from list of users without current user")

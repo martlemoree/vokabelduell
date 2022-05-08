@@ -18,9 +18,7 @@ public class VocabServiceTest {
         this.service = new VocabServiceImpl();
     }
 
-    /**
-     * Testfall für addVocabs ob Vocab erstellt wurde
-     */
+
     @Test
     @DisplayName("new vocab created")
     public void testAddVocabs() {
@@ -35,9 +33,6 @@ public class VocabServiceTest {
         Assert.assertNotNull(vocab);
     }
 
-    /**
-     * Testfall für addVocabs ob Vocab erstellt wurde
-     */
     @Test
     @DisplayName("new single vocab created correctly")
     public void testAddVocabsSingle() {
@@ -52,9 +47,6 @@ public class VocabServiceTest {
         Assert.assertEquals(vocabs, vocab.getVocabs());
     }
 
-    /**
-     * Testfall für addVocabs mit mehreren Vocabs
-     */
     @Test
     @DisplayName("new multiple vocab created correctly")
     public void testAddVocabsMultiple() {

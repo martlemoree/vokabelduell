@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import static org.junit.Assert.assertEquals;
 
 public class GameServiceTest {
 
@@ -23,15 +22,14 @@ public class GameServiceTest {
     @Test
     public void testCreateGameServiceTest() {
         //1. Arrange
-        Long gameId = Long.valueOf(123456);
+        Long gameId = 123456L;
         int pointsRequester = 0;
         int pointsReceiver = 0;
-        User requester = new User(Long.valueOf(234567), "MartinTheBrain", "lol123");
-        User receiver = new User(Long.valueOf(234568), "stellomello", "123lol");
-        int currentRound = 1;
+        User requester = new User(234567L, "MartinTheBrain", "lol123");
+        User receiver = new User(234568L, "stellomello", "123lol");
 
         //2. Act
-        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver, currentRound);
+        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
 
         //3. Assert
         Assert.assertNotNull(game);
@@ -40,22 +38,19 @@ public class GameServiceTest {
         Assert.assertEquals(pointsReceiver, game.getPointsReceiver());
         Assert.assertEquals(requester, game.getRequester());
         Assert.assertEquals(receiver, game.getReceiver());
-        Assert.assertEquals(currentRound, game.getCurrentRound());
     }
 
     @DisplayName("checks whether the game creates 6 rounds")
     @Test
     public void testPlayGame() {
-        Long gameId = Long.valueOf(123456);
+        Long gameId = 123456L;
         int pointsRequester = 0;
         int pointsReceiver = 0;
-        User requester = new User(Long.valueOf(234567), "MartinTheBrain", "lol123");
-        ;
-        User receiver = new User(Long.valueOf(234568), "stellomello", "123lol");
-        int currentRound = 1;
+        User requester = new User(234567L, "MartinTheBrain", "lol123");
+        User receiver = new User(234568L, "stellomello", "123lol");
 
         //2. Act
-        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver, currentRound);
+        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
         service.playGame();
 
         //3. Act
@@ -65,15 +60,14 @@ public class GameServiceTest {
     @DisplayName("Rounds are being created during a game")
     @Test
     public void testCreateRounds(){
-        Long gameId = Long.valueOf(123456);
+        Long gameId = 123456L;
         int pointsRequester = 0;
         int pointsReceiver = 0;
-        User requester= new User(Long.valueOf(234567),"MartinTheBrain", "lol123");;
-        User receiver = new User(Long.valueOf(234568),"stellomello", "123lol");
-        int currentRound = 1;
+        User requester= new User(234567L,"MartinTheBrain", "lol123");
+        User receiver = new User(234568L,"stellomello", "123lol");
 
         //2. Act
-        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver, currentRound);
+        Game game = new Game(gameId, pointsRequester, pointsReceiver, requester, receiver);
         service.playGame();
 
         //3. Act

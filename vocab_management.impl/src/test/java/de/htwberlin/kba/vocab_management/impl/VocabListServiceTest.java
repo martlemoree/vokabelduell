@@ -1,6 +1,5 @@
 package de.htwberlin.kba.vocab_management.impl;
 
-import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
@@ -8,9 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.Assert.assertTrue;
 
 public class VocabListServiceTest {
 
@@ -24,9 +23,9 @@ public class VocabListServiceTest {
 
     @DisplayName("Tests whether a Vocabulary List is created correctly")
     @Test
-    public void testCreateVocabList() throws Exception {
+    public void testCreateVocabList() {
         //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
+        Long vocablistId = 123456L;
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -46,9 +45,9 @@ public class VocabListServiceTest {
 
     @DisplayName("checks whether the name is changed correctly.")
     @Test
-    public void testEditName() throws Exception{
+    public void testEditName(){
         //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
+        Long vocablistId = 123456L;
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -65,9 +64,9 @@ public class VocabListServiceTest {
 
     @DisplayName("checks whether the language of a vocab list is changed correctly.")
     @Test
-    public void testEditLanguage() throws Exception{
+    public void testEditLanguage(){
         //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
+        Long vocablistId = 123456L;
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -85,9 +84,9 @@ public class VocabListServiceTest {
 
     @DisplayName("checks whether the category of a vocab list is changed correctly.")
     @Test
-    public void testEditCategory() throws Exception{
+    public void testEditCategory(){
         //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
+        Long vocablistId = 123456L;
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
@@ -105,16 +104,15 @@ public class VocabListServiceTest {
 
     @DisplayName("checks whether a vocabulary is added to a vocabulary list correctly.")
     @Test
-    public void testAddVocab() throws Exception{
+    public void testAddVocab(){
         //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
+        Long vocablistId = 123456L;
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
-        String newLang = "Spanisch";
         List<Vocab> vocabs = new ArrayList<Vocab>();
 
-        Long vocabId = Long.valueOf(234567);
+        Long vocabId = 234567L;
         List<String> vocabularies = new ArrayList<String>();
         vocabularies.add("Hello");
 
@@ -133,21 +131,20 @@ public class VocabListServiceTest {
 
     @DisplayName("checks whether a vocabulary is removed from a vocabulary list correctly.")
     @Test
-    public void testRemoveVocab() throws Exception{
+    public void testRemoveVocab(){
         //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
+        Long vocablistId = 123456L;
         String category = "Unit 1";
         String name = "Food & Drinks";
         String language = "Englisch";
-        String newLang = "Spanisch";
         List<Vocab> vocabs = new ArrayList<Vocab>();
 
-        Long vocabId = Long.valueOf(234567);
+        Long vocabId = 234567L;
         List<String> vocabularies = new ArrayList<String>();
         vocabularies.add("Hello");
 
 
-        Long vocabId2 = Long.valueOf(234568);
+        Long vocabId2 = 234568L;
         List<String> vocabularies2 = new ArrayList<String>();
         vocabularies2.add("Bye");
 
@@ -167,23 +164,26 @@ public class VocabListServiceTest {
         Assert.assertEquals(checkVocabList, vlist.getVocabs());
     }
 
-    @DisplayName("checks whether the category of a vocab list is changed correctly.")
     @Test
-    public void testChooseVocablist() throws Exception{
-        //1. Arrange
-        Long vocablistId = Long.valueOf(123456);
-        String category = "Unit 1";
-        String name = "Food & Drinks";
-        String language = "Englisch";
-        String newCat = "Unit 2";
-        List<Vocab> vocabs = new ArrayList<Vocab>();
+    @DisplayName("user chooses the vocablist for the current round")
+    public void testChooseUser() {
+        // 1. Arrange
+        List<VocabList> vocablists = service.getAllVocablists();
 
+        boolean bol = false;
 
-        //2. Act
-        VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
-        service.editLanguage(newCat);
+        // 2. Act
+        VocabList chosenVocablist = service.chooseVocabList();
 
-        //3. Act
-        Assert.assertEquals(newCat, vlist.getCategory());
+        for (int i = 0; i < vocablists.size(); i++) {
+            if (chosenVocablist.getVocablistId().equals(vocablists.get(i).getVocablistId())) {
+                bol = true;
+                break;
+            }
+            i++;
+        }
+
+        // 3. Assert
+        assertTrue(bol);
     }
 }

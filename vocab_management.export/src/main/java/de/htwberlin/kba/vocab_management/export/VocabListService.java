@@ -12,7 +12,7 @@ public interface VocabListService {
      * @param vocabs list of the vocabularies that belong to this list
      * @return a new Vocabulary List
      */
-    public VocabList createVocablist(long vocablistId, String category, String name, String language, List<Vocab> vocabs);
+    public VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs);
 
     /**
      * changes the Name of the VocabList.
@@ -44,6 +44,16 @@ public interface VocabListService {
      */
     public void addVocab(Vocab vocab);
 
-    //löschen methode aber wie sieht die aus?
+    /**
+     * User can choose a VocabList from three randomly chosen Vocablists from all available lists
+     * @return the chosen Vocablist
+     */
+    public VocabList chooseVocabList();
+
+    /**
+     * Show all existing Vocablists.
+     * @return the list with all existing vocablists.
+     */
+    public List<VocabList> getAllVocablists();
 
 }

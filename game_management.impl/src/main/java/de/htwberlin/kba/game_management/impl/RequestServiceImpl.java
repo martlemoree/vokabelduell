@@ -7,6 +7,7 @@ import de.htwberlin.kba.user_management.export.User;
 
 public class RequestServiceImpl implements RequestService {
 
+    @Override
     public void changeStatus(Boolean accept) {
     }
 

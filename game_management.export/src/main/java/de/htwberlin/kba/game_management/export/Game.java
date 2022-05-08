@@ -10,16 +10,14 @@ public class Game {
     private int pointsReceiver;
     private User requester;
     private User receiver;
-    private int currentRound;
     private List<Round> rounds;
 
-    public Game(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
+    public Game(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver) {
         this.gameId = gameId;
         this.pointsRequester = pointsRequester;
         this.pointsReceiver = pointsReceiver;
         this.requester = requester;
         this.receiver = receiver;
-        this.currentRound = currentRound;
     }
 
     public Long getGameId() {
@@ -62,13 +60,6 @@ public class Game {
         this.receiver = receiver;
     }
 
-    public int getCurrentRound() {
-        return currentRound;
-    }
-
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
-    }
 
     public List<Round> getRounds() {
         return rounds;

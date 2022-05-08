@@ -22,10 +22,10 @@ public class RequestServiceTest {
     @Test
     public void testCreateRequest(){
         //1. Arrange
-        User martin = new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
-        User stella = new User(Long.valueOf(234568),"stellomello", "123lol");
+        User martin = new User(234567L,"MartinTheBrain", "lol123");
+        User stella = new User(234568L,"stellomello", "123lol");
 
-        long requestId = 123456;
+        Long requestId = 123456L;
         Status requestStatus = Status.PENDING;
         User requester = martin;
         User receiver = stella;
@@ -45,10 +45,10 @@ public class RequestServiceTest {
     @Test
     public void testAcceptRequest(){
         //1. Arrange
-        User martin = new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
-        User stella = new User(Long.valueOf(234568),"stellomello", "123lol");
+        User martin = new User(234567L,"MartinTheBrain", "lol123");
+        User stella = new User(234568L,"stellomello", "123lol");
 
-        Long requestId = Long.valueOf(123456);
+        Long requestId = 123456L;
         Status requestStatus = Status.PENDING;
         User requester = martin;
         User receiver = stella;
@@ -65,10 +65,10 @@ public class RequestServiceTest {
     @Test
     public void testRejectRequest(){
         //1. Arrange
-        User martin = new User(Long.valueOf(234567),"MartinTheBrain", "lol123");
-        User stella = new User(Long.valueOf(234568),"stellomello", "123lol");
+        User martin = new User(234567L,"MartinTheBrain", "lol123");
+        User stella = new User(234568L,"stellomello", "123lol");
 
-        Long requestId = Long.valueOf(123456);
+        Long requestId = 123456L;
         Status requestStatus = Status.PENDING;
         User requester = martin;
         User receiver = stella;
