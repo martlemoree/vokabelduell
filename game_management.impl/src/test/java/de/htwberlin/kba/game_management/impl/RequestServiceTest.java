@@ -55,7 +55,7 @@ public class RequestServiceTest {
 
         //2. Act
         Request req = service.createRequest(requestId, requestStatus, requester, receiver);
-        service.changeStatus(Boolean.TRUE);
+        service.changeStatus(Boolean.TRUE, req);
 
         //3. Assert
         Assert.assertEquals(Status.ACCEPTED, req.getRequestStatus() );
@@ -75,7 +75,7 @@ public class RequestServiceTest {
 
         //2. Act
         Request req = service.createRequest(requestId, requestStatus, requester, receiver);
-        service.changeStatus(Boolean.FALSE);
+        service.changeStatus(Boolean.FALSE, req);
 
         //3. Assert
         Assert.assertEquals(Status.REJECTED, req.getRequestStatus() );

@@ -6,8 +6,9 @@ public interface GameService {
 
     /**
      * Contains the game logic that one game consists of 6 rounds
+     * @param game the game that should be played.
      */
-    public void playGame();
+    public void playGame(Game game);
 
     /**
      * creates a new Game.

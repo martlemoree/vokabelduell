@@ -11,7 +11,7 @@ import java.util.List;
 public class GameServiceImpl implements GameService {
 
     @Override
-    public void playGame() {
+    public void playGame(Game game) {
     }
 
     @Override

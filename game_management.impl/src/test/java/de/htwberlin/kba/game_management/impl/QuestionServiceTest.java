@@ -73,7 +73,7 @@ public class QuestionServiceTest {
         String answer = new String("dach");
 
         //2. Act
-        boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella);
+        boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella, question);
 
         //3. Assert
         Assert.assertTrue(givenAnswer);
@@ -128,7 +128,7 @@ public class QuestionServiceTest {
         String answer = new String("baum");
 
         //2. Act
-        boolean givenAnswer = service.answerQuestion(answer, dach, martin, stella);
+        boolean givenAnswer = service.answerQuestion(answer, dach, martin, stella, question);
 
         //3. Assert
         Assert.assertFalse(givenAnswer);
