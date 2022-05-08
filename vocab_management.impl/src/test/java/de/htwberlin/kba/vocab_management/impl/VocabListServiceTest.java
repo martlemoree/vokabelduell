@@ -33,7 +33,7 @@ public class VocabListServiceTest {
         List<Vocab> vocabs = new ArrayList<Vocab>();
 
         //2. Assert
-        VocabList vlist = new VocabList(vocablistId, category, name, language,vocabs);
+        VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
 
         //3. Assert
         Assert.assertNotNull(vlist);

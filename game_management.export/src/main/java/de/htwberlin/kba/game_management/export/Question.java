@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 
 public class Question {
@@ -18,10 +19,11 @@ public class Question {
     private Vocab wrongB;
     private Vocab wrongC;
     private Vocab rightAnswer;
+    private Translation question;
     private boolean correctAnsweredRequester;
     private boolean correctAnsweredReceiver;
 
-    public Question(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
+    public Question(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer, Translation question) {
         this.questionId = questionId;
         this.requester = requester;
         this.receiver = receiver;
@@ -31,6 +33,7 @@ public class Question {
         this.wrongB = wrongB;
         this.wrongC = wrongC;
         this.rightAnswer = rightAnswer;
+        this.question = question;
     }
 
     public long getQuestionId() {
@@ -119,5 +122,13 @@ public class Question {
 
     public void setCorrectAnsweredReceiver(boolean correctAnsweredReceiver) {
         this.correctAnsweredReceiver = correctAnsweredReceiver;
+    }
+
+    public Translation getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Translation question) {
+        this.question = question;
     }
 }
