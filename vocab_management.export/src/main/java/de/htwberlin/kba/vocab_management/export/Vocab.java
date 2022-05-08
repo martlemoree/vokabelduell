@@ -3,7 +3,6 @@ package de.htwberlin.kba.vocab_management.export;
 import java.util.List;
 
 public class Vocab {
-
     private Long vocabId;
     private List<String> vocabs;
     private VocabList vocablist;

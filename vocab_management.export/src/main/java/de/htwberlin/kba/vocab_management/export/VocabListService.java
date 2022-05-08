@@ -16,44 +16,45 @@ public interface VocabListService {
 
     /**
      * changes the Name of the VocabList.
+     * @param vocablist the object that should be changed
      * @param newName the old name should be replaced by this name.
      */
-    public void editName(String newName);
+    public void editName(VocabList vocablist, String newName);
 
     /**
      * changes the language of the VocabList.
+     * @param vocablist the object that should be changed
      * @param newLanguage the old language should be replaced by this language.
      */
-    public void editLanguage(String newLanguage);
+    public void editLanguage(VocabList vocablist,String newLanguage);
 
     /**
      * changes the category of the VocabList.
+     * @param vocablist the object that should be changed
      * @param newCat the old category should be replaced by this language.
      */
-    public void editCategory(String newCat);
+    public void editCategory(VocabList vocablist,String newCat);
 
     /**
      * removes a specific vocabulary from the VocabList.
+     * @param vocablist the object that should be changed
      * @param vocab is the vocabulary that should be removed from the VocabList
      */
-    public void removeVocab(Vocab vocab);
+    public void removeVocab(VocabList vocablist,Vocab vocab);
 
     /**
      * inserts a new vocabulary to the VocabList
+     * @param vocablist the object that should be changed
      * @param vocab the new Vocabulary that should be added to the VocabList
      */
-    public void addVocab(Vocab vocab);
+    public void addVocab(VocabList vocablist,Vocab vocab);
+
 
     /**
-     * User can choose a VocabList from three randomly chosen Vocablists from all available lists
-     * @return the chosen Vocablist
+     * create a list that consists of three randomly chosen vocablists. A user can choose between this vocablists before
+     * each round.
+     * @return the list with three vocablists.
      */
-    public VocabList chooseVocabList();
-
-    /**
-     * Show all existing Vocablists.
-     * @return the list with all existing vocablists.
-     */
-    public List<VocabList> getAllVocablists();
+    public List<VocabList> getRandomVocablists();
 
 }

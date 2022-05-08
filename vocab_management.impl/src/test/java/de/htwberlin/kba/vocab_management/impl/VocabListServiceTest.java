@@ -9,7 +9,8 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertNotNull;
 
 public class VocabListServiceTest {
 
@@ -56,7 +57,7 @@ public class VocabListServiceTest {
 
         //2. Act
         VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
-        service.editName(newName);
+        service.editName(vlist, newName);
 
         //3. Act
         Assert.assertEquals(newName, vlist.getName());
@@ -76,7 +77,7 @@ public class VocabListServiceTest {
 
         //2. Act
         VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
-        service.editLanguage(newLang);
+        service.editLanguage(vlist, newLang);
 
         //3. Act
         Assert.assertEquals(newLang, vlist.getLanguage());
@@ -96,7 +97,7 @@ public class VocabListServiceTest {
 
         //2. Act
         VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
-        service.editLanguage(newCat);
+        service.editCategory(vlist,newCat);
 
         //3. Act
         Assert.assertEquals(newCat, vlist.getCategory());
@@ -120,7 +121,7 @@ public class VocabListServiceTest {
         //2. Act
         Vocab vocab = new Vocab(vocabId,vocabularies, null, null);
         VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
-        service.addVocab(vocab);
+        service.addVocab(vlist, vocab);
 
         List<Vocab> checkVocabList = new ArrayList<Vocab>();
         checkVocabList.add(vocab);
@@ -153,9 +154,9 @@ public class VocabListServiceTest {
         Vocab vocab1 = new Vocab(vocabId, vocabularies,  null, null);
         Vocab vocab2 = new Vocab(vocabId2, vocabularies2,  null, null);
         VocabList vlist = service.createVocablist(vocablistId, category, name, language, vocabs);
-        service.addVocab(vocab1);
-        service.addVocab(vocab2);
-        service.removeVocab(vocab2);
+        service.addVocab(vlist, vocab1);
+        service.addVocab(vlist, vocab2);
+        service.removeVocab(vlist, vocab2);
 
         List<Vocab> checkVocabList = new ArrayList<Vocab>();
         checkVocabList.add(vocab1);
@@ -164,26 +165,27 @@ public class VocabListServiceTest {
         Assert.assertEquals(checkVocabList, vlist.getVocabs());
     }
 
-    @Test
-    @DisplayName("user chooses the vocablist for the current round")
-    public void testChooseUser() {
-        // 1. Arrange
-        List<VocabList> vocablists = service.getAllVocablists();
 
-        boolean bol = false;
+
+    @Test
+    @DisplayName("getRandomVocablists gives back return parameter")
+    public void testGetRandomUserVocablistsNotNull(){
 
         // 2. Act
-        VocabList chosenVocablist = service.chooseVocabList();
-
-        for (int i = 0; i < vocablists.size(); i++) {
-            if (chosenVocablist.getVocablistId().equals(vocablists.get(i).getVocablistId())) {
-                bol = true;
-                break;
-            }
-            i++;
-        }
+        List<VocabList> randomLists = service.getRandomVocablists();
 
         // 3. Assert
-        assertTrue(bol);
+        assertNotNull(randomLists);
+    }
+
+    @Test
+    @DisplayName("getRandomVocablists gives back three vocablists")
+    public void testGetRandomUserVocablists(){
+
+        // 2. Act
+        List<VocabList> randomLists = service.getRandomVocablists();
+
+        // 3. Assert
+        Assert.assertEquals(3, randomLists.size());
     }
 }
