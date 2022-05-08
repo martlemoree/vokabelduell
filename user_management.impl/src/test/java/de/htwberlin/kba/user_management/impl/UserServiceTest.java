@@ -2,10 +2,12 @@ package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
+import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("getUserList gives back return parameter")
-    public void testGetUserListNotEmpty(){
+    public void testGetUserListWOcurrentUserNotEmpty(){
         // 1. Arrange
         List<User> users = new ArrayList<>();
         Long exampleId = 123456L;
@@ -38,7 +40,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("get all users without current user")
-    public void testGetUserList(){
+    public void testGetUserListWOcurrentUser(){
         // 1. Arrange
         List<User> users = new ArrayList<>();
         Long exampleId = 123456L;
@@ -99,5 +101,19 @@ public class UserServiceTest {
 
         // 3. Assert
         assertTrue(bol);
+    }
+    @Test
+    @DisplayName("user chooses a new password")
+    public void changePassword() {
+        // 1. Arrange
+        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
+        String newPassword = "QWERTZ";
+
+        // 2. Act
+        service.changePassword(newPassword, user);
+
+        // 3. Assert
+        Assert.assertEquals(newPassword, user.getPassword());
+
     }
 }

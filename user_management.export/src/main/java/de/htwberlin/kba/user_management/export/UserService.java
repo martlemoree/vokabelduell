@@ -19,10 +19,10 @@ public interface UserService {
     Long chooseUser(List<User> users);
 
     /**
-     * returns the list of every user registered
-     * @return List of all users
+     * Offers functionality for user to change password according to given standards
+     * @param password chosen password from the user
+     * @param user User who wants to change password
      */
-    List<User> getListOfUsers();
-    Long getId();
+    void changePassword(String password, User user);
 
 }
