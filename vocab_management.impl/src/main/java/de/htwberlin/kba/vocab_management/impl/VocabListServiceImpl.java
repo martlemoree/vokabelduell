@@ -8,34 +8,39 @@ import java.util.List;
 
 public class VocabListServiceImpl implements VocabListService {
     @Override
-    public VocabList createVocablist(long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
+    public VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         return null;
     }
 
     @Override
-    public void editName(String newName) {
+    public void editName(VocabList vocablist, String newName) {
 
     }
 
     @Override
-    public void editLanguage(String newLanguage) {
+    public void editLanguage(VocabList vocablist, String newLanguage) {
 
     }
 
     @Override
-    public void editCategory(String newCat) {
+    public void editCategory(VocabList vocablist, String newCat) {
 
     }
 
     @Override
-    public void removeVocab(Vocab vocab) {
+    public void removeVocab(VocabList vocablist, Vocab vocab) {
 
     }
 
     @Override
-    public void addVocab(Vocab vocab) {
+    public void addVocab(VocabList vocablist, Vocab vocab) {
 
     }
 
+
+    @Override
+    public List<VocabList> getRandomVocablists() {
+        return null;
+    }
 
 }

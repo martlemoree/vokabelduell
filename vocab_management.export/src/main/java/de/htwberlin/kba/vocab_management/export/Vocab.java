@@ -3,23 +3,23 @@ package de.htwberlin.kba.vocab_management.export;
 import java.util.List;
 
 public class Vocab {
-
-    private long vocabId;
+    private Long vocabId;
     private List<String> vocabs;
     private VocabList vocablist;
-    private Translation translation;
+    private List<Translation> translations;
 
-    public Vocab(long vocabId, List<String> vocabs) {
+    public Vocab(Long vocabId, List<String> vocabs, VocabList vocablist, List<Translation> translations) {
         this.vocabId = vocabId;
         this.vocabs = vocabs;
         this.vocablist = vocablist;
+        this.translations = translations;
     }
 
-    public long getVocabId() {
+    public Long getVocabId() {
         return vocabId;
     }
 
-    public void setVocabId(long vocabId) {
+    public void setVocabId(Long vocabId) {
         this.vocabId = vocabId;
     }
 
@@ -37,5 +37,13 @@ public class Vocab {
 
     public void setVocablist(VocabList vocablist) {
         this.vocablist = vocablist;
+    }
+
+    public List<Translation> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(List<Translation> translations) {
+        this.translations = translations;
     }
 }

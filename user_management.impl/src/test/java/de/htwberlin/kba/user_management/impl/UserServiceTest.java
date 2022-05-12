@@ -7,11 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import java.util.Arrays;
+import javax.naming.InvalidNameException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class UserServiceTest {
 
@@ -22,15 +23,34 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("get all users without current user")
-    public void testGetUserList(){
+    @DisplayName("getUserList gives back return parameter")
+    public void testGetUserListWOcurrentUserNotEmpty(){
         // 1. Arrange
-        Long exampleId = service.getListOfUsers().get(0).getUserId();
+        List<User> users = new ArrayList<>();
+        Long exampleId = 123456L;
+        users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
+        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+
+        // 2. Act
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId, users);
+
+        // 3. Assert
+        assertNotNull(usersWithoutCurrentUser);
+    }
+
+    @Test
+    @DisplayName("get all users without current user")
+    public void testGetUserListWOcurrentUser(){
+        // 1. Arrange
+        List<User> users = new ArrayList<>();
+        Long exampleId = 123456L;
+        users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
+        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
 
         boolean bol = false;
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId, users);
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (!exampleId.equals(usersWithoutCurrentUser.get(i).getUserId())) {
@@ -45,19 +65,34 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("user chooses an opponent from list of users without current user")
+    @DisplayName("return parameter of chooseUser is not empty")
+    public void testChooseUserNotEmpty() {
+        // 1. Arrange
+        List<User> users = new ArrayList<>();
+        users.add(new User(123456L, "AntjeWinner", "StellaIstToll"));
+        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+
+        // 2. Act
+        Long chosenUserid = service.chooseUser(users);
+
+        // 3. Assert
+        assertNotNull(chosenUserid);
+    }
+    @Test
+    @DisplayName("user chooses an opponent from given list of users")
     public void testChooseUser() {
         // 1. Arrange
-        Long exampleId = service.getListOfUsers().get(0).getUserId();
-        List<User> usersWithoutCurrentUser = service.getUserList(exampleId);
+        List<User> users = new ArrayList<>();
+        users.add(new User(123456L, "AntjeWinner", "StellaIstToll"));
+        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
 
         boolean bol = false;
 
         // 2. Act
-        Long chosenUserid = service.chooseUser(usersWithoutCurrentUser);
+        Long chosenUserid = service.chooseUser(users);
 
-        for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
-            if (chosenUserid.equals(usersWithoutCurrentUser.get(i).getUserId())) {
+        for (int i = 0; i < users.size(); i++) {
+            if (chosenUserid.equals(users.get(i).getUserId())) {
                 bol = true;
                 break;
             }
@@ -66,7 +101,19 @@ public class UserServiceTest {
 
         // 3. Assert
         assertTrue(bol);
+    }
+    @Test
+    @DisplayName("user chooses a new password")
+    public void changePassword() {
+        // 1. Arrange
+        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
+        String newPassword = "QWERTZ";
 
-        // 3. Assert ist id in users enthalten
+        // 2. Act
+        service.changePassword(newPassword, user);
+
+        // 3. Assert
+        Assert.assertEquals(newPassword, user.getPassword());
+
     }
 }

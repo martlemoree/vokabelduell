@@ -6,9 +6,10 @@ public interface UserService {
     /**
      * Show the user a list of users without showing the user himself in the list.
      * @param userId of the current user
+     * @param users List of all registered users
      * @return userList of all users except the current user
      */
-    List<User> getUserList(Long userId);
+    List<User> getUserListWOcurrentUser(Long userId, List<User> users);
 
     /**
      * Let the user choose an opponent for a new game.
@@ -18,10 +19,10 @@ public interface UserService {
     Long chooseUser(List<User> users);
 
     /**
-     * returns the list of every user registered
-     * @return List of all users
+     * Offers functionality for user to change password according to given standards
+     * @param password chosen password from the user
+     * @param user User who wants to change password
      */
-    List<User> getListOfUsers();
-    public Long getId();
+    void changePassword(String password, User user);
 
 }

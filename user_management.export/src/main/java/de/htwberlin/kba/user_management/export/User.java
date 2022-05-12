@@ -3,12 +3,10 @@ package de.htwberlin.kba.user_management.export;
 import java.util.List;
 
 public class User {
-//irgendeineänderungvkjdcsjkdnk
+
     private Long userId;
     private String userName;
     private String password;
-
-
 
     private static List<User> users;
 

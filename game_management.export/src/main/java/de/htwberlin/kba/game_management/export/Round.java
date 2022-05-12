@@ -2,22 +2,20 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.VocabList;
 
 public class Round {
 
     private Long roundId;
     private Game game;
-    private int pointsRequester;
-    private int pointsReceiver;
     private User requester;
     private User receiver;
     private int currentRound;
+    private VocabList vocablist;
 
-    public Round(Long roundId, Game game, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
+    public Round(Long roundId, Game game, User requester, User receiver, int currentRound) {
         this.roundId = roundId;
         this.game = game;
-        this.pointsRequester = pointsRequester;
-        this.pointsReceiver = pointsReceiver;
         this.requester = requester;
         this.receiver = receiver;
         this.currentRound = currentRound;
@@ -37,22 +35,6 @@ public class Round {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    public int getPointsRequester() {
-        return pointsRequester;
-    }
-
-    public void setPointsRequester(int pointsRequester) {
-        this.pointsRequester = pointsRequester;
-    }
-
-    public int getPointsReceiver() {
-        return pointsReceiver;
-    }
-
-    public void setPointsReceiver(int pointsReceiver) {
-        this.pointsReceiver = pointsReceiver;
     }
 
     public User getRequester() {
@@ -77,5 +59,13 @@ public class Round {
 
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
+    }
+
+    public VocabList getVocablist() {
+        return vocablist;
+    }
+
+    public void setVocablist(VocabList vocablist) {
+        this.vocablist = vocablist;
     }
 }

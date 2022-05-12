@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 
 public class Question {
@@ -10,24 +11,29 @@ public class Question {
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
 
     private Long questionId;
-    private User user;
+    private User requester;
+    private User receiver;
     private Game game;
     private Round round;
     private Vocab wrongA;
     private Vocab wrongB;
     private Vocab wrongC;
     private Vocab rightAnswer;
-    private boolean correctAnswered;
+    private Translation question;
+    private boolean correctAnsweredRequester;
+    private boolean correctAnsweredReceiver;
 
-    public Question(Long questionId, User user, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer) {
+    public Question(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer, Translation question) {
         this.questionId = questionId;
-        this.user = user;
+        this.requester = requester;
+        this.receiver = receiver;
         this.game = game;
         this.round = round;
         this.wrongA = wrongA;
         this.wrongB = wrongB;
         this.wrongC = wrongC;
         this.rightAnswer = rightAnswer;
+        this.question = question;
     }
 
     public long getQuestionId() {
@@ -38,12 +44,20 @@ public class Question {
         this.questionId = questionId;
     }
 
-    public User getUser() {
-        return user;
+    public User getRequester() {
+        return requester;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRequester(User requester) {
+        this.requester = requester;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public Game getGame() {
@@ -94,11 +108,27 @@ public class Question {
         this.rightAnswer = rightAnswer;
     }
 
-    public boolean isCorrectAnswered() {
-        return correctAnswered;
+    public boolean isCorrectAnsweredRequester() {
+        return correctAnsweredRequester;
     }
 
-    public void setCorrectAnswered(boolean correctAnswered) {
-        this.correctAnswered = correctAnswered;
+    public void setCorrectAnsweredRequester(boolean correctAnsweredRequester) {
+        this.correctAnsweredRequester = correctAnsweredRequester;
+    }
+
+    public boolean isCorrectAnsweredReceiver() {
+        return correctAnsweredReceiver;
+    }
+
+    public void setCorrectAnsweredReceiver(boolean correctAnsweredReceiver) {
+        this.correctAnsweredReceiver = correctAnsweredReceiver;
+    }
+
+    public Translation getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Translation question) {
+        this.question = question;
     }
 }

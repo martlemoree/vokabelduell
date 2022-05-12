@@ -2,23 +2,20 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
 
+import java.util.List;
+
 public class Game {
-    //wdkjnwdlwed
-    //sdkcjnskjd
     private Long gameId;
     private int pointsRequester;
     private int pointsReceiver;
     private User requester;
     private User receiver;
-    private int currentRound;
+    private List<Round> rounds;
 
-    public Game(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound) {
+    public Game(Long gameId,  User requester, User receiver) {
         this.gameId = gameId;
-        this.pointsRequester = pointsRequester;
-        this.pointsReceiver = pointsReceiver;
         this.requester = requester;
         this.receiver = receiver;
-        this.currentRound = currentRound;
     }
 
     public Long getGameId() {
@@ -61,11 +58,13 @@ public class Game {
         this.receiver = receiver;
     }
 
-    public int getCurrentRound() {
-        return currentRound;
+
+    public List<Round> getRounds() {
+        return rounds;
     }
 
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
+    public void setRounds(List<Round> rounds) {
+        this.rounds = rounds;
     }
+
 }
