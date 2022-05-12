@@ -1,31 +1,31 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.vocab_management.export.VocabList;
 
 public interface GameService {
 
     /**
      * Contains the game logic that one game consists of 6 rounds
+     * @param game the game that should be played.
      */
-    public void playGame();
+    void playGame(Game game);
 
     /**
      * creates a new Game.
      * @param gameId is the unique identifier of the game.
-     * @param pointsRequester is the current score of the user who sent the request.
-     * @param pointsReceiver is the current score of the user who received the request.
      * @param requester is the user who sent the request for the game.
      * @param receiver is the user who received and accepted the game request.
      * @return a new game
      */
-    public Game createGame(Long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound);
+    Game createGame(Long gameId, User requester, User receiver);
 
     /**
-     * the user chooses a Vocablist for the current round. The questions will be created from this vocablist
-     * @return the vocab
+     * method calculates points for given user and changes value accordingly
+     * @param game game which is to be changed
+     * @param user user for which points are calculated
+     * @param points number of points
+     * @return
      */
-    public VocabList chooseVocabList();
+    int calculatePoints(Game game, User user, int points);
 
-    Game createGame(long gameId, int pointsRequester, int pointsReceiver, User requester, User receiver, int currentRound);
 }

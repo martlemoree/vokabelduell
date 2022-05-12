@@ -17,7 +17,7 @@ public class Request {
         this.receiver = receiver;
     }
 
-    public long getRequestId() {
+    public Long getRequestId() {
         return requestId;
     }
 

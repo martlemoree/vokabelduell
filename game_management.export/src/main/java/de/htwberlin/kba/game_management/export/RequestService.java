@@ -8,8 +8,9 @@ public interface RequestService {
      * Changes status of request accordingly.
      * If request is accepted, starts new game.
      * @param accept gives information about whether the request was accepted (1) or rejected (0)
+     * @param request is the object that should be updated
      */
-    public void changeStatus(Boolean accept);
+    public void changeStatus(Boolean accept, Request request);
 
     /**
      * adds a new game request.
