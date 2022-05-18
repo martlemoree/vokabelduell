@@ -1,8 +1,9 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class VocabList {
+public class VocabList implements Serializable {
 
     private Long vocablistId;
     private String category;

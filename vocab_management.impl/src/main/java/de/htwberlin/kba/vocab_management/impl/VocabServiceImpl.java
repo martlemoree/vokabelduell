@@ -9,6 +9,7 @@ import java.util.List;
 
 public class VocabServiceImpl implements VocabService {
 
+    //todo würde ich wieder rausnehmen da vocabs nur über createvocablist erstellt werden
 
     @Override
     public Vocab createVocab(Long vocabId, List<String> vocabs, VocabList vocablist, List<Translation> translations) {

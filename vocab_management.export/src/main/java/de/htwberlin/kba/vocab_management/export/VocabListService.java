@@ -1,5 +1,6 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface VocabListService {
@@ -12,28 +13,28 @@ public interface VocabListService {
      * @param vocabs list of the vocabularies that belong to this list
      * @return a new Vocabulary List
      */
-    public VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs);
+    VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) throws FileNotFoundException;
 
     /**
      * changes the Name of the VocabList.
      * @param vocablist the object that should be changed
      * @param newName the old name should be replaced by this name.
      */
-    public void editName(VocabList vocablist, String newName);
+    void editName(VocabList vocablist, String newName);
 
     /**
      * changes the language of the VocabList.
      * @param vocablist the object that should be changed
      * @param newLanguage the old language should be replaced by this language.
      */
-    public void editLanguage(VocabList vocablist,String newLanguage);
+    void editLanguage(VocabList vocablist,String newLanguage);
 
     /**
      * changes the category of the VocabList.
      * @param vocablist the object that should be changed
      * @param newCat the old category should be replaced by this language.
      */
-    public void editCategory(VocabList vocablist,String newCat);
+    void editCategory(VocabList vocablist,String newCat);
 
     /**
      * removes a specific vocabulary from the VocabList.
