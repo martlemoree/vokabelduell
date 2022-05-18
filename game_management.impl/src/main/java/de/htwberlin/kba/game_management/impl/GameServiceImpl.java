@@ -33,6 +33,10 @@ public class GameServiceImpl implements GameService {
 
 
             // Gewinner + Loser gibt es nicht, es gibt ja auch keine statistik ._.
+            // List<VocabList> getRandomVocablists() Vocablist
+            // VocabList chooseVocablist(List<VocabList> randomVocabLists)
+            // wie nehmen wir user-eingaben entgegen aus der konsole?
+            // create Question
 
         }
     }

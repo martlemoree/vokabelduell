@@ -12,7 +12,7 @@ public interface RoundService {
      * the User gets a list of three randomly selected vocablists and can set the vocablist for the round
      * @return the vocablist of the current round
      */
-    public VocabList chooseVocablist(List<VocabList> randomVocabLists);
+    VocabList chooseVocablist(List<VocabList> randomVocabLists);
 
     /**
      * create a new round
@@ -23,5 +23,5 @@ public interface RoundService {
      * @param currentRound the number of the round in the current game
      * @return a new round
      */
-    public Round createRound(Long roundId, Game game, User requester, User receiver, int currentRound);
+    Round createRound(Long roundId, Game game, User requester, User receiver, int currentRound);
 }
