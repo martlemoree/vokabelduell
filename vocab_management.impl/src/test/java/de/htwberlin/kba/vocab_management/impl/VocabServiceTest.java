@@ -3,43 +3,56 @@ package de.htwberlin.kba.vocab_management.impl;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RunWith(MockitoJUnitRunner.class)
 public class VocabServiceTest {
 
+    @InjectMocks
     private VocabServiceImpl service;
+    @Mock
+    private VocabService vocabService;
 
     @Before
     public void setUp() {
-        this.service = new VocabServiceImpl();
     }
-
 
     @Test
     @DisplayName("new vocab created")
     public void testCreateVocab() {
         // 1. Arrange
+        // Mock-Objekte
+        Long vocabId = 1234L;
         List<String> vocabs = new ArrayList<String>();
         vocabs.add("go");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
+        VocabList verbs = new VocabList(123L, "Unit 1", "Verbs", "Englisch", null);
         List<String> tranl_string = new ArrayList<String>();
         tranl_string.add("gehen");
         Translation transl = new Translation(234L, tranl_string);
         List<Translation> translations = new ArrayList<>();
         translations.add(transl);
+        // Stubbing
+        Mockito.when(vocabService.createVocab(vocabId,vocabs,verbs,translations)).thenReturn(Mockito.<Vocab>any());
 
         // 2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
+        Vocab vocab = service.createVocab(vocabId,vocabs,verbs,translations);
 
         // 3. Assert
         Assert.assertNotNull(vocab);
+        // Verify
+        Mockito.verify(vocabService, Mockito.times(1));
     }
 
     @Test

@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
@@ -9,13 +10,29 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RunWith(MockitoJUnitRunner.class)
 public class QuestionServiceTest {
 
-    private QuestionService service;
+    @InjectMocks
+    private QuestionServiceImpl service;
+    @Mock
+    private UserService userService;
+    @Mock
+    private GameService gameService;
+    @Mock
+    private RoundService roundService;
+    @Mock
+    private QuestionService questionService;
+
     private User martin;
     private User stella;
     private Game game;
@@ -32,19 +49,20 @@ public class QuestionServiceTest {
     private VocabList wohnen;
     private Vocab baum;
     private Vocab haus;
-   private  Vocab garten;
+    private Vocab garten;
     private Vocab dach;
 
 
     @Before
     public void setUp(){
         this.service = new QuestionServiceImpl();
+        userService = Mockito.mock(UserService.class);
         this.martin = new User(12345L, "MartinTheBrain", "lol123");
         this.stella = new User(934038L, "stellomello", "123lol");
         this.game = new Game(430920L,  martin, stella);
         this.round = new Round(583820L, game, martin, stella, 1);
 
-        //Tranlation for wrongA  Set Up
+        //Translation for wrongA  Set Up
         ArrayList<String> list1 = new ArrayList<String>();
         list1.add("tree");
         Translation trans1 = new Translation(4L, list1);
@@ -116,7 +134,7 @@ public class QuestionServiceTest {
         question.setRightAnswer(dach);
 
         //2. Act
-        boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella, question);
+        boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella,question);
 
         //3. Assert
         Assert.assertTrue(givenAnswer);
