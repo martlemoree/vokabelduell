@@ -15,15 +15,15 @@ public class Question {
     private User receiver;
     private Game game;
     private Round round;
-    private Vocab wrongA;
-    private Vocab wrongB;
-    private Vocab wrongC;
-    private Vocab rightAnswer;
-    private Translation question;
+    private Translation wrongA;
+    private Translation wrongB;
+    private Translation wrongC;
+    private Translation rightAnswer;
+    private Vocab vocab;
     private boolean correctAnsweredRequester;
     private boolean correctAnsweredReceiver;
 
-    public Question(Long questionId, User requester, User receiver, Game game, Round round, Vocab wrongA, Vocab wrongB, Vocab wrongC, Vocab rightAnswer, Translation question) {
+    public Question(Long questionId, User requester, User receiver, Game game, Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
         this.questionId = questionId;
         this.requester = requester;
         this.receiver = receiver;
@@ -33,7 +33,7 @@ public class Question {
         this.wrongB = wrongB;
         this.wrongC = wrongC;
         this.rightAnswer = rightAnswer;
-        this.question = question;
+        this.vocab = vocab;
     }
 
     public long getQuestionId() {
@@ -76,35 +76,35 @@ public class Question {
         this.round = round;
     }
 
-    public Vocab getWrongA() {
+    public Translation getWrongA() {
         return wrongA;
     }
 
-    public void setWrongA(Vocab wrongA) {
+    public void setWrongA(Translation wrongA) {
         this.wrongA = wrongA;
     }
 
-    public Vocab getWrongB() {
+    public Translation getWrongB() {
         return wrongB;
     }
 
-    public void setWrongB(Vocab wrongB) {
+    public void setWrongB(Translation wrongB) {
         this.wrongB = wrongB;
     }
 
-    public Vocab getWrongC() {
+    public Translation getWrongC() {
         return wrongC;
     }
 
-    public void setWrongC(Vocab wrongC) {
+    public void setWrongC(Translation wrongC) {
         this.wrongC = wrongC;
     }
 
-    public Vocab getRightAnswer() {
+    public Translation getRightAnswer() {
         return rightAnswer;
     }
 
-    public void setRightAnswer(Vocab rightAnswer) {
+    public void setRightAnswer(Translation rightAnswer) {
         this.rightAnswer = rightAnswer;
     }
 
@@ -124,11 +124,11 @@ public class Question {
         this.correctAnsweredReceiver = correctAnsweredReceiver;
     }
 
-    public Translation getQuestion() {
-        return question;
+    public Vocab getVocab() {
+        return vocab;
     }
 
-    public void setQuestion(Translation question) {
-        this.question = question;
+    public void setVocab(Vocab vocab) {
+        this.vocab = vocab;
     }
 }

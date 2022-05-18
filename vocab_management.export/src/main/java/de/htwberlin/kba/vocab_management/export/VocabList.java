@@ -9,7 +9,7 @@ public class VocabList {
     private String name;
     private String language;
     private  List<Vocab> vocabs;
-    private  static List<VocabList> vocablists;
+    public static List<VocabList> vocablists;
 
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;

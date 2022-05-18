@@ -98,10 +98,10 @@ public class QuestionServiceTest {
         Vocab dach = new Vocab(5670L, list8, wohnen, transList4);
     }
 
-    /**
+    /*
      * test to check question is true
      */
-
+/*
     @Test
     @DisplayName("question was answered correct")
     public void testAnswerQuestionCorrect(){
@@ -201,6 +201,6 @@ public class QuestionServiceTest {
         Assert.assertNotNull(question.getQuestion());
     }
 
-
+*/
 
 }

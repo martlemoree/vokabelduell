@@ -8,7 +8,7 @@ public interface GameService {
      * Contains the game logic that one game consists of 6 rounds
      * @param game the game that should be played.
      */
-    void playGame(Game game);
+    void playGame(Game game, User requester, User receiver);
 
     /**
      * creates a new Game.
@@ -24,8 +24,7 @@ public interface GameService {
      * @param game game which is to be changed
      * @param user user for which points are calculated
      * @param points number of points
-     * @return
      */
-    int calculatePoints(Game game, User user, int points);
+    void calculatePoints(Game game, User user, int points);
 
 }

@@ -4,6 +4,7 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
+import de.htwberlin.kba.vocab_management.export.VocabList;
 
 import java.util.List;
 
@@ -20,7 +21,8 @@ public interface QuestionService {
     boolean answerQuestion(String answer, Vocab rightAnswer, User requester, User receiver, Question question);
 
     /**
-     * create a new question.
+     * create a new question including the vocab and the correct translation from the chosen VocabList by the user
+     * as well as three wrong answer options
      * @param questionId the unique identifier of the question
      * @param requester the first user that answers the question
      * @param receiver the second user that answers the question
@@ -28,19 +30,18 @@ public interface QuestionService {
      * @param round the round of a game in which the question is created
      * @return  a new question
      */
-    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round);
+    Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round, VocabList vocabList);
 
     /**
-     * A translation is randomly assigned for the question. The related vocabulary is assigned to the correctAnswer
-     * and 3 randomly selected vocabularies are set to be wrongA, wrongB, wrongC.
-     * @param question the question that should be updated
+     * A translation is randomly generated for a wrong answer option to the question.
      */
-    public void setAnswerOptions(Question question);
+    Translation setAnswerOptions();
 
     /**
      * should show all answer options for the question
+     * where the entry at index 0 is the correct answer
      * @return the list of answer options
      */
-    public List<Vocab> getAllAnswers();
+    List<Translation> getAllAnswers(Question question);
 
 }
