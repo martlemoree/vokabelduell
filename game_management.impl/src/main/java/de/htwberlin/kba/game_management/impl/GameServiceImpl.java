@@ -37,10 +37,10 @@ public class GameServiceImpl implements GameService {
         }
     }
     public void calculatePoints(Game game, User user, int points) {
-        if (user.equals (game.getReceiver ())) {
+        if (user.equals(game.getReceiver ())) {
             game.setPointsReceiver (points);
         }
-        if (user.equals (game.getRequester ())) {
+        if (user.equals(game.getRequester ())) {
             game.setPointsRequester (points);
         }
     }
