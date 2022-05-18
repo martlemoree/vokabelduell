@@ -8,7 +8,7 @@ public class User {
     private String userName;
     private String password;
 
-    private static List<User> users;
+
 
     public User(Long userId, String userName, String password) {
         this.userId = userId;
@@ -40,11 +40,5 @@ public class User {
         this.password = password;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
-    public List<User> getUsers() {
-        return users;
-    }
 }

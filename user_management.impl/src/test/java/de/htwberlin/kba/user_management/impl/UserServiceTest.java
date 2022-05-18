@@ -30,9 +30,10 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+        service.setUsers(users);
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId, users);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId);
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
@@ -46,11 +47,12 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+        service.setUsers(users);
 
         boolean bol = false;
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId, users);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId);
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (!exampleId.equals(usersWithoutCurrentUser.get(i).getUserId())) {
@@ -73,7 +75,7 @@ public class UserServiceTest {
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
 
         // 2. Act
-        Long chosenUserid = service.chooseUser(users);
+        Long chosenUserid = service.chooseUser();
 
         // 3. Assert
         assertNotNull(chosenUserid);
@@ -89,7 +91,7 @@ public class UserServiceTest {
         boolean bol = false;
 
         // 2. Act
-        Long chosenUserid = service.chooseUser(users);
+        Long chosenUserid = service.chooseUser();
 
         for (int i = 0; i < users.size(); i++) {
             if (chosenUserid.equals(users.get(i).getUserId())) {
