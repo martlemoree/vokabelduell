@@ -36,8 +36,6 @@ public class VocabListServiceImpl implements VocabListService {
     public void addVocab(VocabList vocablist, Vocab vocab) {
 
     }
-
-
     @Override
     public List<VocabList> getRandomVocablists() {
         return null;

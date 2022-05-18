@@ -18,7 +18,7 @@ public interface QuestionService {
      * @param question Question that should be changed
      * @return gives information whether answer was correct (1) or not (0)
      */
-    boolean answerQuestion(String answer, Vocab rightAnswer, User requester, User receiver, Question question);
+    boolean answerQuestion(String answer, Translation rightAnswer, User requester, User receiver, Question question);
 
     /**
      * create a new question including the vocab and the correct translation from the chosen VocabList by the user

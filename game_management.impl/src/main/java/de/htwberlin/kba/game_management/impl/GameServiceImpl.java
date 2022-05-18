@@ -1,19 +1,26 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.GameService;
-import de.htwberlin.kba.game_management.export.Round;
-import de.htwberlin.kba.game_management.export.RoundService;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserService;
+import de.htwberlin.kba.user_management.impl.UserServiceImpl;
+import de.htwberlin.kba.vocab_management.export.Vocab;
+import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
+
+import java.util.List;
 
 
 public class GameServiceImpl implements GameService {
 
+    /*
+    Finde ich unnötig
+     */
     @Override
     public Game createGame(Long gameId, User requester, User receiver) {
 
-        Game game = new Game(gameId, requester, receiver);
-        return game;
+        return new Game(gameId, requester, receiver);
     }
 
     /**
@@ -22,23 +29,44 @@ public class GameServiceImpl implements GameService {
      */
     public void playGame(Game game, User requester, User receiver) {
 
-        for (int i = 1; i == 6; i++) {
+        VocabListService vocabListService = new VocabListServiceImpl ();
+        RoundService roundService = new RoundServiceImpl ();
+       // UserService userService = new UserServiceImpl ();
+        QuestionService questionService = new QuestionServiceImpl ();
+
+        for (int i = 1; i < 7; i++) {
             /*
             Jedes Mal wird eine neue Runde erstellt
              */
             Round round = new Round(1L, game, requester, receiver, i);
 
-            // richtige/falsche Antwort usw.
+            // get 3 random vocablists to choose from
+            List<VocabList> randomVocabLists = vocabListService.getRandomVocablists();
+
+            // user chooses vocablist for round
+            VocabList chosenVocabList = roundService.chooseVocablist(randomVocabLists);
+
+            // generate Question
+            Question question = questionService.createQuestion(1L, requester, receiver, game, round, chosenVocabList);
+
+            // user answers question (where?)
+            String answer = "Wie und wo nehmen wir die Nutzereingabe entgegen? Am besten eigene Methode";
+            boolean rightOrWrong = questionService.answerQuestion(answer, question.getRightAnswer (), requester, receiver, question);
+
             // Punkte berechnen, passiert aber auch in der Runde?
+            int points;
+            if (rightOrWrong) {
+                points = 500;
+            } else {
+                points = -200;
+            }
 
-
-            // Gewinner + Loser gibt es nicht, es gibt ja auch keine statistik ._.
-            // List<VocabList> getRandomVocablists() Vocablist
-            // VocabList chooseVocablist(List<VocabList> randomVocabLists)
-            // wie nehmen wir user-eingaben entgegen aus der konsole?
-            // create Question
+            // Wie machen wir das hier mit dem User?
+            calculatePoints(game, new User( 1L,"AntjeWinner","richtigGutesPassword"), points);
 
         }
+
+        // Dem User das Ende des Games zu verstehen geben, evtl. inkl. Punktestand
     }
     public void calculatePoints(Game game, User user, int points) {
         if (user.equals(game.getReceiver ())) {

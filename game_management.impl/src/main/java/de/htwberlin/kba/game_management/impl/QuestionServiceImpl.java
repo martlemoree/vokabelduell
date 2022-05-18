@@ -18,12 +18,12 @@ import static de.htwberlin.kba.vocab_management.export.VocabList.vocablists;
 public class QuestionServiceImpl implements QuestionService {
 
     @Override
-    public boolean answerQuestion(String answer, Vocab rightAnswer, User requester, User receiver, Question question) {
+    public boolean answerQuestion(String answer, Translation rightAnswer, User requester, User receiver, Question question) {
 
-        List<String> vocabs = rightAnswer.getVocabs();
+        List<String> translations = rightAnswer.getTranslations ();
 
-        for (String vocab : vocabs) {
-            if (answer.equals(vocab)) {
+        for (String translation : translations) {
+            if (answer.equals(translation)) {
                 return true;
             }
         }

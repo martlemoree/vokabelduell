@@ -12,7 +12,7 @@ public interface RequestService {
      * @param accept gives information about whether the request was accepted (true) or rejected (false)
      * @param request is the object that should be updated
      */
-    void changeStatus(Boolean accept, Request request);
+    void changeStatus(Boolean accept, Request request, User requester, User receiver);
 
     /**
      * adds a new game request.

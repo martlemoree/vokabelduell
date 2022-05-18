@@ -1,8 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.Request;
-import de.htwberlin.kba.game_management.export.RequestService;
-import de.htwberlin.kba.game_management.export.Status;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
@@ -10,10 +8,15 @@ import static de.htwberlin.kba.game_management.export.Status.*;
 public class RequestServiceImpl implements RequestService {
 
     @Override
-    public void changeStatus(Boolean accept, Request request) {
+    public void changeStatus(Boolean accept, Request request, User requester, User receiver) {
 
         if (accept) {
             request.setRequestStatus(ACCEPTED);
+
+            // start game
+            GameService service = new GameServiceImpl();
+            Game game = new Game (1L, requester, receiver);
+            service.playGame(game, requester, receiver);
         } if (!accept) {
             request.setRequestStatus(REJECTED);
         }
