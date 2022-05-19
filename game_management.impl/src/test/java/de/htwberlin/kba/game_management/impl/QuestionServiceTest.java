@@ -19,6 +19,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @RunWith(MockitoJUnitRunner.class)
 public class QuestionServiceTest {
 
@@ -32,7 +34,7 @@ public class QuestionServiceTest {
     private RoundService roundService;
     @Mock
     private QuestionService questionService;
-
+    @Mock
     private User martin;
     private User stella;
     private Game game;
@@ -52,11 +54,9 @@ public class QuestionServiceTest {
     private Vocab garten;
     private Vocab dach;
 
-
     @Before
     public void setUp(){
         this.service = new QuestionServiceImpl();
-        userService = Mockito.mock(UserService.class);
         this.martin = new User(12345L, "MartinTheBrain", "lol123");
         this.stella = new User(934038L, "stellomello", "123lol");
         this.game = new Game(430920L,  martin, stella);
@@ -123,7 +123,10 @@ public class QuestionServiceTest {
     @Test
     @DisplayName("question was answered correct")
     public void testAnswerQuestionCorrect(){
-        //1. Arrange
+        // 1. Arrange
+        // Mock-Objekte
+        Long userMartinId = 12345L;
+        Long userStellaId = 12346L;
         String answer = new String("dach");
         Question question = service.createQuestion(1L, martin, stella, game, round);
         question.setQuestion(trans4);
@@ -132,6 +135,9 @@ public class QuestionServiceTest {
         question.setWrongB(haus);
         question.setWrongC(garten);
         question.setRightAnswer(dach);
+        // Stubbing
+        Mockito.when(userService.chooseUser(userMartinId)).thenReturn(martin);
+        Mockito.when(userService.chooseUser(userStellaId)).thenReturn(stella);
 
         //2. Act
         boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella,question);

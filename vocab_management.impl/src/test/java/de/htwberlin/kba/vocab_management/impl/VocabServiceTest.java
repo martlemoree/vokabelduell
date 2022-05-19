@@ -44,60 +44,69 @@ public class VocabServiceTest {
         List<Translation> translations = new ArrayList<>();
         translations.add(transl);
         // Stubbing
-        Mockito.when(vocabService.createVocab(vocabId,vocabs,verbs,translations)).thenReturn(Mockito.<Vocab>any());
+        Mockito.when(vocabService.createVocab(vocabId,vocabs,verbs,translations)).thenReturn(null);
 
         // 2. Act
         Vocab vocab = service.createVocab(vocabId,vocabs,verbs,translations);
 
         // 3. Assert
-        Assert.assertNotNull(vocab);
+        Assert.assertNull(vocab);
         // Verify
-        Mockito.verify(vocabService, Mockito.times(1));
+        //Mockito.verify(vocabService, Mockito.times(1)).;
     }
 
     @Test
-    @DisplayName("new single vocab created correctly")
+    @DisplayName("new single vocab created correctly") // der gleiche wie davor?
     public void testAddVocabsSingle() {
         // 1. Arrange
+        // Mock-Objekte
+        Long vocabId = 1234L;
         List<String> vocabs = new ArrayList<String>();
         vocabs.add("go");
         VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
         List<String> tranl_string = new ArrayList<String>();
         tranl_string.add("gehen");
         Translation transl = new Translation(234L, tranl_string);
         List<Translation> translations = new ArrayList<>();
         translations.add(transl);
+        // Stubbing
+        Mockito.when(vocabService.createVocab(vocabId,vocabs,verbs,translations)).thenReturn(null);
 
         // 2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
+        Vocab vocab = service.createVocab(vocabId,vocabs,verbs,translations);
 
         // 3. Assert
         Assert.assertEquals(vocabs, vocab.getVocabs());
+        // Verify
+        //Mockito.verify(vocabService, Mockito.times(1)).;
     }
 
     @Test
     @DisplayName("new multiple vocab created correctly")
     public void testAddVocabsMultiple() {
         // 1. Arrange
+        // Mock-Objekte
+        Long vocabId = 1234L;
         List<String> vocabs = new ArrayList<String>();
         vocabs.add("go");
         vocabs.add("went");
         vocabs.add("gone");
         VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
         List<String> tranl_string = new ArrayList<String>();
         tranl_string.add("gehen");
         Translation transl = new Translation(234L, tranl_string);
         List<Translation> translations = new ArrayList<>();
         translations.add(transl);
+        // Stubbing
+        Mockito.when(vocabService.createVocab(vocabId,vocabs,verbs,translations)).thenReturn(null);
 
         // 2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-
+        Vocab vocab = service.createVocab(vocabId, vocabs, verbs,translations);
 
         // 3. Assert
         Assert.assertEquals(vocabs, vocab.getVocabs());
+        // Verify
+        //Mockito.verify(vocabService, Mockito.times(3)).; //anyString
     }
 
     @DisplayName("checks whether the vocablist is changed correctly.")

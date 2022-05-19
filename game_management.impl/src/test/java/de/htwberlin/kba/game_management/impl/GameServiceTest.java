@@ -3,15 +3,25 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class GameServiceTest {
 
-    private GameService service;
+    @InjectMocks
+    private GameServiceImpl service;
+    @Mock
+    private GameService gameService;
+    @Mock
+    private UserService userService;
 
     @Before
     public void setUp() {
@@ -22,9 +32,12 @@ public class GameServiceTest {
     @Test
     public void testCreateGame() {
         //1. Arrange
+        // Mock-Objekte
         Long gameId = 123456L;
         User requester = new User(234567L, "MartinTheBrain", "lol123");
         User receiver = new User(234568L, "stellomello", "123lol");
+        // Stubbing
+
 
         //2. Act
         Game game = service.createGame(gameId, requester, receiver);
@@ -34,6 +47,8 @@ public class GameServiceTest {
         Assert.assertEquals(gameId, game.getGameId());
         Assert.assertEquals(requester, game.getRequester());
         Assert.assertEquals(receiver, game.getReceiver());
+        // Verify
+
     }
 
     @DisplayName("checks whether the game creates 6 rounds")
