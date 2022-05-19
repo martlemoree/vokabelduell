@@ -14,6 +14,8 @@ import java.util.List;
 
 public class VocabListServiceImpl implements VocabListService {
 
+    //todo Löschen einer VocabList ergänzen
+
     //Todo die parameter müssen wieder rausgenommen werden --> wird von der Liste befüllt
     //Todo dafür muss hier aber der dateipfad übergeben werden
     @Override
@@ -111,6 +113,8 @@ public class VocabListServiceImpl implements VocabListService {
         System.out.println(v1.getVocablistId());
         System.out.println(v1.getCategory());
         System.out.println(v1.getVocabs());
+
+        //Todo das muss noch zur liste an vocablist hinzugefügt --> damit die ID generieren
 
         return v1;
     }

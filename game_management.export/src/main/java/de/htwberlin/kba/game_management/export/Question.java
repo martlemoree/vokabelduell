@@ -10,6 +10,7 @@ public class Question {
     // toString Methode überschreiben, um eine sinnvolle Frage hervorzubringen: z.B.
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
 
+    //todo (F) Question.answerQuestion evtl. nach GameService refactoren
     private Long questionId;
     private User requester;
     private User receiver;
