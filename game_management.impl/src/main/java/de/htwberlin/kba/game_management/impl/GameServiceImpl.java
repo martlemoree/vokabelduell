@@ -14,19 +14,16 @@ import java.util.List;
 
 public class GameServiceImpl implements GameService {
 
-    /*
-    Finde ich unnötig
-     */
+
+    //Finde ich unnötig
+
     @Override
     public Game createGame(Long gameId, User requester, User receiver) {
 
-        return new Game(gameId, requester, receiver);
+        return new Game (gameId, requester, receiver);
+
     }
 
-    /**
-     * Contains the game logic that one game consists of 6 rounds
-     * @param game the game that should be played.
-     */
     public void playGame(Game game, User requester, User receiver) {
 
         VocabListService vocabListService = new VocabListServiceImpl ();
@@ -35,10 +32,9 @@ public class GameServiceImpl implements GameService {
         QuestionService questionService = new QuestionServiceImpl ();
 
         for (int i = 1; i < 7; i++) {
-            /*
-            Jedes Mal wird eine neue Runde erstellt
-             */
-            Round round = new Round(1L, game, requester, receiver, i);
+            //            Jedes Mal wird eine neue Runde erstellt
+
+            Round round = new Round(1L, game, i);
 
             // get 3 random vocablists to choose from
             List<VocabList> randomVocabLists = vocabListService.getRandomVocablists();
@@ -50,6 +46,7 @@ public class GameServiceImpl implements GameService {
             Question question = questionService.createQuestion(1L, requester, receiver, game, round, chosenVocabList);
 
             // user answers question (where?)
+            // TODO: Nutzereingabe
             String answer = "Wie und wo nehmen wir die Nutzereingabe entgegen? Am besten eigene Methode";
             boolean rightOrWrong = questionService.answerQuestion(answer, question.getRightAnswer (), requester, receiver, question);
 
@@ -76,5 +73,6 @@ public class GameServiceImpl implements GameService {
             game.setPointsRequester (points);
         }
     }
+
 
 }

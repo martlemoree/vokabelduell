@@ -38,7 +38,7 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public Round createRound(Long roundId, Game game, User requester, User receiver, int currentRound) {
-        return new Round(1L, game, requester, receiver, currentRound);
+    public Round createRound(Long roundId, Game game, int currentRound) {
+        return new Round(1L, game, currentRound);
     }
 }

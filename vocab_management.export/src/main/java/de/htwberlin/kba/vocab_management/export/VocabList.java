@@ -9,7 +9,7 @@ public class VocabList implements Serializable {
     private String category;
     private String name;
     private String language;
-    private  List<Vocab> vocabs;
+    private List<Vocab> vocabs;
     public static List<VocabList> vocablists;
 
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {

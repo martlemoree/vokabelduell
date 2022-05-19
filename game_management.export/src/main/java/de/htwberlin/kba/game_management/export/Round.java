@@ -8,16 +8,12 @@ public class Round {
 
     private Long roundId;
     private Game game;
-    private User requester;
-    private User receiver;
     private int currentRound;
     private VocabList vocablist;
 
-    public Round(Long roundId, Game game, User requester, User receiver, int currentRound) {
+    public Round(Long roundId, Game game, int currentRound) {
         this.roundId = roundId;
         this.game = game;
-        this.requester = requester;
-        this.receiver = receiver;
         this.currentRound = currentRound;
     }
 
@@ -35,22 +31,6 @@ public class Round {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    public User getRequester() {
-        return requester;
-    }
-
-    public void setRequester(User requester) {
-        this.requester = requester;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
     }
 
     public int getCurrentRound() {

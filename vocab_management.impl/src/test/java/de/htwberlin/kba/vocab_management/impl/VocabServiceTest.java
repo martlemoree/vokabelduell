@@ -13,6 +13,8 @@ import java.util.List;
 
 public class VocabServiceTest {
 
+    //optional
+
     private VocabServiceImpl service;
 
     @Before
