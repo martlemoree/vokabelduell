@@ -62,7 +62,7 @@ public class GameServiceImpl implements GameService {
             }
 
             // Wie machen wir das hier mit dem User?
-            calculatePoints(game, new User( 1L,"AntjeWinner","richtigGutesPassword"), points);
+                    calculatePoints(game, new User( 1L,"AntjeWinner","richtigGutesPassword"), points);
 
         }
 

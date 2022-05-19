@@ -12,12 +12,10 @@
     <module>game_management.export</module>
     <module>game_management.impl</module>
     <module>user_management.export</module>
-      <module>user_management.impl</module>
-      <module>vocab_management.export</module>
+    <module>user_management.impl</module>
     <module>vocab_management.export</module>
-      <module>Configuration</module>
-      <module>vocab_management.impl</module>
-    <module>vocab_management.export</module>
+    <module>vocab_management.impl</module>
+    <module>configuration</module>
   </modules>
 
   <name>Vokabelduell</name>
