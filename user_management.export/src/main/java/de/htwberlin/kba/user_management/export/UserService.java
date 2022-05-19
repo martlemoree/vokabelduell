@@ -25,4 +25,11 @@ public interface UserService {
 
     void setUsers(List<User> users);
 
+    List<User> getUsers();
+
+    User createUser(String name, String password);
+
+    User getUserById(Long Id);
+    void removeUser(User user);
+
 }

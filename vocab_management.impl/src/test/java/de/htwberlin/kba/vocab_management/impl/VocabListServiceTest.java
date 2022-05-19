@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import static de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl.vocablists;
 import static org.junit.Assert.assertNotNull;
 
 public class VocabListServiceTest {
@@ -23,7 +24,7 @@ public class VocabListServiceTest {
         this.service = new VocabListServiceImpl();
     }
 
-
+/*
     @DisplayName("Tests whether a Vocabulary List is created correctly")
     @Test
     public void testCreateVocabList() throws FileNotFoundException {
@@ -42,7 +43,7 @@ public class VocabListServiceTest {
         /*Assert.assertEquals(vocablistId, vlist.getVocablistId());
         Assert.assertEquals(category, vlist.getCategory());
         Assert.assertEquals(name, vlist.getName());
-        Assert.assertEquals(language, vlist.getLanguage());*/
+        Assert.assertEquals(language, vlist.getLanguage());
 
     }
 
@@ -189,13 +190,13 @@ public class VocabListServiceTest {
 
         // 3. Assert
         Assert.assertEquals(3, randomLists.size());
-    }
+    }*/
 
     @Test
     public void test() throws FileNotFoundException {
 
         //read file
-        File file = new File("C:\\KBA\\vocabulary\\family_and_year.txt");
+        File file = new File("C:\\KBA\\vocabulary\\¡Hola- ¿Qué tal- - Bloque A.txt");
         Scanner sc = new Scanner(file);
 
         String fileContent = "";
@@ -225,9 +226,9 @@ public class VocabListServiceTest {
             }
         }
 
-        String name = strings.get(3);
-        String language = strings.get(9);
-        String category = strings.get(21);
+        String name_string = strings.get(3);
+        String language_string = strings.get(9);
+        String category_string = strings.get(21);
 
         //iterate through the other lines of the text and create a list for every group
         List<String> groups = new ArrayList<String>();
@@ -239,46 +240,56 @@ public class VocabListServiceTest {
                 groups.add(returnString);
                 returnString = new String();
             }
-            }
+        }
 
         groups.remove(0);
 
         String left = new String();
-        String right = new String();
-
-        int i = 1;
+        String right = new String(); //rechts ist das deutsche, das ist die translation
 
         List<Vocab> vocabs_init = new ArrayList<Vocab>();
         List<Translation> translations_init = new ArrayList<Translation>();
-        System.out.println(groups);
 
         //iterate through every group and create objects
+        //todo akuell gibt es weder synonyme noch verschiedene bedeutungen
+        //todo ids automatisch generieren
         for (String group: groups) {
-            left = group.substring(0,group.indexOf(':'));
+            left = group.substring(0,group.indexOf(':')-1);
             right = group.substring(group.indexOf(':')+1);
 
-            left = left.replaceAll("[^a-zA-Z]", "");
-            right = right.replaceAll("[^a-zA-Z]", "");
+           left = left.replaceAll("[^a-zA-Z ]", "");
 
-            List<String> translations = new ArrayList<String>();
-            translations.add(right);
-
-            List<String> vocabs = new ArrayList<String>();
-            vocabs.add(left);
-
-            translations_init.add(new Translation(Long.valueOf(i), translations));
+            char[] right_chars = right.toCharArray();
+            String synoym = new String();
             List<Translation> translation_list = new ArrayList<Translation>();
-            translation_list.add(translations_init.get(i-1));
+            List<String> synonyms = new ArrayList<>();
 
-            vocabs_init.add(new Vocab(Long.valueOf(i), vocabs, (VocabList) null, translation_list));
-            i = i+1;
+
+            for (char c : right_chars){
+                if (c  == '{') {
+                    synoym = new String();
+                    synonyms.clear();
+                } else if(c == ',') {
+                    synonyms.add(synoym);
+                    synoym = new String();
+                } else if (c  == '}') {
+                    synonyms.add(synoym);
+                    translation_list.add(new Translation(1L, new ArrayList<>(synonyms) ));
+                    synonyms.clear();
+                } else {
+                    synoym = synoym + c;
+                }
+            }
+
+            //System.out.println(translation_list);
+            List<String> vocab_strings = new ArrayList<String>();
+            vocab_strings.add(left);
+
+            vocabs_init.add(new Vocab(1L, vocab_strings, translation_list));
+            // System.out.println(vocabs_init);
+
         }
-
-        VocabList v1 = new VocabList(Long.valueOf(1),category, name, language, vocabs_init);
-
-        for (Vocab v: vocabs_init) {
-            v.setVocablist(v1);
-        }
+        VocabList v1 = new VocabList(Long.valueOf(1),category_string, name_string, language_string, vocabs_init);
 
         //ToDo toString von den Listen anpassen
         System.out.println(v1.getName());
@@ -287,6 +298,7 @@ public class VocabListServiceTest {
         System.out.println(v1.getCategory());
         System.out.println(v1.getVocabs());
 
+      //  vocablists.add(v1);
     }
 
 

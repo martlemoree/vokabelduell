@@ -14,22 +14,31 @@ import java.util.List;
 
 public class VocabListServiceImpl implements VocabListService {
 
-    //todo Löschen einer VocabList ergänzen
+    public static List<VocabList> vocablists;
+
+    public void removeVocablist(){
+        //todo das muss mit der datenbank gemacht werden muss
+    }
 
     //Todo die parameter müssen wieder rausgenommen werden --> wird von der Liste befüllt
     //Todo dafür muss hier aber der dateipfad übergeben werden
-    @Override
-    public VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) throws FileNotFoundException {
+
+    public String readFile(String path) throws FileNotFoundException {
         //read file
-        File file = new File("C:\\KBA\\vocabulary\\clothes.txt");
+        File file = new File(path);
         Scanner sc = new Scanner(file);
 
         String fileContent = "";
         while(sc.hasNextLine())
             fileContent = fileContent.concat(sc.nextLine() + ";");
 
+        return fileContent;
+    }
+    @Override
+    public VocabList createVocablist(String text) {
+
         //split text into chars and convert to list of chars
-        char[] chars = fileContent.toCharArray();
+        char[] chars = text.toCharArray();
         List<Character> char_list = new ArrayList<Character>();
         for (char c : chars) {
             char_list.add(c);
@@ -70,53 +79,60 @@ public class VocabListServiceImpl implements VocabListService {
         groups.remove(0);
 
         String left = new String();
-        String right = new String();
-
-        int i = 1;
+        String right = new String(); //rechts ist das deutsche, das ist die translation
 
         List<Vocab> vocabs_init = new ArrayList<Vocab>();
         List<Translation> translations_init = new ArrayList<Translation>();
-        System.out.println(groups);
 
         //iterate through every group and create objects
         //todo akuell gibt es weder synonyme noch verschiedene bedeutungen
+        //todo ids automatisch generieren
         for (String group: groups) {
-            left = group.substring(0,group.indexOf(':'));
+            left = group.substring(0,group.indexOf(':')-1);
             right = group.substring(group.indexOf(':')+1);
 
-            left = left.replaceAll("[^a-zA-Z]", "");
-            right = right.replaceAll("[^a-zA-Z]", "");
+            left = left.replaceAll("[^a-zA-Z ]", "");
 
-            List<String> translations = new ArrayList<String>();
-            translations.add(right);
+            char[] right_chars = right.toCharArray();
+            String synoym = new String();
+            List<Translation> translation_list = new ArrayList<Translation>();
+            List<String> synonyms = new ArrayList<>();
 
+
+            for (char c : right_chars){
+                if (c  == '{') {
+                    synoym = new String();
+                    synonyms.clear();
+                } else if(c == ',') {
+                    synonyms.add(synoym);
+                    synoym = new String();
+                } else if (c  == '}') {
+                    synonyms.add(synoym);
+                    translation_list.add(new Translation(1L, new ArrayList<>(synonyms) ));
+                    synonyms.clear();
+                } else {
+                    synoym = synoym + c;
+                }
+            }
+
+            //System.out.println(translation_list);
             List<String> vocab_strings = new ArrayList<String>();
             vocab_strings.add(left);
 
-            translations_init.add(new Translation(Long.valueOf(i), translations));
-            List<Translation> translation_list = new ArrayList<Translation>();
-            translation_list.add(translations_init.get(i-1));
+            vocabs_init.add(new Vocab(1L, vocab_strings, translation_list));
+            // System.out.println(vocabs_init);
 
-            vocabs_init.add(new Vocab(Long.valueOf(i), vocab_strings, (VocabList) null, translation_list));
-            i = i+1;
         }
-
-        VocabList v1 = new VocabList(Long.valueOf(1),category, name, language, vocabs_init);
-
-        for (Vocab v: vocabs_init) {
-            v.setVocablist(v1);
-        }
+        VocabList v1 = new VocabList(Long.valueOf(1),category_string, name_string, language_string, vocabs_init);
 
         //ToDo toString von den Listen anpassen
-        //hier noch mal ein change
         System.out.println(v1.getName());
         System.out.println(v1.getLanguage());
         System.out.println(v1.getVocablistId());
         System.out.println(v1.getCategory());
         System.out.println(v1.getVocabs());
 
-        //Todo das muss noch zur liste an vocablist hinzugefügt --> damit die ID generieren
-
+          vocablists.add(v1);
         return v1;
     }
 

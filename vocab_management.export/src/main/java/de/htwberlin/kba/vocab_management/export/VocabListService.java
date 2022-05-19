@@ -6,14 +6,10 @@ import java.util.List;
 public interface VocabListService {
     /**
      * creates a new Vocabulary List.
-     * @param vocablistId unique identifier of the vocablist
-     * @param category category of the vocablist
-     * @param name name of the vocablist
-     * @param language foreign language of the vocablist
-     * @param vocabs list of the vocabularies that belong to this list
+     * @param
      * @return a new Vocabulary List
      */
-    VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) throws FileNotFoundException;
+    VocabList createVocablist(String text);
 
     /**
      * changes the Name of the VocabList.
@@ -57,5 +53,8 @@ public interface VocabListService {
      * @return the list with three vocablists.
      */
     public List<VocabList> getRandomVocablists();
+
+    void removeVocablist();
+    String readFile(String path) throws FileNotFoundException;
 
 }

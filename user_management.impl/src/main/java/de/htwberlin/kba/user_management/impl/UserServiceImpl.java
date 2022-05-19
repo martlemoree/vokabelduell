@@ -19,16 +19,13 @@ public class UserServiceImpl implements UserService {
         return listWOuser;
     }
     public Long chooseUser() {
-        //ToDo keeeinee ahnung
+        //todo Benutzereingabe
         return null;
     }
     public void changePassword(String password, User user) {
         user.setPassword(password);
     }
 
-    public void addUsertoList(User user){
-        this.users.add(user);
-    }
     public void setUsers(List<User> users) {
         this.users = users;
     }
@@ -46,5 +43,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    public User createUser(String name, String password){
+        //todo automatische ID vergeben
+        User u = new User(1L, name, password);
+        this.users.add(u);
+        return u;
+    }
+
+    public void removeUser(User user){
+        // todo User aus der DB löschen
     }
 }

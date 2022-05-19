@@ -30,4 +30,12 @@ public class Translation {
         this.translations = translations;
     }
 
+    @Override
+    public String toString() {
+        String result = "+";
+        for (int i = 0; i < translations.size(); i++) {
+            result +=  " " + translations.get(i) ;
+        }
+        return result;
+    }
 }

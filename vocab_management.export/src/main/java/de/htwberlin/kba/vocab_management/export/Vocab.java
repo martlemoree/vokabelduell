@@ -5,13 +5,11 @@ import java.util.List;
 public class Vocab {
     private Long vocabId;
     private List<String> vocabs;
-    private VocabList vocablist;
     private List<Translation> translations;
 
-    public Vocab(Long vocabId, List<String> vocabs, VocabList vocablist, List<Translation> translations) {
+    public Vocab(Long vocabId, List<String> vocabs,  List<Translation> translations) {
         this.vocabId = vocabId;
         this.vocabs = vocabs;
-        this.vocablist = vocablist;
         this.translations = translations;
     }
 
@@ -31,13 +29,6 @@ public class Vocab {
         this.vocabs = vocabs;
     }
 
-    public VocabList getVocablist() {
-        return vocablist;
-    }
-
-    public void setVocablist(VocabList vocablist) {
-        this.vocablist = vocablist;
-    }
 
     public List<Translation> getTranslations() {
         return translations;
@@ -45,5 +36,18 @@ public class Vocab {
 
     public void setTranslations(List<Translation> translations) {
         this.translations = translations;
+    }
+
+    @Override
+    public String toString() {
+        /*String result = "+";
+        for (int i = 0; i < vocabs.size(); i++) {
+            result += " " + vocabs.get(i)  ;
+        }
+        return result;*/
+
+        return "ID=" + vocabId  +
+                ", vocabs=" + vocabs  +
+                ", translations=" + translations + "\n" ;
     }
 }
