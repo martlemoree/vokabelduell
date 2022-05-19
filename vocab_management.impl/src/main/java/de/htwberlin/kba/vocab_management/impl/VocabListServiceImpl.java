@@ -108,6 +108,7 @@ public class VocabListServiceImpl implements VocabListService {
         }
 
         //ToDo toString von den Listen anpassen
+        //hier noch mal ein change
         System.out.println(v1.getName());
         System.out.println(v1.getLanguage());
         System.out.println(v1.getVocablistId());
