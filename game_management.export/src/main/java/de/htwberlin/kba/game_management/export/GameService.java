@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.Translation;
 
 public interface GameService {
 
@@ -18,6 +19,14 @@ public interface GameService {
      * @return a new game
      */
     Game createGame(Long gameId, User requester, User receiver);
+
+    /**
+     * Takes the given answer from the user, validates if its correct and gives back if it was the correct answer or not
+     * @param answer given answer from user
+     * @param rightAnswer the right answer of the current question
+     * @return gives information whether answer was correct (1) or not (0)
+     */
+    boolean answerQuestion(String answer, Translation rightAnswer);
 
     /**
      * method calculates points for given user and changes value accordingly

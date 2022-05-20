@@ -12,9 +12,6 @@ public class Question {
 
     //todo (F) Question.answerQuestion evtl. nach GameService refactoren
     private Long questionId;
-    private User requester;
-    private User receiver;
-    private Game game;
     private Round round;
     private Translation wrongA;
     private Translation wrongB;
@@ -24,11 +21,8 @@ public class Question {
     private boolean correctAnsweredRequester;
     private boolean correctAnsweredReceiver;
 
-    public Question(Long questionId, User requester, User receiver, Game game, Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
+    public Question(Long questionId, Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
         this.questionId = questionId;
-        this.requester = requester;
-        this.receiver = receiver;
-        this.game = game;
         this.round = round;
         this.wrongA = wrongA;
         this.wrongB = wrongB;
@@ -43,30 +37,6 @@ public class Question {
 
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
-    }
-
-    public User getRequester() {
-        return requester;
-    }
-
-    public void setRequester(User requester) {
-        this.requester = requester;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     public Round getRound() {

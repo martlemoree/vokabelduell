@@ -4,6 +4,7 @@ import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.user_management.impl.UserServiceImpl;
+import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
@@ -14,8 +15,19 @@ import java.util.List;
 
 public class GameServiceImpl implements GameService {
 
+    @Override
+    public boolean answerQuestion(String answer, Translation rightAnswer) {
 
-    //Finde ich unnötig
+        List<String> translations = rightAnswer.getTranslations ();
+
+        for (String translation : translations) {
+            if (answer.equals(translation)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @Override
     public Game createGame(Long gameId, User requester, User receiver) {
@@ -26,9 +38,14 @@ public class GameServiceImpl implements GameService {
 
     public void playGame(Game game, User requester, User receiver) {
 
+        // TODO Controller von der Oberfläche (Interaktion mit dem Benutzer)
+        // Eine View, eine Controller-Klasse in eigener Oberflächen Projekt
+        // anlegen von dem Spiel, aktuelle Frage bekommen zur Ausgabe, Antworten verbuchen, Am Ende Auswertung
+        // Brauchen Round/Question usw. wirklich Interfaces?
+
         VocabListService vocabListService = new VocabListServiceImpl ();
+
         RoundService roundService = new RoundServiceImpl ();
-       // UserService userService = new UserServiceImpl ();
         QuestionService questionService = new QuestionServiceImpl ();
 
         for (int i = 1; i < 7; i++) {
@@ -43,12 +60,12 @@ public class GameServiceImpl implements GameService {
             VocabList chosenVocabList = roundService.chooseVocablist(randomVocabLists);
 
             // generate Question
-            Question question = questionService.createQuestion(1L, requester, receiver, game, round, chosenVocabList);
+            Question question = questionService.createQuestion(1L, round, chosenVocabList);
 
             // user answers question (where?)
             // TODO: Nutzereingabe
             String answer = "Wie und wo nehmen wir die Nutzereingabe entgegen? Am besten eigene Methode";
-            boolean rightOrWrong = questionService.answerQuestion(answer, question.getRightAnswer (), requester, receiver, question);
+            boolean rightOrWrong = this.answerQuestion(answer, question.getRightAnswer ());
 
             // Punkte berechnen, passiert aber auch in der Runde?
             int points;

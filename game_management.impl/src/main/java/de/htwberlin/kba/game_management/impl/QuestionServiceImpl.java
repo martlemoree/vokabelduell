@@ -17,21 +17,7 @@ import static de.htwberlin.kba.vocab_management.export.VocabList.vocablists;
 
 public class QuestionServiceImpl implements QuestionService {
 
-    @Override
-    public boolean answerQuestion(String answer, Translation rightAnswer, User requester, User receiver, Question question) {
-
-        List<String> translations = rightAnswer.getTranslations ();
-
-        for (String translation : translations) {
-            if (answer.equals(translation)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round, VocabList vocabList) {
+    public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
 
         Random rand = new Random();
 
@@ -42,7 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
         Translation wrongB = setAnswerOptions();
         Translation wrongC = setAnswerOptions();
 
-        return new Question(1L,requester, receiver, game, round, wrongA, wrongB, wrongC, rightAnswer, vocab);
+        return new Question(1L, round, wrongA, wrongB, wrongC, rightAnswer, vocab);
     }
 
     public Translation setAnswerOptions() {
@@ -64,5 +50,4 @@ public class QuestionServiceImpl implements QuestionService {
 
         return translations;
     }
-
 }
