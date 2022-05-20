@@ -9,10 +9,12 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
+@Service
 public class GameServiceImpl implements GameService {
 
     @Override

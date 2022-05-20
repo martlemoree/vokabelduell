@@ -37,14 +37,14 @@ public interface VocabListService {
      * @param vocablist the object that should be changed
      * @param vocab is the vocabulary that should be removed from the VocabList
      */
-    public void removeVocab(VocabList vocablist,Vocab vocab);
+    void removeVocab(VocabList vocablist,Vocab vocab);
 
     /**
      * inserts a new vocabulary to the VocabList
      * @param vocablist the object that should be changed
      * @param vocab the new Vocabulary that should be added to the VocabList
      */
-    public void addVocab(VocabList vocablist,Vocab vocab);
+    void addVocab(VocabList vocablist,Vocab vocab);
 
 
     /**
@@ -52,9 +52,13 @@ public interface VocabListService {
      * each round.
      * @return the list with three vocablists.
      */
-    public List<VocabList> getRandomVocablists();
+    List<VocabList> getRandomVocablists();
 
     void removeVocablist();
     String readFile(String path) throws FileNotFoundException;
+
+    List<VocabList> getVocablists();
+
+    void setVocablists(List<VocabList> vocablists);
 
 }

@@ -8,13 +8,15 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static de.htwberlin.kba.vocab_management.export.VocabList.vocablists;
-
+@Service
 public class QuestionServiceImpl implements QuestionService {
 
     public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
@@ -34,8 +36,9 @@ public class QuestionServiceImpl implements QuestionService {
     public Translation setAnswerOptions() {
 
         Random rand = new Random();
+        VocabListService vocabListService = new VocabListServiceImpl ();
 
-        VocabList randomVocabList = VocabList.getVocablists().get(rand.nextInt(VocabList.getVocablists().size()));
+        VocabList randomVocabList = vocabListService.getVocablists().get(rand.nextInt(vocabListService.getVocablists().size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
         return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
