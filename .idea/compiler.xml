@@ -15,8 +15,10 @@
         <module name="vocab-management.impl" />
         <module name="user_management.impl" />
         <module name="user_management.export" />
+        <module name="game_uiexport" />
         <module name="user-management.impl" />
         <module name="vocab_management.impl" />
+        <module name="game_ui" />
         <module name="UserManagement" />
         <module name="game_ui.impl" />
         <module name="GameManagement" />
