@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -23,9 +24,6 @@ public class VocabListServiceImpl implements VocabListService {
         //todo das muss mit der datenbank gemacht werden muss
     }
 
-    //Todo die parameter müssen wieder rausgenommen werden --> wird von der Liste befüllt
-    //Todo dafür muss hier aber der dateipfad übergeben werden
-
     public String readFile(String path) throws FileNotFoundException {
         //read file
         File file = new File(path);
@@ -33,7 +31,7 @@ public class VocabListServiceImpl implements VocabListService {
 
         String fileContent = "";
         while(sc.hasNextLine())
-            fileContent = fileContent.concat(sc.nextLine() + ";");
+            fileContent = fileContent.concat(sc.nextLine() + "|");
 
         return fileContent;
     }
@@ -71,9 +69,9 @@ public class VocabListServiceImpl implements VocabListService {
         List<String> groups = new ArrayList<String>();
         for (int i = 60; i < char_list.size(); i++) {
 
-            if (char_list.get(i)  != ';') {
+            if (char_list.get(i)  != '|') {
                 returnString = returnString+char_list.get(i);
-            } else if (char_list.get(i) == ';') {
+            } else if (char_list.get(i) == '|') {
                 groups.add(returnString);
                 returnString = new String();
             }
@@ -88,7 +86,6 @@ public class VocabListServiceImpl implements VocabListService {
         List<Translation> translations_init = new ArrayList<Translation>();
 
         //iterate through every group and create objects
-        //todo akuell gibt es weder synonyme noch verschiedene bedeutungen
         //todo ids automatisch generieren
         for (String group: groups) {
             left = group.substring(0,group.indexOf(':')-1);
@@ -128,7 +125,6 @@ public class VocabListServiceImpl implements VocabListService {
         }
         VocabList v1 = new VocabList(Long.valueOf(1),category_string, name_string, language_string, vocabs_init);
 
-        //ToDo toString von den Listen anpassen
         System.out.println(v1.getName());
         System.out.println(v1.getLanguage());
         System.out.println(v1.getVocablistId());
@@ -141,7 +137,7 @@ public class VocabListServiceImpl implements VocabListService {
 
     @Override
     public void editName(VocabList vocablist, String newName) {
-
+        vocablist.setName(newName);
     }
     public List<VocabList> getVocablists() {
         return vocablists;
@@ -152,25 +148,62 @@ public class VocabListServiceImpl implements VocabListService {
     }
     @Override
     public void editLanguage(VocabList vocablist, String newLanguage) {
-
+        vocablist.setLanguage(newLanguage);
     }
 
     @Override
     public void editCategory(VocabList vocablist, String newCat) {
-
+        vocablist.setCategory(newCat);
     }
 
     @Override
     public void removeVocab(VocabList vocablist, Vocab vocab) {
-
+    //todo irgendwas mit der DB machen
     }
 
     @Override
     public void addVocab(VocabList vocablist, Vocab vocab) {
-
+        List<Vocab> current_vocabs = vocablist.getVocabs();
+        current_vocabs.add(vocab);
+        vocablist.setVocabs(current_vocabs);
     }
     @Override
     public List<VocabList> getRandomVocablists() {
+
+        List<Long> allVocablists = new ArrayList<>();
+
+        for (VocabList vlist: vocablists) {
+            allVocablists.add(vlist.getVocablistId());
+        }
+
+        Random rand = new Random();
+        int element1 = rand.nextInt(allVocablists.size());
+        int element2 = rand.nextInt(allVocablists.size());
+        int element3 = rand.nextInt(allVocablists.size());
+
+        List<VocabList> random_lists = new ArrayList<>();
+
+        random_lists.add(getVocabListById(allVocablists.get(element1)));
+        random_lists.add(getVocabListById(allVocablists.get(element2)));
+        random_lists.add(getVocabListById(allVocablists.get(element3)));
+
+        return random_lists;
+    }
+    //todo problem hier: die linke seite für synonyme oder verschiedene bedeutungen zu machen
+    // da die translation jetzt keine lsite an vocabs mehr hat, können wir nicht mehrere vocabs zusammenfügen
+    // man könnte dann einfach eine liste an strings machen für eine vocab aber
+    // beispiel 1: {tell}, {told}, {told} : {erzählen}, {vorhersagen}, {sagen}
+    // beispiel 2: {the sooner ...\, the better  ...} : {je eher ..\, desto besser ...}
+    // beispiel 3: {lab, laboratory} : {Labor}
+    // beispiel 4: {(to) burst\, burst\, burst} : {platzen}
+
+  public VocabList getVocabListById(Long id) {
+
+        for (VocabList v : vocablists) {
+            if (v.getVocablistId() == id) {
+                return v;
+            }
+        }
         return null;
     }
 

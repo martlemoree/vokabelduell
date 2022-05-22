@@ -19,10 +19,4 @@ public interface TranslationService {
      */
     void removeTranslation(Translation translation,String translationToBeRemoved);
 
-    /**
-     * inserts a new translation to the String list of translations
-     * @param translation the object that should be changed
-     * @param newTranslation the new Vocabulary that should be added to the VocabList
-     */
-    void addTranslation(Translation translation,String newTranslation);
 }

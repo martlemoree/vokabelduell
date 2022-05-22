@@ -10,9 +10,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    //todo Bitte Methode zum Erstellen und Löschen eines User ergänzen
-    //- Die restlichen Methoden evtl. nicht weiter betrachten
-
     private static List<User> users;
     public List<User> getUserListWOcurrentUser(Long userId) {
 

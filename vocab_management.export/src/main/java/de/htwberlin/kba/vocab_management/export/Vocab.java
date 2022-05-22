@@ -40,12 +40,6 @@ public class Vocab {
 
     @Override
     public String toString() {
-        /*String result = "+";
-        for (int i = 0; i < vocabs.size(); i++) {
-            result += " " + vocabs.get(i)  ;
-        }
-        return result;*/
-
         return "ID=" + vocabId  +
                 ", vocabs=" + vocabs  +
                 ", translations=" + translations + "\n" ;

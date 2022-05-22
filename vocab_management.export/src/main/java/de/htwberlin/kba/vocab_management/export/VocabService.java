@@ -15,13 +15,6 @@ public interface VocabService {
     public Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations);
 
     /**
-     * change the Vocabulary List of a Vocabulary
-     * @param vocab the object that should be changed
-     * @param newVocabList the new Vocablist
-     */
-    public void editVocabList(Vocab vocab,VocabList newVocabList);
-
-    /**
      * change the items of a vocabulary
      * @param vocab the object that should be changed
      * @param newVocabs list with the new vocabularies of this object

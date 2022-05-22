@@ -196,12 +196,12 @@ public class VocabListServiceTest {
     public void test() throws FileNotFoundException {
 
         //read file
-        File file = new File("C:\\KBA\\vocabulary\\¡Hola- ¿Qué tal- - Bloque A.txt");
+        File file = new File("C:\\KBA\\vocabulary\\Irregular Verbs.txt");
         Scanner sc = new Scanner(file);
 
         String fileContent = "";
         while(sc.hasNextLine())
-            fileContent = fileContent.concat(sc.nextLine() + ";");
+            fileContent = fileContent.concat(sc.nextLine() + "|");
 
         //split text into chars and convert to list of chars
         char[] chars = fileContent.toCharArray();
@@ -234,9 +234,9 @@ public class VocabListServiceTest {
         List<String> groups = new ArrayList<String>();
         for (int i = 60; i < char_list.size(); i++) {
 
-            if (char_list.get(i)  != ';') {
+            if (char_list.get(i)  != '|') {
                 returnString = returnString+char_list.get(i);
-            } else if (char_list.get(i) == ';') {
+            } else if (char_list.get(i) == '|') {
                 groups.add(returnString);
                 returnString = new String();
             }
@@ -250,11 +250,12 @@ public class VocabListServiceTest {
         List<Vocab> vocabs_init = new ArrayList<Vocab>();
         List<Translation> translations_init = new ArrayList<Translation>();
 
+
         //iterate through every group and create objects
         //todo akuell gibt es weder synonyme noch verschiedene bedeutungen
         //todo ids automatisch generieren
         for (String group: groups) {
-            left = group.substring(0,group.indexOf(':')-1);
+            left = group.substring(0,group.indexOf(":")-1);
             right = group.substring(group.indexOf(':')+1);
 
            left = left.replaceAll("[^a-zA-Z ]", "");
@@ -265,7 +266,7 @@ public class VocabListServiceTest {
             List<String> synonyms = new ArrayList<>();
 
 
-            for (char c : right_chars){
+           for (char c : right_chars){
                 if (c  == '{') {
                     synoym = new String();
                     synonyms.clear();
@@ -286,18 +287,20 @@ public class VocabListServiceTest {
             vocab_strings.add(left);
 
             vocabs_init.add(new Vocab(1L, vocab_strings, translation_list));
-            // System.out.println(vocabs_init);
 
         }
-        VocabList v1 = new VocabList(Long.valueOf(1),category_string, name_string, language_string, vocabs_init);
+       VocabList v1 = new VocabList(Long.valueOf(1),category_string, name_string, language_string, vocabs_init);
+
 
         //ToDo toString von den Listen anpassen
-        System.out.println(v1.getName());
+       /* System.out.println(v1.getName());
         System.out.println(v1.getLanguage());
         System.out.println(v1.getVocablistId());
         System.out.println(v1.getCategory());
-        System.out.println(v1.getVocabs());
+        System.out.println(v1.getVocabs());*/
 
+        System.out.println(vocabs_init.get(1));
+        System.out.println(vocabs_init.get(1).getVocabs().size());
       //  vocablists.add(v1);
     }
 
