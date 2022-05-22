@@ -2,9 +2,11 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import org.springframework.stereotype.Service;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
 
+@Service
 public class RequestServiceImpl implements RequestService {
 
     @Override

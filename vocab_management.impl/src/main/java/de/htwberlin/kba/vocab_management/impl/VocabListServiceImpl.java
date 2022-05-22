@@ -4,6 +4,8 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.Scanner;
 
 import java.util.List;
 
+@Service
 public class VocabListServiceImpl implements VocabListService {
 
     public static List<VocabList> vocablists;
@@ -140,7 +143,13 @@ public class VocabListServiceImpl implements VocabListService {
     public void editName(VocabList vocablist, String newName) {
 
     }
+    public List<VocabList> getVocablists() {
+        return vocablists;
+    }
 
+    public void setVocablists(List<VocabList> vocablists) {
+        VocabListServiceImpl.vocablists = vocablists;
+    }
     @Override
     public void editLanguage(VocabList vocablist, String newLanguage) {
 

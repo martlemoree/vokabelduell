@@ -2,10 +2,12 @@ package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.user_management.export.User;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     //todo Bitte Methode zum Erstellen und Löschen eines User ergänzen

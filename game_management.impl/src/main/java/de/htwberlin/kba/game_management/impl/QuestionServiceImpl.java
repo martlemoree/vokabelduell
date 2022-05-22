@@ -8,30 +8,18 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static de.htwberlin.kba.vocab_management.export.VocabList.vocablists;
-
+@Service
 public class QuestionServiceImpl implements QuestionService {
 
-    @Override
-    public boolean answerQuestion(String answer, Translation rightAnswer, User requester, User receiver, Question question) {
-
-        List<String> translations = rightAnswer.getTranslations ();
-
-        for (String translation : translations) {
-            if (answer.equals(translation)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Question createQuestion(Long questionId, User requester, User receiver, Game game, Round round, VocabList vocabList) {
+    public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
 
         Random rand = new Random();
 
@@ -42,14 +30,15 @@ public class QuestionServiceImpl implements QuestionService {
         Translation wrongB = setAnswerOptions();
         Translation wrongC = setAnswerOptions();
 
-        return new Question(1L,requester, receiver, game, round, wrongA, wrongB, wrongC, rightAnswer, vocab);
+        return new Question(1L, round, wrongA, wrongB, wrongC, rightAnswer, vocab);
     }
 
     public Translation setAnswerOptions() {
 
         Random rand = new Random();
+        VocabListService vocabListService = new VocabListServiceImpl ();
 
-        VocabList randomVocabList = VocabList.getVocablists().get(rand.nextInt(VocabList.getVocablists().size()));
+        VocabList randomVocabList = vocabListService.getVocablists().get(rand.nextInt(vocabListService.getVocablists().size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
         return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
@@ -64,5 +53,4 @@ public class QuestionServiceImpl implements QuestionService {
 
         return translations;
     }
-
 }

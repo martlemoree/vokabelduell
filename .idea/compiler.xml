@@ -10,6 +10,7 @@
         <module name="configuration" />
         <module name="GameManagementExport" />
         <module name="UserManagementExport" />
+        <module name="game_ui.export" />
         <module name="game_management.impl" />
         <module name="vocab-management.impl" />
         <module name="user_management.impl" />
@@ -17,6 +18,7 @@
         <module name="user-management.impl" />
         <module name="vocab_management.impl" />
         <module name="UserManagement" />
+        <module name="game_ui.impl" />
         <module name="GameManagement" />
         <module name="vocab_management.export" />
         <module name="game_management.export" />
