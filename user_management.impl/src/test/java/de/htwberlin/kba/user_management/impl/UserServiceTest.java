@@ -2,22 +2,19 @@ package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
 
     private UserService service;
-    @Before
+    @BeforeAll
     public void setUp() {
         this.service = new UserServiceImpl();
     }
@@ -115,7 +112,7 @@ public class UserServiceTest {
         service.changePassword(newPassword, user);
 
         // 3. Assert
-        Assert.assertEquals(newPassword, user.getPassword());
+        assertEquals(newPassword, user.getPassword());
 
     }
 }
