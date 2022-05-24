@@ -1,9 +1,9 @@
-package de.htwberlin.kba.game_ui.impl;
+package de.htwberlin.kba.vokabelduell_ui.impl;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameView {
+public class VokabelduellView {
 
     public void byeBye() {
         System.out.println("Bye :)");

@@ -3,8 +3,8 @@ package de.htwberlin.kba.configuration;
 import de.htwberlin.kba.game_management.impl.QuestionServiceImpl;
 import de.htwberlin.kba.game_management.impl.RequestServiceImpl;
 import de.htwberlin.kba.game_management.impl.RoundServiceImpl;
-import de.htwberlin.kba.game_ui.impl.GameUiController;
-import de.htwberlin.kba.game_ui.impl.GameView;
+import de.htwberlin.kba.vokabelduell_ui.impl.VokabellduellUiController;
+import de.htwberlin.kba.vokabelduell_ui.impl.VokabelduellView;
 
 import de.htwberlin.kba.game_management.impl.GameServiceImpl;
 import de.htwberlin.kba.user_management.impl.UserServiceImpl;
@@ -15,12 +15,12 @@ import de.htwberlin.kba.vocab_management.impl.VocabServiceImpl;
 public class ConfigurationImpl {
 
     public static void main(String[] args) {
-        GameUiController controller = registerComponents();
+        VokabellduellUiController controller = registerComponents();
         controller.run();
     }
 
     // Ist das hier die DI von Hand die wir dann nicht mehr brauchen???
-    private static GameUiController registerComponents() {
+    private static VokabellduellUiController registerComponents() {
         GameServiceImpl gameService = new GameServiceImpl();
         UserServiceImpl userService = new UserServiceImpl();
         VocabServiceImpl vocabServiceImpl = new VocabServiceImpl();
@@ -34,9 +34,9 @@ public class ConfigurationImpl {
 
         // QuestionServiceImpl braucht VocabListServiceImpl, reicht das schon? --> wo müssen sich dann variable&setter befinden? nur im impl oder auch im interface?
         // bidService.setItemService(itemService);
-        GameView auctionView = new GameView();
+        VokabelduellView auctionView = new VokabelduellView();
         //  auctionController.setBidService(bidService);
       //  auctionController.setView(auctionView);
-        return new GameUiController(auctionView);
+        return new VokabellduellUiController(auctionView);
     }
 }
