@@ -19,7 +19,7 @@ public class VocabList implements Serializable {
         this.vocabs = vocabs;
     }
 
-    public Long getVocablistId() {
+    public Long getVocabListId() {
         return vocablistId;
     }
 

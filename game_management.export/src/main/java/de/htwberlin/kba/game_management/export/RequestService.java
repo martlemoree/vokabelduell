@@ -2,17 +2,18 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
 
+import java.util.List;
+
 public interface RequestService {
 
     /**
      * Processes the answer from a user to a request.
      * Changes status of request accordingly.
-     * If request is accepted, starts new game.
      *
      * @param accept gives information about whether the request was accepted (true) or rejected (false)
      * @param request is the object that should be updated
      */
-    void changeStatus(Boolean accept, Request request, User requester, User receiver);
+    void changeStatus(Boolean accept, Request request);
 
     /**
      * adds a new game request.
@@ -23,5 +24,12 @@ public interface RequestService {
      * @return a new game request
      */
     Request createRequest(Long requestId, User requester, User receiver);
+
+    /**
+     * gives back all requests with status pending, where given user is the receiver
+     * @param user current user
+     * @return list of requests
+     */
+    List<Request> getRequestsForCurrentUser(User user);
 
 }

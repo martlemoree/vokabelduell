@@ -6,45 +6,45 @@ import java.util.List;
 public interface VocabListService {
     /**
      * creates a new Vocabulary List.
-     * @param
+     * @param text holds Vocabulary List.
      * @return a new Vocabulary List
      */
-    VocabList createVocablist(String text);
+    VocabList createVocabList(String text);
 
     /**
      * changes the Name of the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param newName the old name should be replaced by this name.
      */
-    void editName(VocabList vocablist, String newName);
+    void editName(VocabList vocabList, String newName);
 
     /**
      * changes the language of the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param newLanguage the old language should be replaced by this language.
      */
-    void editLanguage(VocabList vocablist,String newLanguage);
+    void editLanguage(VocabList vocabList,String newLanguage);
 
     /**
      * changes the category of the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param newCat the old category should be replaced by this language.
      */
-    void editCategory(VocabList vocablist,String newCat);
+    void editCategory(VocabList vocabList,String newCat);
 
     /**
      * removes a specific vocabulary from the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param vocab is the vocabulary that should be removed from the VocabList
      */
-    void removeVocab(VocabList vocablist,Vocab vocab);
+    void removeVocab(VocabList vocabList,Vocab vocab);
 
     /**
      * inserts a new vocabulary to the VocabList
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param vocab the new Vocabulary that should be added to the VocabList
      */
-    void addVocab(VocabList vocablist,Vocab vocab);
+    void addVocab(VocabList vocabList,Vocab vocab);
 
 
     /**
@@ -52,13 +52,14 @@ public interface VocabListService {
      * each round.
      * @return the list with three vocablists.
      */
-    List<VocabList> getRandomVocablists();
+    List<VocabList> getRandomVocabLists();
 
-    void removeVocablist();
+    void removeVocabList(VocabList vocabList);
     String readFile(String path) throws FileNotFoundException;
 
-    List<VocabList> getVocablists();
+    List<VocabList> getVocabLists();
 
-    void setVocablists(List<VocabList> vocablists);
+    // wofür ist diese Methode da? Nicht im VokabellduellUiController verwendet
+    void setVocabLists(List<VocabList> vocabLists);
 
 }

@@ -4,29 +4,30 @@ import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static de.htwberlin.kba.game_management.export.Status.*;
 
 @Service
 public class RequestServiceImpl implements RequestService {
 
     @Override
-    public void changeStatus(Boolean accept, Request request, User requester, User receiver) {
+    public void changeStatus(Boolean accept, Request request) {
 
-        if (accept) {
-            request.setRequestStatus(ACCEPTED);
-
-            // start game
-            GameService service = new GameServiceImpl();
-            Game game = new Game (1L, requester, receiver);
-            service.playGame(game, requester, receiver);
-        } if (!accept) {
-            request.setRequestStatus(REJECTED);
-        }
+        // TODO DAO
     }
 
     @Override
     public Request createRequest(Long requestId, User requester, User receiver) {
 
         return new Request(requestId, PENDING, requester, receiver);
+    }
+
+    public List<Request> getRequestsForCurrentUser(User user) {
+        // TODO DAO
+        // Javadoc: gives back all requests with status pending, where given user is the receiver
+        List<Request> requests = new ArrayList<>();
+        return requests;
     }
 }

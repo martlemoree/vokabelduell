@@ -30,6 +30,8 @@ public interface UserService {
     User createUser(String name, String password);
 
     User getUserById(Long Id);
+
+    User getUserByUserName(String userName);
     void removeUser(User user);
 
 }

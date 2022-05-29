@@ -10,8 +10,10 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    // TODO hier und im Folgenden Datenbankzugriff einfügen
     private static List<User> users;
     public List<User> getUserListWOcurrentUser(Long userId) {
+
 
         List<User>listWOuser = new ArrayList<>(users);
         listWOuser.remove(getUserById(userId));
@@ -37,7 +39,18 @@ public class UserServiceImpl implements UserService {
         User returnUser;
 
         for (User u : users){
-            if (u.getUserId() == Id){
+            if (u.getUserId().equals(Id)){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public User getUserByUserName(String userName){
+        User returnUser;
+
+        for (User u : users){
+            if (u.getUserName().equals(userName)){
                 return u;
             }
         }

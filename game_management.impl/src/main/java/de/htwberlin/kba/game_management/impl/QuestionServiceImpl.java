@@ -38,7 +38,7 @@ public class QuestionServiceImpl implements QuestionService {
         Random rand = new Random();
         VocabListService vocabListService = new VocabListServiceImpl ();
 
-        VocabList randomVocabList = vocabListService.getVocablists().get(rand.nextInt(vocabListService.getVocablists().size()));
+        VocabList randomVocabList = vocabListService.getVocabLists().get(rand.nextInt(vocabListService.getVocabLists().size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
         return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));

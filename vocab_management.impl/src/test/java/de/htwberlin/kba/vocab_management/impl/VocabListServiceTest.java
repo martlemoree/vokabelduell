@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl.vocablists;
+import static de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl.vocabLists;
 import static org.junit.Assert.assertNotNull;
 
 public class VocabListServiceTest {
@@ -205,14 +205,14 @@ public class VocabListServiceTest {
 
         //split text into chars and convert to list of chars
         char[] chars = fileContent.toCharArray();
-        List<Character> char_list = new ArrayList<Character>();
+        List<Character> char_list = new ArrayList<>();
         for (char c : chars) {
             char_list.add(c);
         }
         int len = char_list.size();
 
         //iterate through the 1st row of the text file and create list with language, category, name
-       List<String> strings = new ArrayList<String>();
+       List<String> strings = new ArrayList<>();
         String returnString = new String();
 
         for (char c : char_list){
@@ -231,7 +231,7 @@ public class VocabListServiceTest {
         String category_string = strings.get(21);
 
         //iterate through the other lines of the text and create a list for every group
-        List<String> groups = new ArrayList<String>();
+        List<String> groups = new ArrayList<>();
         for (int i = 60; i < char_list.size(); i++) {
 
             if (char_list.get(i)  != '|') {
@@ -247,8 +247,8 @@ public class VocabListServiceTest {
         String left = new String();
         String right = new String(); //rechts ist das deutsche, das ist die translation
 
-        List<Vocab> vocabs_init = new ArrayList<Vocab>();
-        List<Translation> translations_init = new ArrayList<Translation>();
+        List<Vocab> vocabs_init = new ArrayList<>();
+        List<Translation> translations_init = new ArrayList<>();
 
 
         //iterate through every group and create objects
@@ -262,7 +262,7 @@ public class VocabListServiceTest {
 
             char[] right_chars = right.toCharArray();
             String synoym = new String();
-            List<Translation> translation_list = new ArrayList<Translation>();
+            List<Translation> translation_list = new ArrayList<>();
             List<String> synonyms = new ArrayList<>();
 
 
@@ -283,13 +283,13 @@ public class VocabListServiceTest {
             }
 
             //System.out.println(translation_list);
-            List<String> vocab_strings = new ArrayList<String>();
+            List<String> vocab_strings = new ArrayList<>();
             vocab_strings.add(left);
 
             vocabs_init.add(new Vocab(1L, vocab_strings, translation_list));
 
         }
-       VocabList v1 = new VocabList(Long.valueOf(1),category_string, name_string, language_string, vocabs_init);
+       VocabList v1 = new VocabList(1L,category_string, name_string, language_string, vocabs_init);
 
 
         //ToDo toString von den Listen anpassen
