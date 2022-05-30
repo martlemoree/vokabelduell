@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>game_uiexport</artifactId>
+    <artifactId>vokabelduell_ui.export</artifactId>
     <build>
         <plugins>
             <plugin>

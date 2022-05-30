@@ -34,13 +34,13 @@
       </dependency>
     <dependency>
       <groupId>org.example</groupId>
-      <artifactId>game_ui</artifactId>
+      <artifactId>vokabelduell_ui.export</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
       <dependency>
           <groupId>org.example</groupId>
-          <artifactId>game_uiexport</artifactId>
+          <artifactId>vokabelduell_ui.impl</artifactId>
           <version>1.0-SNAPSHOT</version>
           <scope>compile</scope>
       </dependency>

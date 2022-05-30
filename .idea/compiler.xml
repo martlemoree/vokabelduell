@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Configuration" />
+        <module name="vokabelduell_ui.export" />
         <module name="configuration" />
         <module name="GameManagementExport" />
         <module name="UserManagementExport" />
@@ -15,12 +16,11 @@
         <module name="vocab-management.impl" />
         <module name="user_management.impl" />
         <module name="user_management.export" />
-        <module name="game_uiexport" />
         <module name="user-management.impl" />
         <module name="vocab_management.impl" />
-        <module name="game_ui" />
         <module name="UserManagement" />
         <module name="game_ui.impl" />
+        <module name="vokabelduell_ui.impl" />
         <module name="GameManagement" />
         <module name="vocab_management.export" />
         <module name="game_management.export" />
