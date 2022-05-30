@@ -9,6 +9,7 @@ public class Translation {
     private Long translationId;
     private List<String> translations;
 
+    private  List<Vocab> vocabs;
     public Translation(Long translationId, List<String> translations) {
         this.translationId = translationId;
         this.translations = translations;
@@ -30,11 +31,19 @@ public class Translation {
         this.translations = translations;
     }
 
+    public List<Vocab> getVocabs() {
+        return vocabs;
+    }
+
+    public void setVocabs(List<Vocab> vocabs) {
+        this.vocabs = vocabs;
+    }
+
     @Override
     public String toString() {
         String result = "+";
-        for (int i = 0; i < translations.size(); i++) {
-            result +=  " " + translations.get(i) ;
+        for (String translation : translations) {
+            result += translation + "/";
         }
         return result;
     }

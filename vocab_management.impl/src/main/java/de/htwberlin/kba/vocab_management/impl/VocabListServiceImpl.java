@@ -21,7 +21,7 @@ public class VocabListServiceImpl implements VocabListService {
     public static List<VocabList> vocabLists;
 
     public void removeVocabList(VocabList vocabList){
-        //todo das muss mit der datenbank gemacht werden
+        //TODO das muss mit der datenbank gemacht werden
     }
 
     public String readFile(String path) throws FileNotFoundException {
@@ -36,10 +36,18 @@ public class VocabListServiceImpl implements VocabListService {
         return fileContent;
     }
     @Override
-    public VocabList createVocabList(String text) {
+    public VocabList createVocabList(String text) throws FileNotFoundException {
+
+        //read file
+        File file = new File("C:\\KBA\\vocabulary\\Unit 3 Big dreams - small steps - Part A.txt");
+        Scanner sc = new Scanner(file);
+
+        String fileContent = "";
+        while(sc.hasNextLine())
+            fileContent = fileContent.concat(sc.nextLine() + "|");
 
         //split text into chars and convert to list of chars
-        char[] chars = text.toCharArray();
+        char[] chars = fileContent.toCharArray();
         List<Character> char_list = new ArrayList<>();
         for (char c : chars) {
             char_list.add(c);
@@ -83,21 +91,44 @@ public class VocabListServiceImpl implements VocabListService {
         String right = new String(); //rechts ist das deutsche, das ist die translation
 
         List<Vocab> vocabs_init = new ArrayList<>();
-        List<Translation> translations_init = new ArrayList<>();
 
         //iterate through every group and create objects
-        //todo ids automatisch generieren
+        //TODO ids automatisch generieren
         for (String group: groups) {
-            left = group.substring(0,group.indexOf(':')-1);
+            left = group.substring(0,group.indexOf(":")-1);
             right = group.substring(group.indexOf(':')+1);
 
-            left = left.replaceAll("[^a-zA-Z ]", "");
+            //split left part (vocabs) into different objects
+            //left = left.replaceAll("[^a-zA-Z ]", "");
+            char[] left_chars = left.toCharArray();
+            String synoym_left = new String();
+            List<Vocab> vocab_list = new ArrayList<>();
+            List<String> synonyms_left = new ArrayList<>();
 
+            for (char c : left_chars){
+                if (c  == '{') {
+                    synoym_left = new String();
+                    synonyms_left.clear();
+                } else if(c == ',') {
+                    synonyms_left.add(synoym_left);
+                    synoym_left = new String();
+                } else if (c  == '}') {
+                    if (!synoym_left.trim().isEmpty()){
+                        synonyms_left.add(synoym_left);
+                        vocab_list.add(new Vocab(1L, new ArrayList<>(synonyms_left), null));
+                    }
+                    synonyms_left.clear();
+                    synoym_left = new String();
+                } else {
+                    synoym_left = synoym_left + c;
+                }
+            }
+
+            //split right part (translations) in different objects
             char[] right_chars = right.toCharArray();
             String synoym = new String();
             List<Translation> translation_list = new ArrayList<>();
             List<String> synonyms = new ArrayList<>();
-
 
             for (char c : right_chars){
                 if (c  == '{') {
@@ -107,29 +138,31 @@ public class VocabListServiceImpl implements VocabListService {
                     synonyms.add(synoym);
                     synoym = new String();
                 } else if (c  == '}') {
-                    synonyms.add(synoym);
-                    translation_list.add(new Translation(1L, new ArrayList<>(synonyms) ));
+                    if (!synoym.trim().isEmpty()) {
+                        synonyms.add(synoym);
+                        translation_list.add(new Translation(1L, new ArrayList<>(synonyms)));
+                    }
                     synonyms.clear();
+                    synoym = new String();
                 } else {
                     synoym = synoym + c;
                 }
             }
 
-            //System.out.println(translation_list);
-            List<String> vocab_strings = new ArrayList<>();
-            vocab_strings.add(left);
 
-            vocabs_init.add(new Vocab(1L, vocab_strings, translation_list));
-            // System.out.println(vocabs_init);
+            //Set relation between vocabs & translations
+            for (Vocab v: vocab_list) {
+                v.setTranslations(translation_list);
+                vocabs_init.add(v);
+            }
+
+            for (Translation t: translation_list) {
+                t.setVocabs(vocab_list);
+            }
 
         }
-        VocabList v1 = new VocabList(1L,category_string, name_string, language_string, vocabs_init);
 
-        System.out.println(v1.getName());
-        System.out.println(v1.getLanguage());
-        System.out.println(v1.getVocabListId());
-        System.out.println(v1.getCategory());
-        System.out.println(v1.getVocabs());
+        VocabList v1 = new VocabList(1L,category_string, name_string, language_string, vocabs_init);
 
           vocabLists.add(v1);
         return v1;
@@ -158,7 +191,7 @@ public class VocabListServiceImpl implements VocabListService {
 
     @Override
     public void removeVocab(VocabList vocabList, Vocab vocab) {
-    //todo irgendwas mit der DB machen
+    //TODO irgendwas mit der DB machen
     }
 
     @Override
@@ -189,13 +222,6 @@ public class VocabListServiceImpl implements VocabListService {
 
         return random_lists;
     }
-    //todo problem hier: die linke seite für synonyme oder verschiedene bedeutungen zu machen
-    // da die translation jetzt keine lsite an vocabs mehr hat, können wir nicht mehrere vocabs zusammenfügen
-    // man könnte dann einfach eine liste an strings machen für eine vocab aber
-    // beispiel 1: {tell}, {told}, {told} : {erzählen}, {vorhersagen}, {sagen}
-    // beispiel 2: {the sooner ...\, the better  ...} : {je eher ..\, desto besser ...}
-    // beispiel 3: {lab, laboratory} : {Labor}
-    // beispiel 4: {(to) burst\, burst\, burst} : {platzen}
 
   public VocabList getVocabListById(Long id) {
 

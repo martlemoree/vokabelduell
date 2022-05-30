@@ -196,7 +196,7 @@ public class VocabListServiceTest {
     public void test() throws FileNotFoundException {
 
         //read file
-        File file = new File("C:\\KBA\\vocabulary\\Irregular Verbs.txt");
+        File file = new File("C:\\KBA\\vocabulary\\Unit 3 Big dreams - small steps - Part A.txt");
         Scanner sc = new Scanner(file);
 
         String fileContent = "";
@@ -248,8 +248,6 @@ public class VocabListServiceTest {
         String right = new String(); //rechts ist das deutsche, das ist die translation
 
         List<Vocab> vocabs_init = new ArrayList<>();
-        List<Translation> translations_init = new ArrayList<>();
-
 
         //iterate through every group and create objects
         //todo akuell gibt es weder synonyme noch verschiedene bedeutungen
@@ -258,13 +256,37 @@ public class VocabListServiceTest {
             left = group.substring(0,group.indexOf(":")-1);
             right = group.substring(group.indexOf(':')+1);
 
-           left = left.replaceAll("[^a-zA-Z ]", "");
+            //split left part (vocabs) into different objects
+           //left = left.replaceAll("[^a-zA-Z ]", "");
+            char[] left_chars = left.toCharArray();
+            String synoym_left = new String();
+            List<Vocab> vocab_list = new ArrayList<>();
+            List<String> synonyms_left = new ArrayList<>();
 
+            for (char c : left_chars){
+                if (c  == '{') {
+                    synoym_left = new String();
+                    synonyms_left.clear();
+                } else if(c == ',') {
+                    synonyms_left.add(synoym_left);
+                    synoym_left = new String();
+                } else if (c  == '}') {
+                    if (!synoym_left.trim().isEmpty()){
+                        synonyms_left.add(synoym_left);
+                        vocab_list.add(new Vocab(1L, new ArrayList<>(synonyms_left), null));
+                        }
+                    synonyms_left.clear();
+                    synoym_left = new String();
+                } else {
+                    synoym_left = synoym_left + c;
+                }
+            }
+
+            //split right part (translations) in different objects
             char[] right_chars = right.toCharArray();
             String synoym = new String();
             List<Translation> translation_list = new ArrayList<>();
             List<String> synonyms = new ArrayList<>();
-
 
            for (char c : right_chars){
                 if (c  == '{') {
@@ -274,33 +296,42 @@ public class VocabListServiceTest {
                     synonyms.add(synoym);
                     synoym = new String();
                 } else if (c  == '}') {
-                    synonyms.add(synoym);
-                    translation_list.add(new Translation(1L, new ArrayList<>(synonyms) ));
+                    if (!synoym.trim().isEmpty()) {
+                        synonyms.add(synoym);
+                        translation_list.add(new Translation(1L, new ArrayList<>(synonyms)));
+                    }
                     synonyms.clear();
+                    synoym = new String();
                 } else {
                     synoym = synoym + c;
                 }
             }
 
-            //System.out.println(translation_list);
-            List<String> vocab_strings = new ArrayList<>();
-            vocab_strings.add(left);
 
-            vocabs_init.add(new Vocab(1L, vocab_strings, translation_list));
+           //Set relation between vocabs & translations
+            for (Vocab v: vocab_list) {
+                v.setTranslations(translation_list);
+                vocabs_init.add(v);
+            }
+
+            for (Translation t: translation_list) {
+                t.setVocabs(vocab_list);
+            }
 
         }
+
        VocabList v1 = new VocabList(1L,category_string, name_string, language_string, vocabs_init);
 
 
         //ToDo toString von den Listen anpassen
-       /* System.out.println(v1.getName());
+        System.out.println(v1.getName());
         System.out.println(v1.getLanguage());
-        System.out.println(v1.getVocablistId());
+        System.out.println(v1.getVocabListId());
         System.out.println(v1.getCategory());
-        System.out.println(v1.getVocabs());*/
+        System.out.println(v1.getVocabs());
 
-        System.out.println(vocabs_init.get(1));
-        System.out.println(vocabs_init.get(1).getVocabs().size());
+       // System.out.println(vocabs_init.get(1));
+        // System.out.println(vocabs_init.get(1).getVocabs().size());
       //  vocablists.add(v1);
     }
 

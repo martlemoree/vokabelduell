@@ -9,7 +9,7 @@ public interface VocabListService {
      * @param text holds Vocabulary List.
      * @return a new Vocabulary List
      */
-    VocabList createVocabList(String text);
+    VocabList createVocabList(String text) throws FileNotFoundException;
 
     /**
      * changes the Name of the VocabList.
