@@ -1,14 +1,28 @@
 package de.htwberlin.kba.vocab_management.export;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
-public class VocabList implements Serializable {
+@Entity
+@Table(name = "vocab_lists")
+public class VocabList {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vocablist_id")
     private Long vocablistId;
+
+    @Column
     private String category;
+
+    @Column
     private String name;
+
+    @Column
     private String language;
+
+    @ManyToOne
+    @JoinColumn
     private List<Vocab> vocabs;
 
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
@@ -17,6 +31,10 @@ public class VocabList implements Serializable {
         this.name = name;
         this.language = language;
         this.vocabs = vocabs;
+    }
+
+    public VocabList() {
+
     }
 
     public Long getVocabListId() {

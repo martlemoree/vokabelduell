@@ -3,11 +3,26 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.game_management.export.Status;
 import de.htwberlin.kba.user_management.export.User;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "requests")
 public class Request {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "request_id")
     private Long requestId;
+
+    @Column(name = "request_status")
     private Status requestStatus;
+
+    @OneToOne
+    @Column(name = "user_requester")
     private User requester;
+
+    @OneToOne
+    @Column(name = "user_receiver")
     private User receiver;
 
     public Request(Long requestId, Status requestStatus, User requester, User receiver) {
@@ -15,6 +30,10 @@ public class Request {
         this.requestStatus = requestStatus;
         this.requester = requester;
         this.receiver = receiver;
+    }
+
+    public Request() {
+
     }
 
     public Long getRequestId() {

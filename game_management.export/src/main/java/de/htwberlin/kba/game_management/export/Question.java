@@ -4,6 +4,10 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "questions")
 public class Question {
     // Vorschlag wurden in Kempas Beispiel lediglich in der Entitäten-Klasse umgesetzt (Category),
     // nirgends anders (CategoryServiceImpl/CategoryService)
@@ -11,14 +15,40 @@ public class Question {
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
 
     //todo (F) Question.answerQuestion evtl. nach GameService refactoren
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "question_id")
     private Long questionId;
+
+    @ManyToOne
+    @Column(name = "question_round")
     private Round round;
+
+    @ManyToMany
+    @Column(name = "translation_wrong_a")
     private Translation wrongA;
+
+    @ManyToMany
+    @Column(name = "translation_wrong_b")
     private Translation wrongB;
+
+    @ManyToMany
+    @Column(name = "translation_wrong_c")
     private Translation wrongC;
+
+    @ManyToMany
+    @Column(name = "translation_right")
     private Translation rightAnswer;
+
+    @ManyToMany
+    @Column(name = "question_vocab")
     private Vocab vocab;
+
+    @Column(name = "correct_answered_requester")
     private boolean correctAnsweredRequester;
+
+    @Column(name = "correct_answered_receiver")
     private boolean correctAnsweredReceiver;
 
     public Question(Long questionId, Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
@@ -29,6 +59,10 @@ public class Question {
         this.wrongC = wrongC;
         this.rightAnswer = rightAnswer;
         this.vocab = vocab;
+    }
+
+    public Question() {
+
     }
 
     public long getQuestionId() {
