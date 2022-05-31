@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.export;
 
-import de.htwberlin.kba.user_management.export.User;
+
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 

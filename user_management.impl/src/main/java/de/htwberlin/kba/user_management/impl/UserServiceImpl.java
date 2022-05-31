@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    // TODO: muss das noch in die DAO/Impl?
     public User getUserByUserName(String userName){
         User returnUser;
 

@@ -21,7 +21,7 @@ public class VocabListServiceImpl implements VocabListService {
     public static List<VocabList> vocabLists;
 
     public void removeVocabList(VocabList vocabList){
-        //TODO das muss mit der datenbank gemacht werden
+        //TODO DAO das muss mit der datenbank gemacht werden
     }
 
     public String readFile(String path) throws FileNotFoundException {
