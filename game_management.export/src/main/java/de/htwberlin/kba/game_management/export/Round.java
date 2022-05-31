@@ -10,11 +10,13 @@ public class Round {
     private Game game;
     private int currentRound;
     private VocabList vocablist;
+    private boolean playedByTwo;
 
     public Round(Long roundId, Game game, int currentRound) {
         this.roundId = roundId;
         this.game = game;
         this.currentRound = currentRound;
+        playedByTwo = false;
     }
 
     public Long getRoundId() {
@@ -48,4 +50,13 @@ public class Round {
     public void setVocablist(VocabList vocablist) {
         this.vocablist = vocablist;
     }
+
+    public boolean getisPlayedByTwo() {
+        return playedByTwo;
+    }
+
+    public void setPlayedByTwo(boolean playedByTwo) {
+        this.playedByTwo = playedByTwo;
+    }
+
 }

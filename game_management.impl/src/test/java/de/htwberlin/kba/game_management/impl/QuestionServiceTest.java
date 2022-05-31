@@ -5,10 +5,6 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +31,7 @@ public class QuestionServiceTest {
    private  Vocab garten;
     private Vocab dach;
 
-
+/*
     @Before
     public void setUp(){
         this.service = new QuestionServiceImpl();

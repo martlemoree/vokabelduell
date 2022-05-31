@@ -3,18 +3,13 @@ package de.htwberlin.kba.vokabelduell_ui.impl;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
-import de.htwberlin.kba.vocab_management.export.Translation;
-import de.htwberlin.kba.vocab_management.export.Vocab;
-import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.export.*;
 import de.htwberlin.kba.vokabelduell_ui.export.VokabellduellUi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class VokabellduellUiController implements VokabellduellUi {
@@ -29,10 +24,12 @@ public class VokabellduellUiController implements VokabellduellUi {
     private RoundService roundService;
     private QuestionService questionService;
     private RequestService requestService;
+    private VocabService vocabService;
+    private TranslationService translationService;
 
     // TODO: Constructor-Injection?
     @Autowired
-    public VokabellduellUiController(VokabelduellView view, VocabListService vocabListService, RoundService roundService, QuestionService questionService, GameService gameService, UserService userService) {
+    public VokabellduellUiController(VokabelduellView view, VocabListService vocabListService, RoundService roundService, QuestionService questionService, GameService gameService, UserService userService, VocabService vocabService, TranslationService translationService) {
         super();
         this.view = view;
         this.vocabListService = vocabListService;
@@ -40,6 +37,8 @@ public class VokabellduellUiController implements VokabellduellUi {
         this.questionService = questionService;
         this.gameService = gameService;
         this.userService = userService;
+        this.vocabService = vocabService;
+        this.translationService = translationService;
     }
 
     public VokabellduellUiController() {
@@ -71,11 +70,11 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void run() {
 
         // Login
-        User currentUser = logIn ();
+        User currentUser = logIn();
 
         int input;
         do {
-            view.printMessage ("Was möchtest du tun? \n " +
+            view.printMessage("Was möchtest du tun? \n " +
                     "1 - Neue Anfrage verschicken \n " +
                     "2 - Anfragen verwalten \n " +
                     "3 - Spiel weiterspielen \n " +
@@ -83,52 +82,56 @@ public class VokabellduellUiController implements VokabellduellUi {
                     "5 - Konto verwalten \n " +
                     "6 - Anwendung beenden");
 
-            input = view.userInputInt ();
+            input = view.userInputInt();
 
             // Neue Anfrage verschicken
             if (input == 1) {
 
-                view.printMessage ("Suche dir aus der Liste von Mitspielern einen Gegner aus!");
+                view.printMessage("Suche dir aus der Liste von Mitspielern einen Gegner aus!");
 
                 // für jeden user in der Liste den UserName ausgeben
-                List<User> users = userService.getUserListWOcurrentUser (currentUser.getUserId ());
+                List<User> users = userService.getUserListWOcurrentUser(currentUser.getUserId());
                 for (User user : users) {
-                    view.printMessage (currentUser.getUserName () + "\n");
+                    view.printMessage(currentUser.getUserName() + "\n");
                 }
 
-                String userName = view.userInputString ();
+                String userName = view.userInputString();
                 // TODO DAO Spieler anhand des Benutzernamens auswählen
-                User receiver = userService.getUserByUserName (userName); // diese Methode gibt es noch nicht
+                User receiver = userService.getUserByUserName(userName); // diese Methode gibt es noch nicht
 
-                Request request = requestService.createRequest (1L, currentUser, receiver);
+                Request request = requestService.createRequest(1L, currentUser, receiver);
                 // TODO muss das hier dynamisch sein? Braucht es überhaupt einen Rückgabewert?
 
-                view.printMessage ("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
+                view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
 
             }
 
             // Anfragen verwalten
             if (input == 2) {
 
-                view.printMessage ("Gib den Benutzernamen des:r Nutzers:in ein, dessen Anfrage du annehmen oder ablehnen möchtest oder drücke 6 zur Rückkehr ins Hauptmenü!");
-                // Alle Anfragen ausgeben, wo der currentUser involviert ist
-                List<Request> requests = requestService.getRequestsForCurrentUser (currentUser);
+                // TODO Was tun bei der 6?
+                view.printMessage("Gib den Benutzernamen des:r Nutzers:in ein, dessen Anfrage du annehmen oder ablehnen möchtest oder '6' zur Rückkehr ins Hauptmenü!");
+                // Alle Anfragen ausgeben, wo der currentUser involviert ist, die noch nicht abgelehnt wurden
+                List<Request> requests = requestService.getRequestsForCurrentUser(currentUser);
                 for (Request request : requests) {
-                    view.printMessage (request.getRequester ().getUserName () + "\n");
+                    if (request.getRequestStatus() != Status.REJECTED) {
+                        view.printMessage(request.getRequester().getUserName() + "\n");
+                    }
                 }
 
-                String userOrMenu = view.userInputString ();
+                String userOrMenu = view.userInputString();
 
                 for (Request request : requests) {
                     // Passt das hier so?
-                    if (userOrMenu.equals (request.getRequester ().getUserName ())) {
+                    if (userOrMenu.equals(request.getRequester().getUserName())) {
                         // Status der Anfrage ändern
-                        view.printMessage ("Möchtest du (1) die Anfrage annehmen oder sie (2) ablehnen? Oder wähle 6 zur Rückkehr ins Hauptmenü!");
-                        int requestAnswer = view.userInputInt ();
+                        // TODO Was tun bei der 6?
+                        view.printMessage("Möchtest du (1) die Anfrage annehmen oder sie (2) ablehnen? Oder wähle 6 zur Rückkehr ins Hauptmenü!");
+                        int requestAnswer = view.userInputInt();
                         if (requestAnswer == 1) {
-                            changeRequestStatus (request, Status.ACCEPTED);
+                            changeRequestStatus(request, Status.ACCEPTED);
                         } else if (requestAnswer == 2) {
-                            changeRequestStatus (request, Status.REJECTED);
+                            changeRequestStatus(request, Status.REJECTED);
                         }
                     }
                 }
@@ -136,107 +139,64 @@ public class VokabellduellUiController implements VokabellduellUi {
 
             // Spiel weiterspielen
             if (input == 3) {
+                // TODO Man kann nur dann weiterspielen wenn man dran ist :)
                 // show all existing games from current user
-                List<Game> games = gameService.getGamesFromCurrentUser (currentUser);
-                view.printMessage ("Gegen wen möchtest du weiterspielen? \n ");
+                List<Game> games = gameService.getGamesFromCurrentUser(currentUser);
+                view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
                 for (Game game : games) {
-                    view.printMessage (game.getRequester ().getUserName () + " gegen " + game.getReceiver ().getUserName ());
+                    if (game.getRounds().size() > 6) { // TODO > 6, was wenn man die 6. Runde beendet?
+                        view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                    }
                 }
 
-                String chosenUser = view.userInputString ();
+                String chosenUser = view.userInputString();
 
                 for (Game game : games) {
-                    if (chosenUser.equals (game.getRequester ().getUserName ()) || chosenUser.equals (game.getReceiver ().getUserName ())) {
-                        playGame (game);
+                    if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
+                        playGame(game, currentUser);
                     }
                 }
             }
 
             // Vokabeln verwalten
             if (input == 4) {
-                vocabListManagement ();
+                vocabListManagement();
             }
             // Konto verwalten
             if (input == 5) {
                 // TODO Gibt es hier noch mehr Möglichkeiten?
-                view.printMessage ("Was möchtest du tun? \n " +
+                view.printMessage("Was möchtest du tun? \n " +
                         "1 - Konto löschen \n " +
                         "2 - Passwort ändern");
 
-                int userManagementInput = view.userInputInt ();
+                int userManagementInput = view.userInputInt();
 
                 if (userManagementInput == 1) {
-                    view.printMessage ("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
+                    view.printMessage("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
                             "1 - Ja \n " +
                             "2 - Nein");
-                    int deleteUserInput = view.userInputInt ();
+                    int deleteUserInput = view.userInputInt();
                     if (deleteUserInput == 1) {
-                        userService.removeUser (currentUser);
-                        view.printMessage ("Dein Konto wurde gelöscht.");
+                        userService.removeUser(currentUser);
+                        view.printMessage("Dein Konto wurde gelöscht.");
                     } else if (deleteUserInput == 2) {
                         break; // TODO Funktioniert das hier so? --> Ich möchte zurück zum Eingangs-Menü
                     }
                 } else if (userManagementInput == 2) {
-                    view.printMessage ("Gib Dein neues Password ein.");
-                    String newPassword = view.userInputString ();
-                    userService.changePassword (newPassword, currentUser);
+                    view.printMessage("Gib Dein neues Password ein.");
+                    String newPassword = view.userInputString();
+                    userService.changePassword(newPassword, currentUser);
                 }
             }
         } while (input != 6);
 
-        view.printMessage ("Bis zum nächsten Mal! :)");
-        // TODO: muss hier noch was passieren, um die Anwendung "richtig" zu beenden?
+        view.printMessage("Bis zum nächsten Mal! :)");
+        System.exit(0);
 
     }
-
-    public void playGame(Game game) {
-
-        // TODO: Wenn ich das hier so verwenden will, kann die Runde nicht jedes Mal bei 1 anfangen
-        // Was, wenn ein Spiel weitergespielt wird?
-        // Anzahl der Runde wird wo festgehalten?
-        List<Round> rounds = game.getRounds();
-        for (int i = 0; i < 7; i++) {
-            // Jedes Mal wird eine neue Runde erstellt
-            // Es muss auch erst Spieler 1 und dann Spieler 2 dran sein
-
-            Round round = roundService.createRound(1L, game, i);
-            // TODO: Es gibt in Rounds einen setter setRounds
-
-            // get 3 random vocablists to choose from
-            List<VocabList> randomVocabLists = vocabListService.getRandomVocabLists();
-
-            // user chooses vocablist for round
-            VocabList chosenVocabList = chooseVocablist(randomVocabLists);
-
-            // generate Question
-            Question question = questionService.createQuestion(1L, round, chosenVocabList);
-
-            // user is asked question
-            askQuestion(question);
-            // user answers question
-            String answer = view.userInputString();
-            // is answer correct?
-            boolean rightOrWrong = answerQuestion(answer, question.getRightAnswer());
-
-            // Punkte berechnen
-            int points;
-            if (rightOrWrong) {
-                points = 500;
-            } else {
-                points = -200;
-            }
-
-            // TODO Wie machen wir das hier mit dem User?
-            // TODO ist die Methode im gameService richtig oder muss die hier hin? Welche Methoden gehören überhaupt noch in den Service?
-            gameService.calculatePoints(game, new User( 1L,"AntjeWinner","richtigGutesPassword"), points);
-
-        }
-
-    }
-
 
     public User logIn() {
-        view.printMessage ("Herzlich Willkommen! Was möchtest du tun? \n " +
+        view.printMessage("Herzlich Willkommen! Was möchtest du tun? \n " +
                 "1 - Einloggen \n " +
                 "2 - Registrieren");
 
@@ -244,9 +204,9 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         // Einloggen
         if (firstInput == 1) {
-            view.printMessage ("Wie lautet dein Benutzername?");
+            view.printMessage("Wie lautet dein Benutzername?");
             String userName = view.userInputString();
-            view.printMessage ("Gib dein Passwort ein.");
+            view.printMessage("Gib dein Passwort ein.");
             String password = view.userInputString();
 
             // TODO DAO Überprüfung der Anmeldedaten + Übergabe des Users
@@ -255,146 +215,250 @@ public class VokabellduellUiController implements VokabellduellUi {
         }
         // Registrieren
         else if (firstInput == 2) {
-            view.printMessage ("Wie soll dein Benutzername lauten");
+            view.printMessage("Wie soll dein Benutzername lauten");
             String userName = view.userInputString();
-            // TODO Muss der Benutzername eindeutig sein?
-            view.printMessage ("Gib dein Passwort ein.");
+            // TODO DAO der Benutzername muss eindeutig sein!
+            view.printMessage("Gib dein Passwort ein.");
             String password = view.userInputString();
 
-            view.printMessage ("Das ist deine einmalige User Id:");
+            view.printMessage("Das ist deine einmalige User Id:");
 
             return userService.createUser(userName, password);
         }
+        return null;
+    }
+    public void playGame(Game game, User currentUser) {
+
+        List<Question> questions = null;
+        List<Round> rounds = game.getRounds();
+
+        // if game has just been created or the last round was played by both players a new round must be initiated
+        if (rounds.isEmpty() || !rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
+            questions = startNewRound(game);
+
+            for (int i = 0; i<4; i++) {
+                askQuestions(game, currentUser, questions, i);
+            }
+        } else {
+            // play the last existing round
+            // sind die Runde und ihre Fragen irgendwie connected?
+            // eigentlich muss die Runde ihre FRagen kennen
+            // momentan kennen nur die FRagen die Runde
+        }
+        // Herausforderung annehmen
+        // Liste auswählen
+        // Erste Runde erste FRagen beantworten
+        // Herausforderer beantwortet die Fragen aus der ersten runde der liste die die person ausgewählt hat, die die fragen ausgweählt hat
+        // dann beginnt der herausforderer die nächste runde und wählt eine liste aus
+        // dann spielt der Receiver die Runde die der Requester begonnen hat mit der ausgewählten liste
+        // dann beginnt der receiver die nächste runde und sucht eine liste aus
+
+        // DIe Runden müssen nicht jedes Mal erstellt und hochgezählt werden, sondern NUR, wenn der currentUser der Receiver des Games ist, denn der fängt an
+        // ODER ?!
+
+        // Ansonsten muss die Runde weitergespielt werden, die vom Receiver schon begonnen wurde, UND NUR DIE KÖNNEN AUCH WEITERGESPIELT WERDEN; SONST MUSS MAN WARTEN
+
+
+
     }
 
+    public void askQuestions(Game game, User currentUser, List<Question> questions, int i) {
+        askQuestion(questions.get(i));
+        // user answers question
+        String answer = view.userInputString();
+        // is answer correct?
+        boolean rightOrWrong = answeredQuestion(answer, questions.get(i).getRightAnswer());
+
+        // Punkte berechnen
+        int points;
+        if (rightOrWrong) {
+            points = 500;
+            view.printMessage("Super, das ist richtig!");
+        } else {
+            points = -200;
+            view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questions.get(i).getRightAnswer());
+        }
+
+        // TODO ist die Methode im gameService richtig oder muss die hier hin? Welche Methoden gehören überhaupt noch in den Service?
+        gameService.calculatePoints(game, currentUser, points);
+
+        /*
+        Die Question hat die Felder
+        private boolean correctAnsweredRequester;
+        private boolean correctAnsweredReceiver;
+
+        das bringt gefühlt gar nichts, wenn die Runde nicht ihre Fragen kennt
+         */
+    }
+
+    // user is asked question
+
+    public List<Question> startNewRound(Game game) {
+        List<Round> rounds = new ArrayList<>();
+        Round round = roundService.createRound(1L, game, 1);
+        rounds.add(round);
+        // der list der round des games hinzufügen
+        game.setRounds(rounds);
+
+        // get 3 random vocablists to choose from
+        List<VocabList> randomVocabLists = vocabListService.getRandomVocabLists();
+
+        // user chooses vocablist for round
+        VocabList chosenVocabList = chooseVocablist(randomVocabLists);
+
+        // generate Questions
+        List<Question> questions = new ArrayList<>();
+        Question question1 = questionService.createQuestion(1L, round, chosenVocabList);
+        Question question2 = questionService.createQuestion(1L, round, chosenVocabList);
+        Question question3 = questionService.createQuestion(1L, round, chosenVocabList);
+        questions.add(question1);
+        questions.add(question2);
+        questions.add(question3);
+
+        return questions;
+    }
     public void changeRequestStatus(Request request, Status status) {
 
         // TODO Ist das mit dem setter hier so richtig oder muss das über den Service laufen?
         request.setRequestStatus(status);
 
-        // funktioniert der Vergleich hier so?
         if (status == Status.ACCEPTED) {
             // new game is created and starts
-            playGame(gameService.createGame(1L, request.getRequester(), request.getReceiver()));
+            playGame(gameService.createGame(1L, request.getRequester(), request.getReceiver()), request.getReceiver());
+        } else if (status == Status.REJECTED) {
+            view.printMessage("Die Anfrage wurde abgelehnt.");
         }
     }
 
     public void vocabListManagement() throws FileNotFoundException {
         // TODO: Muss ich mich hier irgendwie um die Exception kümmern?
-        view.printMessage ("Was möchtest du tun? \n " +
-                "1 - Neue Vokabelliste hinzufügen \n " +
-                "2 - Vokabelliste bearbeiten \n " +
-                "3 - Vokabelliste löschen \n " +
-                "4 - Rückkehr ins Hauptmenü");
+        int inputVocabListManagementMenu;
+        do {
+            view.printMessage("Was möchtest du tun? \n " +
+                    "1 - Neue Vokabelliste hinzufügen \n " +
+                    "2 - Vokabelliste bearbeiten \n " +
+                    "3 - Vokabelliste löschen \n " +
+                    "4 - Rückkehr ins Hauptmenü");
 
-        int inputVocabListManagementMenu = view.userInputInt();
+            inputVocabListManagementMenu = view.userInputInt();
 
-        // Neue Vokabelliste hinzufügen
-        if (inputVocabListManagementMenu == 1) { // TODO: Antje: So richtig verstanden?
-            view.printMessage ("Gib den Dateipfad der neuen Vokabelliste ein.");
-            String path = view.userInputString();
-            String text = vocabListService.readFile(path);
-            vocabListService.createVocabList(text);
-        } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
-            view.printMessage ("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
-            String input = view.userInputString();
+            // Neue Vokabelliste hinzufügen
+            if (inputVocabListManagementMenu == 1) { // TODO: Antje: So richtig verstanden?
+                view.printMessage("Gib den Dateipfad der neuen Vokabelliste ein.");
+                String path = view.userInputString();
+                String text = vocabListService.readFile(path);
+                vocabListService.createVocabList(text);
+            } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
+                view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
+                String input = view.userInputString();
 
-            List<VocabList> vocabLists = vocabListService.getVocabLists();
-            for (VocabList vocabList : vocabLists) {
-                // TODO: hierfür könnte die equals und die hash methode der VocabList angepasst werden
-                if (vocabList.getName().equals(input)) {
-                    view.printMessage ("Was möchtest du bearbeiten? \n " +
-                            "1 - Namen der Vokabelliste \n " +
-                            "2 - Sprache der Vokabelliste \n " +
-                            "3 - Kategorie der Vokabelliste \n " +
-                            "4 - Vokabeln der Vokabelliste \n " +
-                            "5 - Rückkehr ins Hauptmenü");
+                List<VocabList> vocabLists = vocabListService.getVocabLists();
+                for (VocabList vocabList : vocabLists) {
+                    // TODO: hierfür könnte die equals und die hash methode der VocabList angepasst werden
+                    if (vocabList.getName().equals(input)) {
+                        view.printMessage("Was möchtest du bearbeiten? \n " +
+                                "1 - Namen der Vokabelliste \n " +
+                                "2 - Sprache der Vokabelliste \n " +
+                                "3 - Kategorie der Vokabelliste \n " +
+                                "4 - Vokabeln der Vokabelliste \n " +
+                                "5 - Rückkehr ins Hauptmenü");
 
-                    int inputEditVocabList = view.userInputInt();
+                        int inputEditVocabList = view.userInputInt();
 
-                    if (inputEditVocabList == 1) { // Namen bearbeiten
-                        view.printMessage ("Gib den neuen Namen der Vokabelliste " + vocabList.getName() + " ein.");
-                        String newName = view.userInputString();
-                        vocabListService.editName(vocabList, newName);
-                    } else if (inputEditVocabList == 2) { // Sprache bearbeiten
-                        view.printMessage ("Gib die neue Sprache der Vokabelliste " + vocabList.getName() + " ein.  \n " +
-                                "Die Sprache ist momentan " + vocabList.getLanguage());
-                        String newLanguage = view.userInputString();
-                        vocabListService.editLanguage(vocabList,newLanguage);
-                    } else if (inputEditVocabList == 3) { // Kategorie bearbeiten
-                        view.printMessage ("Gib die neue Kategorie der Vokabelliste " + vocabList.getName() + " ein.  \n " +
-                                "Die Kategorie ist momentan " + vocabList.getCategory());
-                        String newCat = view.userInputString();
-                        vocabListService.editCategory(vocabList,newCat);
-                    } else if (inputEditVocabList == 4) { // Vokabeln der Liste bearbeiten
-                        // TODO: Inwiefern können die Vokabeln selbst bearbeitet werden? (abgesehen von hinzufügen und löschen)
+                        if (inputEditVocabList == 1) { // Namen bearbeiten
+                            view.printMessage("Gib den neuen Namen der Vokabelliste " + vocabList.getName() + " ein.");
+                            String newName = view.userInputString();
+                            vocabListService.editName(vocabList, newName);
+                        } else if (inputEditVocabList == 2) { // Sprache bearbeiten
+                            view.printMessage("Gib die neue Sprache der Vokabelliste " + vocabList.getName() + " ein.  \n " +
+                                    "Die Sprache ist momentan " + vocabList.getLanguage());
+                            String newLanguage = view.userInputString();
+                            vocabListService.editLanguage(vocabList, newLanguage);
+                        } else if (inputEditVocabList == 3) { // Kategorie bearbeiten
+                            view.printMessage("Gib die neue Kategorie der Vokabelliste " + vocabList.getName() + " ein.  \n " +
+                                    "Die Kategorie ist momentan " + vocabList.getCategory());
+                            String newCat = view.userInputString();
+                            vocabListService.editCategory(vocabList, newCat);
+                        } else if (inputEditVocabList == 4) { // Vokabeln der Liste bearbeiten
+                            // TODO: Inwiefern können die Vokabeln selbst bearbeitet werden? (abgesehen von hinzufügen und löschen)
 
 
-                        view.printMessage ("Was möchtest du tun? \n " +
-                                "1 - Vokabel der Vokabelliste hinzufügen \n " +
-                                "2 - Vokabel aus der Vokabelliste entfernen \n " +
-                                "3 - Rückkehr ins Hauptmenü");
-                        int inputEditVocab = view.userInputInt();
+                            view.printMessage("Was möchtest du tun? \n " +
+                                    "1 - Vokabel der Vokabelliste hinzufügen \n " +
+                                    "2 - Vokabel aus der Vokabelliste entfernen \n " +
+                                    "3 - Rückkehr ins Hauptmenü");
+                            int inputEditVocab = view.userInputInt();
 
-                        if (inputEditVocab == 1) { // TODO Vokabel hinzufügen
-                            Object Vocab;
-                            vocabListService.addVocab(VocabList vocabList,Vocab vocab);
-                        } else if (inputEditVocab == 2) { // TODO Vokabel entfernen
-                            view.printMessage ("Gib den Namen der zu entfernenden Vokabel ein.");
-                            String vocabName = view.userInputString();
+                            if (inputEditVocab == 1) {
+                                // TODO Antje: Was wenn eine Vokabel mit Synonymen hinzugefügt werden soll?
+                                view.printMessage("Gib die neue Vokabel ein!");
+                                List<String> newVocabsString = new ArrayList<>();
+                                newVocabsString.add(view.userInputString());
 
-                            List<Vocab> vocabs = vocabList.getVocabs();
-                            for (Vocab vocab : vocabs) {
-                                // Wenn es mit einem der Komponenten der String List übereinstimmt
-                                List<String> vocabStrings = vocab.getVocabs();
-                                for (String vocabString : vocabStrings) {
-                                    if (vocabName.equals(vocabString)) {
-                                        vocabListService.removeVocab(vocabList, vocab);
+                                // TODO Antje: Was wenn eine Übersetzung mit Synonymen hinzugefügt werden soll?
+                                view.printMessage("Gib die Übersetzung der neuen Vokabel ein!");
+                                List<String> newTranslationsString = new ArrayList<String>(Arrays.asList(view.userInputString()));
+
+                                Translation newTranslation = translationService.createTranslation(1L, newTranslationsString);
+                                List<Translation> newTranslations = new ArrayList<Translation>(Arrays.asList(newTranslation));
+
+                                Vocab newVocab = vocabService.createVocab(1L, newVocabsString, newTranslations);
+                                vocabListService.addVocab(vocabList, newVocab);
+                            } else if (inputEditVocab == 2) {
+                                view.printMessage("Gib den Namen der zu entfernenden Vokabel ein.");
+                                String vocabName = view.userInputString();
+
+                                List<Vocab> vocabs = vocabList.getVocabs();
+                                // TODO DAO das hier gehört wahrscheinlich eher in die DAO als getByVocab oder sowas?
+                                for (Vocab vocab : vocabs) {
+                                    List<String> vocabStrings = vocab.getVocabs();
+                                    for (String vocabString : vocabStrings) {
+                                        if (vocabName.equals(vocabString)) {
+                                            vocabListService.removeVocab(vocabList, vocab);
+                                        }
                                     }
+
                                 }
 
+
+                            } else if (inputEditVocab == 3) { // Rückkehr ins Hauptmenü
+                                break;
                             }
 
-
-                        } else if (inputEditVocab == 3) {
-                            break;
+                        } else if (inputEditVocabList == 5) { // Rückkehr ins Hauptmenü
+                            inputVocabListManagementMenu = 4;
                         }
+                    }
+                }
+            } else if (inputVocabListManagementMenu == 3) { // Vokabelliste löschen
+                view.printMessage("Gib den Namen der zu löschenden Vokabelliste ein.");
+                String input = view.userInputString();
 
-                    } else if (inputEditVocabList == 5) { // Rückkehr ins Hauptmenü
-                        // TODO Funktioniert das so?
-                        break;
+                List<VocabList> vocabLists = vocabListService.getVocabLists();
+                for (VocabList vocabList : vocabLists) {
+                    // TODO: hierfür könnte die equals und die hash methode der VocabList angepasst werden
+                    if (vocabList.getName().equals(input)) {
+                        vocabListService.removeVocabList(vocabList);
+                        view.printMessage("Die Vokabelliste " + input + " wurde gelöscht.");
                     }
                 }
             }
-        } else if (inputVocabListManagementMenu == 3) { // Vokabelliste löschen
-            view.printMessage ("Gib den Namen der zu löschenden Vokabelliste ein.");
-            String input = view.userInputString();
-
-            List<VocabList> vocabLists = vocabListService.getVocabLists();
-            for (VocabList vocabList : vocabLists) {
-                // TODO: hierfür könnte die equals und die hash methode der VocabList angepasst werden
-                if (vocabList.getName().equals(input)) {
-                    vocabListService.removeVocabList(vocabList);
-                    view.printMessage ("Die Vokabelliste " + input + " wurde gelöscht.");
-                }
-            }
-        } else if (inputVocabListManagementMenu == 4) {
-            break;
-        }
+        } while (inputVocabListManagementMenu != 4);
     }
+
     public VocabList chooseVocablist(List<VocabList> randomVocabLists) {
 
-        view.printMessage ("Welche Vokabelliste möchtest du wählen? \n " +
-                "1 - " + randomVocabLists.get(0).getName () + ",\n " +
-                "2 - " + randomVocabLists.get(1).getName () + "oder \n " +
-                "3 - " + randomVocabLists.get(2).getName () + "?");
+        view.printMessage("Welche Vokabelliste möchtest du wählen? \n " +
+                "1 - " + randomVocabLists.get(0).getName() + ",\n " +
+                "2 - " + randomVocabLists.get(1).getName() + "oder \n " +
+                "3 - " + randomVocabLists.get(2).getName() + "?");
 
         int input = view.userInputInt();
 
         if (input == 1) {
             return randomVocabLists.get(0);
         }
-        if (input == 2)) {
+        if (input == 2) {
             return randomVocabLists.get(1);
         }
         if (input == 3) {
@@ -409,7 +473,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         Random rand = new Random();
 
-        List<Translation> translations = new ArrayList<> ();
+        List<Translation> translations = new ArrayList<>();
         translations.add(question.getWrongA());
         translations.add(question.getWrongB());
         translations.add(question.getWrongC());
@@ -440,16 +504,16 @@ public class VokabellduellUiController implements VokabellduellUi {
         String answer4 = translationStrings4.get(translationStringsindex4);
         translations.remove(index4);
 
-        view.printMessage ("Wie kann" + question.getVocab() + " richtig übersetzt werden? \n " +
-            "1 - " + answer1 + ",\n " + // hier wird ja auch nur die Translations übergeben, gar nicht der String
-            "2 - " + answer2 + "oder \n " +
-            "2 - " + answer3 + "oder \n " +
-            "3 - " + answer4 + "?");
+        view.printMessage("Wie kann" + question.getVocab() + " richtig übersetzt werden? \n " +
+                "1 - " + answer1 + ",\n " + // hier wird ja auch nur die Translations übergeben, gar nicht der String
+                "2 - " + answer2 + "oder \n " +
+                "2 - " + answer3 + "oder \n " +
+                "3 - " + answer4 + "?");
     }
 
-    public boolean answerQuestion(String answer, Translation rightAnswer) {
+    public boolean answeredQuestion(String answer, Translation rightAnswer) {
 
-        List<String> translations = rightAnswer.getTranslations ();
+        List<String> translations = rightAnswer.getTranslations();
 
         for (String translation : translations) {
             if (answer.equals(translation)) {
@@ -459,7 +523,4 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         return false;
     }
-
-
-
 }

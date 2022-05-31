@@ -42,6 +42,6 @@ public class ConfigurationImpl {
         VokabelduellView vokabelduellView = new VokabelduellView();
         //  auctionController.setBidService(bidService);
       //  auctionController.setView(auctionView);
-        return new VokabellduellUiController(vokabelduellView, vocabListService, roundService, questionService, gameService, userService);
+        return new VokabellduellUiController(vokabelduellView, vocabListService, roundService, questionService, gameService, userService, vocabService, translationService);
     }
 }
