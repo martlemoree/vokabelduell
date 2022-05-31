@@ -1,16 +1,33 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "vocabs")
 public class Vocab {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vocab_id")
     private Long vocabId;
+
+    @OneToMany
+    @Column(name = "vocabs")
     private List<String> vocabs;
+
+    @OneToMany
+    @Column(name = "translations")
     private List<Translation> translations;
 
     public Vocab(Long vocabId, List<String> vocabs,  List<Translation> translations) {
         this.vocabId = vocabId;
         this.vocabs = vocabs;
         this.translations = translations;
+    }
+
+    public Vocab() {
+
     }
 
     public Long getVocabId() {

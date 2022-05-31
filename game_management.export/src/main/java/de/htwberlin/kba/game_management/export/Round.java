@@ -4,11 +4,26 @@ import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "rounds")
 public class Round {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "round_id")
     private Long roundId;
+
+    @ManyToOne
+    @Column(name = "round_game")
     private Game game;
+
+    @Column(name = "current_round")
     private int currentRound;
+
+    @ManyToOne
+    @Column(name = "vocab_list")
     private VocabList vocablist;
     private boolean playedByTwo;
 
@@ -17,6 +32,10 @@ public class Round {
         this.game = game;
         this.currentRound = currentRound;
         playedByTwo = false;
+    }
+
+    public Round() {
+
     }
 
     public Long getRoundId() {
