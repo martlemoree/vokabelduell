@@ -23,15 +23,32 @@ public interface UserService {
      */
     void changePassword(String password, User user);
 
-    void setUsers(List<User> users);
-
-    List<User> getUsers();
-
+    /**
+     * creates new user with given user input
+     * @param name user name chosen by current user
+     * @param password password chosen by current user
+     * @return new user created
+     */
     User createUser(String name, String password);
 
+    /**
+     * holds logic to get user by id
+     * @param Id to identify the user
+     * @return the user that belongs to the given id
+     */
     User getUserById(Long Id);
 
+    /**
+     * holds logic to get user by userName
+     * @param userName to identify the user
+     * @return the user that belongs to the given userName
+     */
     User getUserByUserName(String userName);
+
+    /**
+     * holds logic to remove given user
+     * @param user which should be removed
+     */
     void removeUser(User user);
 
 }

@@ -30,6 +30,6 @@ public interface RequestService {
      * @param user current user
      * @return list of requests
      */
-    List<Request> getRequestsForCurrentUser(User user);
+    List<Request> getPendingRequestsForCurrentUser(User user);
 
 }

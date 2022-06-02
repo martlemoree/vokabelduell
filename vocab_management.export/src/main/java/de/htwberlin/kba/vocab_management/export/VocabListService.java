@@ -39,13 +39,6 @@ public interface VocabListService {
      */
     void removeVocab(VocabList vocabList,Vocab vocab);
 
-    /**
-     * inserts a new vocabulary to the VocabList
-     * @param vocabList the object that should be changed
-     * @param vocab the new Vocabulary that should be added to the VocabList
-     */
-    void addVocab(VocabList vocabList,Vocab vocab);
-
 
     /**
      * create a list that consists of three randomly chosen vocablists. A user can choose between this vocablists before
@@ -54,14 +47,35 @@ public interface VocabListService {
      */
     List<VocabList> getRandomVocabLists();
 
+    /**
+     * holds logic to delete given vocablist
+     * @param vocabList to be deleted
+     */
     void removeVocabList(VocabList vocabList);
+
+    /**
+     * holds logic to read a text file from given path
+     * @param path given path by the user where to find the file
+     * @return string with contents of the file
+     * @throws FileNotFoundException if file cannot be found in given path
+     */
     String readFile(String path) throws FileNotFoundException;
 
+    /**
+     * holds logic to get all existing vocablists
+     * @return all existing vocablists
+     */
     List<VocabList> getVocabLists();
 
-    // wofür ist diese Methode da? Nicht im VokabellduellUiController verwendet
+    // TODO ANTJE wofür ist diese Methode da? (Nicht im VokabellduellUiController verwendet)
     void setVocabLists(List<VocabList> vocabLists);
     // TODO DAO
+
+    /**
+     * holds logic to get a vocablist by given name
+     * @param vocabListName name of the vocablist
+     * @return vocablist with given name
+     */
     VocabList getVocabListByName( String vocabListName);
 
 }

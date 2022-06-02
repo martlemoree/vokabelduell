@@ -34,7 +34,7 @@ public class GameServiceImpl implements GameService {
     }
 
     public List<Game> getGamesFromCurrentUser(User user) {
-        // TODO DAO
+        // TODO: DAO, am besten auch, wo die List<Round> weniger als 6 Einträge hat, aber nur wenn nicht zu viel Aufwand :)
         return null;
     }
 

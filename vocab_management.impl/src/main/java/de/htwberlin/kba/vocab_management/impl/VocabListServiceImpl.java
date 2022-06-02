@@ -194,13 +194,6 @@ public class VocabListServiceImpl implements VocabListService {
     //TODO irgendwas mit der DB machen
     }
 
-    @Override
-    public void addVocab(VocabList vocabList, Vocab vocab) {
-        List<Vocab> current_vocabs = vocabList.getVocabs();
-        current_vocabs.add(vocab);
-        vocabList.setVocabs(current_vocabs);
-    }
-
     public VocabList getVocabListByName(String vocabListName) {
         // TODO DAO
         return null;

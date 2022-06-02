@@ -27,14 +27,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
     public User getUserById(Long Id){
         // TODO DAO mit find
         User returnUser;

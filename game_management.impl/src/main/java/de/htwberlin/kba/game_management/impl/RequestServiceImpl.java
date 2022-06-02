@@ -23,7 +23,7 @@ public class RequestServiceImpl implements RequestService {
         new Request(requestId, PENDING, requester, receiver);
     }
 
-    public List<Request> getRequestsForCurrentUser(User user) {
+    public List<Request> getPendingRequestsForCurrentUser(User user) {
         // TODO DAO
         // Javadoc: gives back all requests with status pending, where given user is the receiver
         List<Request> requests = new ArrayList<>();

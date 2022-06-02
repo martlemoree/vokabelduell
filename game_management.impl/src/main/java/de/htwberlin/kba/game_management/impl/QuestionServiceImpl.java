@@ -72,11 +72,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<String> answerOptions = new ArrayList<>();
 
         // create translations list to extract answer options randomly
-        List<Translation> translations = new ArrayList<>();
-        translations.add(question.getWrongA());
-        translations.add(question.getWrongB());
-        translations.add(question.getWrongC());
-        translations.add(question.getRightAnswer());
+        List<Translation> translations = getAllAnswers(question);
 
         // get Random Translation (if various possibilities)
         int index1 = rand.nextInt(translations.size()-1);

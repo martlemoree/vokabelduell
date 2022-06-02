@@ -30,8 +30,18 @@ public interface VocabService {
     void editTranslations(Vocab vocab, List<Translation> translations);
 
     // TODO DAO
+
+    /**
+     * holds logic to identify and get a vocab by given name
+     * @param vocabName supposed name of a vocab
+     * @return vocab with given name
+     */
     Vocab getVocabByName(String vocabName);
 
+    /**
+     * holds logic to give a random entry from the list of strings of the given vocab
+     * @param vocab given vocab
+     * @return random string entry from list of strings of vocab
+     */
     String giveVocabStringRandom(Vocab vocab);
-
 }

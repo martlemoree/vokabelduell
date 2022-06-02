@@ -110,11 +110,9 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                 view.printMessage("Gib den Benutzernamen des:r Nutzers:in ein, dessen Anfrage du annehmen oder ablehnen möchtest oder '6' zur Rückkehr ins Hauptmenü!");
                 // Alle Anfragen ausgeben, wo der currentUser involviert ist, die noch nicht abgelehnt wurden
-                List<Request> requests = requestService.getRequestsForCurrentUser(currentUser);
+                List<Request> requests = requestService.getPendingRequestsForCurrentUser(currentUser);
                 for (Request request : requests) {
-                    if (request.getRequestStatus() == Status.PENDING) {
-                        view.printMessage(request.getRequester().getUserName() + "\n");
-                    }
+                    view.printMessage(request.getRequester().getUserName() + "\n");
                 }
 
                 String userOrMenu = view.userInputString();
@@ -411,7 +409,6 @@ public class VokabellduellUiController implements VokabellduellUi {
         if (input == 3) {
             return randomVocabLists.get(2);
         } else {
-            // TODO exception ?
             return null;
         }
     }

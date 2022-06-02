@@ -16,6 +16,11 @@ public interface RoundService {
      */
     Round createRound(Long roundId, Game game, int currentRound);
 
-    // TODO: Javadoc
+    /**
+     * new round is created and directly added to the list of rounds of the current game
+     *
+     * @param game current game for which new round is needed
+     * @return new round started
+     */
     Round startNewRound(Game game);
 }
