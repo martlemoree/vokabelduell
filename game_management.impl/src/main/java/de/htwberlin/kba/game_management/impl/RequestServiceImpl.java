@@ -19,9 +19,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request createRequest(Long requestId, User requester, User receiver) {
-
-        return new Request(requestId, PENDING, requester, receiver);
+    public void createRequest(Long requestId, User requester, User receiver) {
+        new Request(requestId, PENDING, requester, receiver);
     }
 
     public List<Request> getRequestsForCurrentUser(User user) {
@@ -30,4 +29,5 @@ public class RequestServiceImpl implements RequestService {
         List<Request> requests = new ArrayList<>();
         return requests;
     }
+
 }

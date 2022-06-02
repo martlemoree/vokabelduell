@@ -200,6 +200,11 @@ public class VocabListServiceImpl implements VocabListService {
         current_vocabs.add(vocab);
         vocabList.setVocabs(current_vocabs);
     }
+
+    public VocabList getVocabListByName(String vocabListName) {
+        // TODO DAO
+        return null;
+    }
     @Override
     public List<VocabList> getRandomVocabLists() {
 

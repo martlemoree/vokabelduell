@@ -15,4 +15,7 @@ public interface RoundService {
      * @return a new round
      */
     Round createRound(Long roundId, Game game, int currentRound);
+
+    // TODO: Javadoc
+    Round startNewRound(Game game);
 }

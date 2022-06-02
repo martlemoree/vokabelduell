@@ -23,7 +23,7 @@ public interface RequestService {
      * @param receiver      is the user who receives the request
      * @return a new game request
      */
-    Request createRequest(Long requestId, User requester, User receiver);
+    void createRequest(Long requestId, User requester, User receiver);
 
     /**
      * gives back all requests with status pending, where given user is the receiver

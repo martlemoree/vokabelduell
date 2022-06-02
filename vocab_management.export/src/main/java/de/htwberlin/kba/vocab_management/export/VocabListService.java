@@ -61,5 +61,7 @@ public interface VocabListService {
 
     // wofür ist diese Methode da? Nicht im VokabellduellUiController verwendet
     void setVocabLists(List<VocabList> vocabLists);
+    // TODO DAO
+    VocabList getVocabListByName( String vocabListName);
 
 }

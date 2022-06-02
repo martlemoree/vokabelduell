@@ -31,4 +31,10 @@ public interface QuestionService {
      */
     List<Translation> getAllAnswers(Question question);
 
+    // TODO: Javadoc
+    List<Question> createQuestions(Game game, VocabList chosenVocabList);
+    List<String> giveAnswerOptionsRandom(Question question);
+
+    boolean answeredQuestion(String answer, Translation rightAnswer);
+
 }

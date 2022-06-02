@@ -1,6 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
 
 import java.util.List;
+import java.util.Random;
 
 public interface VocabService {
 
@@ -26,6 +27,11 @@ public interface VocabService {
      * @param vocab the object that should be changed
      * @param translations the list with new translations of a vocabulary
      */
-    public void editTranslations(Vocab vocab, List<Translation> translations);
+    void editTranslations(Vocab vocab, List<Translation> translations);
+
+    // TODO DAO
+    Vocab getVocabByName(String vocabName);
+
+    String giveVocabStringRandom(Vocab vocab);
 
 }

@@ -7,6 +7,7 @@ import de.htwberlin.kba.vocab_management.export.VocabService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class VocabServiceImpl implements VocabService {
@@ -28,7 +29,19 @@ public class VocabServiceImpl implements VocabService {
     }
 
     public void removeVocab(){
-        //todo das muss mit der datenbank gemacht werden muss
+        //todo dao das muss mit der datenbank gemacht werden muss
+    }
+
+    public Vocab getVocabByName(String vocabName) {
+        //todo dao das muss mit der datenbank gemacht werden muss
+        return null;
+    }
+
+    public String giveVocabStringRandom(Vocab vocab) {
+        Random rand = new Random();
+
+        int index = rand.nextInt(vocab.getVocabs().size()-1);
+        return vocab.getVocabs().get(index);
     }
 
 

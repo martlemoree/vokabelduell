@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserById(Long Id){
+        // TODO DAO mit find
         User returnUser;
 
         for (User u : users){
