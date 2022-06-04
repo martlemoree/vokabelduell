@@ -1,15 +1,29 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "vocab_lists")
 public class VocabList {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vocablist_id")
     private Long vocablistId;
+
+    @Column
     private String category;
+
+    @Column
     private String name;
+
+    @Column
     private String language;
-    private  List<Vocab> vocabs;
-    private  static List<VocabList> vocablists;
+
+    @ManyToOne
+    @JoinColumn
+    private List<Vocab> vocabs;
 
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
@@ -19,7 +33,11 @@ public class VocabList {
         this.vocabs = vocabs;
     }
 
-    public Long getVocablistId() {
+    public VocabList() {
+
+    }
+
+    public Long getVocabListId() {
         return vocablistId;
     }
 
@@ -59,11 +77,4 @@ public class VocabList {
         this.vocabs = vocabs;
     }
 
-    public static List<VocabList> getVocablists() {
-        return vocablists;
-    }
-
-    public static void setVocablists(List<VocabList> vocablists) {
-        VocabList.vocablists = vocablists;
-    }
-}
+  }

@@ -1,6 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
 
 import java.util.List;
+import java.util.Random;
 
 public interface VocabService {
 
@@ -8,19 +9,11 @@ public interface VocabService {
      * a new German Vocabulary is created.
      * @param vocabId is the unqiue identifier of a vocabulary
      * @param vocabs is a list with the vocabulary and its different synonyms.
-     * @param vocablist is the vocablist of the vocabulary
      * @param translations is a list of the different translation of the vocabulary. A vocabulary can have different meanings so that
      *                     there are several translations for every different meaning.
      * @return a new vocabulary
      */
-    public Vocab createVocab(Long vocabId, List<String> vocabs, VocabList vocablist, List<Translation> translations);
-
-    /**
-     * change the Vocabulary List of a Vocabulary
-     * @param vocab the object that should be changed
-     * @param newVocabList the new Vocablist
-     */
-    public void editVocabList(Vocab vocab,VocabList newVocabList);
+    public Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations);
 
     /**
      * change the items of a vocabulary
@@ -34,6 +27,21 @@ public interface VocabService {
      * @param vocab the object that should be changed
      * @param translations the list with new translations of a vocabulary
      */
-    public void editTranslations(Vocab vocab, List<Translation> translations);
+    void editTranslations(Vocab vocab, List<Translation> translations);
 
+    // TODO DAO
+
+    /**
+     * holds logic to identify and get a vocab by given name
+     * @param vocabName supposed name of a vocab
+     * @return vocab with given name
+     */
+    Vocab getVocabByName(String vocabName);
+
+    /**
+     * holds logic to give a random entry from the list of strings of the given vocab
+     * @param vocab given vocab
+     * @return random string entry from list of strings of vocab
+     */
+    String giveVocabStringRandom(Vocab vocab);
 }

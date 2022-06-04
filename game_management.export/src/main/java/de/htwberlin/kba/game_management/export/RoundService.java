@@ -7,21 +7,20 @@ import java.util.List;
 
 public interface RoundService {
 
-
-    /**
-     * the User gets a list of three randomly selected vocablists and can set the vocablist for the round
-     * @return the vocablist of the current round
-     */
-    public VocabList chooseVocablist(List<VocabList> randomVocabLists);
-
     /**
      * create a new round
      * @param roundId unique identifier of the round
      * @param game the game in which the round is created
-     * @param requester the 1st user that is playing in this round
-     * @param receiver the 2nd user that is playing in this round
      * @param currentRound the number of the round in the current game
      * @return a new round
      */
-    public Round createRound(Long roundId, Game game, User requester, User receiver, int currentRound);
+    Round createRound(Long roundId, Game game, int currentRound);
+
+    /**
+     * new round is created and directly added to the list of rounds of the current game
+     *
+     * @param game current game for which new round is needed
+     * @return new round started
+     */
+    Round startNewRound(Game game);
 }

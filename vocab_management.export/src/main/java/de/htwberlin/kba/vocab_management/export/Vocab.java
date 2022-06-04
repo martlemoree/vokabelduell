@@ -1,18 +1,33 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "vocabs")
 public class Vocab {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vocab_id")
     private Long vocabId;
+
+    @OneToMany
+    @Column(name = "vocabs")
     private List<String> vocabs;
-    private VocabList vocablist;
+
+    @OneToMany
+    @Column(name = "translations")
     private List<Translation> translations;
 
-    public Vocab(Long vocabId, List<String> vocabs, VocabList vocablist, List<Translation> translations) {
+    public Vocab(Long vocabId, List<String> vocabs,  List<Translation> translations) {
         this.vocabId = vocabId;
         this.vocabs = vocabs;
-        this.vocablist = vocablist;
         this.translations = translations;
+    }
+
+    public Vocab() {
+
     }
 
     public Long getVocabId() {
@@ -31,13 +46,6 @@ public class Vocab {
         this.vocabs = vocabs;
     }
 
-    public VocabList getVocablist() {
-        return vocablist;
-    }
-
-    public void setVocablist(VocabList vocablist) {
-        this.vocablist = vocablist;
-    }
 
     public List<Translation> getTranslations() {
         return translations;
@@ -45,5 +53,12 @@ public class Vocab {
 
     public void setTranslations(List<Translation> translations) {
         this.translations = translations;
+    }
+
+    @Override
+    public String toString() {
+        return "ID=" + vocabId  +
+                ", vocabs=" + vocabs  +
+                ", translations=" + translations + "\n" ;
     }
 }

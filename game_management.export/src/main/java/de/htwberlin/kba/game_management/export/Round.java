@@ -4,21 +4,48 @@ import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "rounds")
 public class Round {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "round_id")
     private Long roundId;
+
+    @ManyToOne
+    @Column(name = "round_game")
     private Game game;
-    private User requester;
-    private User receiver;
+
+    // TODO: DAO Das Feld kann weg!!!
+    @Column(name = "current_round")
     private int currentRound;
+
+    @ManyToOne
+    @Column(name = "vocab_list")
     private VocabList vocablist;
 
-    public Round(Long roundId, Game game, User requester, User receiver, int currentRound) {
+
+    // TODO: DAO NEUE FELDER:
+    private boolean playedByTwo;
+
+    // Sorry Martin, das musste ich hier schon mal einfügen weil sonst Fehlermeldung
+    @OneToMany
+    @Column(name = "questions")
+    private List<Question> questions;
+
+    public Round(Long roundId, Game game, int currentRound) {
         this.roundId = roundId;
         this.game = game;
-        this.requester = requester;
-        this.receiver = receiver;
         this.currentRound = currentRound;
+        playedByTwo = false;
+    }
+
+    public Round() {
+
     }
 
     public Long getRoundId() {
@@ -37,22 +64,6 @@ public class Round {
         this.game = game;
     }
 
-    public User getRequester() {
-        return requester;
-    }
-
-    public void setRequester(User requester) {
-        this.requester = requester;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
     public int getCurrentRound() {
         return currentRound;
     }
@@ -68,4 +79,21 @@ public class Round {
     public void setVocablist(VocabList vocablist) {
         this.vocablist = vocablist;
     }
+
+    public boolean getisPlayedByTwo() {
+        return playedByTwo;
+    }
+
+    public void setPlayedByTwo(boolean playedByTwo) {
+        this.playedByTwo = playedByTwo;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
 }

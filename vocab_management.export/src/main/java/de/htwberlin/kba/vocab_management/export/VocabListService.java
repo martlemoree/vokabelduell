@@ -1,53 +1,43 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface VocabListService {
     /**
      * creates a new Vocabulary List.
-     * @param vocablistId unique identifier of the vocablist
-     * @param category category of the vocablist
-     * @param name name of the vocablist
-     * @param language foreign language of the vocablist
-     * @param vocabs list of the vocabularies that belong to this list
+     * @param text holds Vocabulary List.
      * @return a new Vocabulary List
      */
-    public VocabList createVocablist(Long vocablistId, String category, String name, String language, List<Vocab> vocabs);
+    VocabList createVocabList(String text) throws FileNotFoundException;
 
     /**
      * changes the Name of the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param newName the old name should be replaced by this name.
      */
-    public void editName(VocabList vocablist, String newName);
+    void editName(VocabList vocabList, String newName);
 
     /**
      * changes the language of the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param newLanguage the old language should be replaced by this language.
      */
-    public void editLanguage(VocabList vocablist,String newLanguage);
+    void editLanguage(VocabList vocabList,String newLanguage);
 
     /**
      * changes the category of the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param newCat the old category should be replaced by this language.
      */
-    public void editCategory(VocabList vocablist,String newCat);
+    void editCategory(VocabList vocabList,String newCat);
 
     /**
      * removes a specific vocabulary from the VocabList.
-     * @param vocablist the object that should be changed
+     * @param vocabList the object that should be changed
      * @param vocab is the vocabulary that should be removed from the VocabList
      */
-    public void removeVocab(VocabList vocablist,Vocab vocab);
-
-    /**
-     * inserts a new vocabulary to the VocabList
-     * @param vocablist the object that should be changed
-     * @param vocab the new Vocabulary that should be added to the VocabList
-     */
-    public void addVocab(VocabList vocablist,Vocab vocab);
+    void removeVocab(VocabList vocabList,Vocab vocab);
 
 
     /**
@@ -55,6 +45,37 @@ public interface VocabListService {
      * each round.
      * @return the list with three vocablists.
      */
-    public List<VocabList> getRandomVocablists();
+    List<VocabList> getRandomVocabLists();
+
+    /**
+     * holds logic to delete given vocablist
+     * @param vocabList to be deleted
+     */
+    void removeVocabList(VocabList vocabList);
+
+    /**
+     * holds logic to read a text file from given path
+     * @param path given path by the user where to find the file
+     * @return string with contents of the file
+     * @throws FileNotFoundException if file cannot be found in given path
+     */
+    String readFile(String path) throws FileNotFoundException;
+
+    /**
+     * holds logic to get all existing vocablists
+     * @return all existing vocablists
+     */
+    List<VocabList> getVocabLists();
+
+    // TODO ANTJE wofür ist diese Methode da? (Nicht im VokabellduellUiController verwendet)
+    void setVocabLists(List<VocabList> vocabLists);
+    // TODO DAO
+
+    /**
+     * holds logic to get a vocablist by given name
+     * @param vocabListName name of the vocablist
+     * @return vocablist with given name
+     */
+    VocabList getVocabListByName( String vocabListName);
 
 }

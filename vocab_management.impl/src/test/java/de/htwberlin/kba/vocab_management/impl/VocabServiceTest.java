@@ -13,6 +13,8 @@ import java.util.List;
 
 public class VocabServiceTest {
 
+    //optional
+
     private VocabServiceImpl service;
 
     @Before
@@ -20,7 +22,7 @@ public class VocabServiceTest {
         this.service = new VocabServiceImpl();
     }
 
-
+/*
     @Test
     @DisplayName("new vocab created")
     public void testCreateVocab() {
@@ -162,6 +164,6 @@ public class VocabServiceTest {
 
         //3. Act
         Assert.assertEquals(translations, vocab.getTranslations());
-    }
+    }*/
 
 }

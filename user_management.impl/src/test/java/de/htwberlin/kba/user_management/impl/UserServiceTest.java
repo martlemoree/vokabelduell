@@ -2,22 +2,19 @@ package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
 
     private UserService service;
-    @Before
+    @BeforeAll
     public void setUp() {
         this.service = new UserServiceImpl();
     }
@@ -30,9 +27,10 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+        service.setUsers(users);
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId, users);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId);
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
@@ -46,11 +44,12 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+        service.setUsers(users);
 
         boolean bol = false;
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId, users);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId);
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (!exampleId.equals(usersWithoutCurrentUser.get(i).getUserId())) {
@@ -73,7 +72,7 @@ public class UserServiceTest {
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
 
         // 2. Act
-        Long chosenUserid = service.chooseUser(users);
+        Long chosenUserid = service.chooseUser();
 
         // 3. Assert
         assertNotNull(chosenUserid);
@@ -89,7 +88,7 @@ public class UserServiceTest {
         boolean bol = false;
 
         // 2. Act
-        Long chosenUserid = service.chooseUser(users);
+        Long chosenUserid = service.chooseUser();
 
         for (int i = 0; i < users.size(); i++) {
             if (chosenUserid.equals(users.get(i).getUserId())) {
@@ -113,7 +112,7 @@ public class UserServiceTest {
         service.changePassword(newPassword, user);
 
         // 3. Assert
-        Assert.assertEquals(newPassword, user.getPassword());
+        assertEquals(newPassword, user.getPassword());
 
     }
 }

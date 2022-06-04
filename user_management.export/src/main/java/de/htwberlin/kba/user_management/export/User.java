@@ -1,19 +1,31 @@
 package de.htwberlin.kba.user_management.export;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
-    private String userName;
-    private String password;
 
-    private static List<User> users;
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "password")
+    private String password;
 
     public User(Long userId, String userName, String password) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
+    }
+
+    public User() {
+
     }
 
     public Long getUserId() {
@@ -22,7 +34,7 @@ public class User {
 
     public void setUserId(long userID) {
         this.userId = userId;
-    }
+    } // eigentlich überflüssig, da id generatedValue ist
 
     public String getUserName() {
         return userName;
@@ -40,11 +52,5 @@ public class User {
         this.password = password;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
-    public List<User> getUsers() {
-        return users;
-    }
 }

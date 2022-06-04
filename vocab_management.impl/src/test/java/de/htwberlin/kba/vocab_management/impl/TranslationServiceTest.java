@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TranslationServiceTest {
+/*
+    //optional
 
     private TranslationService service;
 
@@ -73,5 +75,5 @@ public class TranslationServiceTest {
 
         //3. Act
         Assert.assertEquals(translations, translation.getTranslations());
-    }
+    }*/
 }
