@@ -78,4 +78,7 @@ public interface VocabListService {
      */
     VocabList getVocabListByName( String vocabListName);
 
+    //TODO java doc aber brauchen wir die überhaupt?
+    VocabList getVocabListById(Long id);
+
 }

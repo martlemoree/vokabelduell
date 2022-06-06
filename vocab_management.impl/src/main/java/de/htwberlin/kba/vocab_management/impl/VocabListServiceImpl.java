@@ -45,16 +45,9 @@ public class VocabListServiceImpl implements VocabListService {
     @Override
     public VocabList createVocabList(String text) throws FileNotFoundException {
 
-        //read file
-        File file = new File("C:\\KBA\\vocabulary\\Unit 3 Big dreams - small steps - Part A.txt");
-        Scanner sc = new Scanner(file);
-
-        String fileContent = "";
-        while(sc.hasNextLine())
-            fileContent = fileContent.concat(sc.nextLine() + "|");
 
         //split text into chars and convert to list of chars
-        char[] chars = fileContent.toCharArray();
+        char[] chars = text.toCharArray();
         List<Character> char_list = new ArrayList<>();
         for (char c : chars) {
             char_list.add(c);
@@ -170,7 +163,6 @@ public class VocabListServiceImpl implements VocabListService {
 
         VocabList v1 = new VocabList(1L,category_string, name_string, language_string, vocabs_init);
 
-          vocabLists.add(v1);
         return v1;
     }
 

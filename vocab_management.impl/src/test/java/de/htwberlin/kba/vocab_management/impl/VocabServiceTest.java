@@ -4,9 +4,9 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,156 +14,80 @@ import java.util.List;
 public class VocabServiceTest {
 
     //optional
+    private VocabDao vocabDao;
+    private VocabServiceImpl service = new VocabServiceImpl(vocabDao);
 
-    private VocabServiceImpl service;
+    @Mock
+    List<Translation> mock_translations;
+    @Mock
+    private VocabList mock_vocabList;
+    @Mock
+    private Vocab mock_vocab;
+   // removeVocab
+   // getVocabByName
 
-    @Before
-    public void setUp() {
-        this.service = new VocabServiceImpl();
+    @Test
+    @DisplayName("the method should return a vocab")
+    public void testgetVocabByNameNotNull(){
+        //1. Arrange
+        List<String> vocab_strings = new ArrayList<>();
+        vocab_strings.add("Hallo");
+        vocab_strings.add("Guten Tag");
+        Vocab v1 = new Vocab(1L, vocab_strings,mock_translations);
+
+        //TODO hier noch den richtigen Test für die Datenbank einfügen
+        // Vocab wird in die Datenbank eingefügt und muss dann gefunden werden
+
+        //TODO eine vocab hat keinen namen sondern nur eine string liste
+        // 3. Assert
+       //Assert.assertNotNull(service.getVocabByName(vocab_strings));
+       //Assert.assertEquals(service.getVocabByName(vocab_strings), v1);
     }
 
-/*
+    @Test
+    @DisplayName("the method should return a string that is not empty")
+    public void testGiveVocabStringRandomNotNull(){
+        //1. Arrange
+        List<String> vocab_strings = new ArrayList<>();
+        vocab_strings.add("Hallo");
+        vocab_strings.add("Guten Tag");
+        Vocab v1 = new Vocab(1L, vocab_strings,mock_translations);
+
+        //2. Act & 3. Assert
+        Assert.assertNotNull(service.giveVocabStringRandom(v1));
+    }
+
+    @Test
+    @DisplayName("the method should return a string from the string list of a vocab")
+    public void testGiveVocabStringRandominList(){
+        //1. Assert
+        List<String> vocab_strings = new ArrayList<>();
+        vocab_strings.add("Hallo");
+        vocab_strings.add("Guten Tag");
+        Vocab v1 = new Vocab(1L, vocab_strings,mock_translations);
+
+        //2. Act
+        String test_string = service.giveVocabStringRandom(v1);
+
+        //3. Assert
+        Assert.assertTrue(v1.getVocabs().contains(test_string));
+
+
+    }
+
     @Test
     @DisplayName("new vocab created")
     public void testCreateVocab() {
-        // 1. Arrange
-        List<String> vocabs = new ArrayList<String>();
-        vocabs.add("go");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
-        List<String> tranl_string = new ArrayList<String>();
-        tranl_string.add("gehen");
-        Translation transl = new Translation(234L, tranl_string);
-        List<Translation> translations = new ArrayList<>();
-        translations.add(transl);
-
-        // 2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-
-        // 3. Assert
-        Assert.assertNotNull(vocab);
-    }
-
-    @Test
-    @DisplayName("new single vocab created correctly")
-    public void testAddVocabsSingle() {
-        // 1. Arrange
-        List<String> vocabs = new ArrayList<String>();
-        vocabs.add("go");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
-        List<String> tranl_string = new ArrayList<String>();
-        tranl_string.add("gehen");
-        Translation transl = new Translation(234L, tranl_string);
-        List<Translation> translations = new ArrayList<>();
-        translations.add(transl);
-
-        // 2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-
-        // 3. Assert
-        Assert.assertEquals(vocabs, vocab.getVocabs());
-    }
-
-    @Test
-    @DisplayName("new multiple vocab created correctly")
-    public void testAddVocabsMultiple() {
-        // 1. Arrange
-        List<String> vocabs = new ArrayList<String>();
-        vocabs.add("go");
-        vocabs.add("went");
-        vocabs.add("gone");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
-        List<String> tranl_string = new ArrayList<String>();
-        tranl_string.add("gehen");
-        Translation transl = new Translation(234L, tranl_string);
-        List<Translation> translations = new ArrayList<>();
-        translations.add(transl);
-
-        // 2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-
-
-        // 3. Assert
-        Assert.assertEquals(vocabs, vocab.getVocabs());
-    }
-
-    @DisplayName("checks whether the vocablist is changed correctly.")
-    @Test
-    public void testEditVocablist(){
-        //1. Arrange
-        List<String> vocabs = new ArrayList<String>();
-        vocabs.add("go");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-        VocabList activities = new VocabList(1234L, "Unit 1", "activities", "Englisch", null);
-
-        List<String> tranl_string = new ArrayList<String>();
-        tranl_string.add("gehen");
-        Translation transl = new Translation(234L, tranl_string);
-        List<Translation> translations = new ArrayList<>();
-        translations.add(transl);
-
-        //2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-        service.editVocabList(vocab, activities);
-
-        //3. Act
-        Assert.assertEquals(activities, vocab.getVocablist());
     }
 
     @DisplayName("checks whether the vocabs are changed correctly.")
     @Test
     public void testEditVocabs(){
-        //1. Arrange
-        List<String> vocabs = new ArrayList<String>();
-        vocabs.add("go");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
-        List<String> tranl_string = new ArrayList<String>();
-        tranl_string.add("gehen");
-        Translation transl = new Translation(234L, tranl_string);
-        List<Translation> translations = new ArrayList<>();
-        translations.add(transl);
-
-        //2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-
-        vocabs.add("went");
-        vocabs.add("gone");
-
-        service.editVocabs(vocab, vocabs);
-
-        //3. Act
-        Assert.assertEquals(vocabs, vocab.getVocabs());
     }
 
     @DisplayName("checks whether the vocabs are changed correctly.")
     @Test
     public void testEditTranslation(){
-        //1. Arrange
-        List<String> vocabs = new ArrayList<String>();
-        vocabs.add("gift");
-        VocabList verbs = new VocabList(1234L, "Unit 1", "Verbs", "Englisch", null);
-
-        List<String> tranl_string = new ArrayList<String>();
-        tranl_string.add("Geschenk");
-        Translation transl = new Translation(234L, tranl_string);
-        List<Translation> translations = new ArrayList<>();
-        translations.add(transl);
-
-        //2. Act
-        Vocab vocab = service.createVocab(123L, vocabs, verbs,translations);
-
-        List<String> tranl_string2 = new ArrayList<String>();
-        tranl_string.add("Gabe");
-        Translation transl2 = new Translation(235L, tranl_string);
-        translations.add(transl2);
-
-        service.editTranslations(vocab, translations);
-
-        //3. Act
-        Assert.assertEquals(translations, vocab.getTranslations());
-    }*/
+    }
 
 }
