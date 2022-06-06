@@ -16,12 +16,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
-/*
-    private UserService service;
-    @BeforeAll
-    public void setUp() {
-        this.service = new UserServiceImpl();
-    }
+
+    UserDao userDao;
+    private UserService service = new UserServiceImpl(userDao);
 
     @Test
     @DisplayName("getUserList gives back return parameter")
@@ -31,10 +28,10 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
-        service.setUsers(users);
+        //ToDo datenbankzugriff
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser("AntjeWinner");
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
@@ -48,12 +45,12 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
-        service.setUsers(users);
+        //ToDo datenbankzugriff
 
         boolean bol = false;
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(exampleId);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser("AntjeWinner");
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (!exampleId.equals(usersWithoutCurrentUser.get(i).getUserId())) {
@@ -67,44 +64,7 @@ public class UserServiceTest {
         assertTrue(bol);
     }
 
-    @Test
-    @DisplayName("return parameter of chooseUser is not empty")
-    public void testChooseUserNotEmpty() {
-        // 1. Arrange
-        List<User> users = new ArrayList<>();
-        users.add(new User(123456L, "AntjeWinner", "StellaIstToll"));
-        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
 
-        // 2. Act
-        Long chosenUserid = service.chooseUser();
-
-        // 3. Assert
-        assertNotNull(chosenUserid);
-    }
-    @Test
-    @DisplayName("user chooses an opponent from given list of users")
-    public void testChooseUser() {
-        // 1. Arrange
-        List<User> users = new ArrayList<>();
-        users.add(new User(123456L, "AntjeWinner", "StellaIstToll"));
-        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
-
-        boolean bol = false;
-
-        // 2. Act
-        Long chosenUserid = service.chooseUser();
-
-        for (int i = 0; i < users.size(); i++) {
-            if (chosenUserid.equals(users.get(i).getUserId())) {
-                bol = true;
-                break;
-            }
-            i++;
-        }
-
-        // 3. Assert
-        assertTrue(bol);
-    }
     @Test
     @DisplayName("user chooses a new password")
     public void changePassword() {
@@ -119,5 +79,21 @@ public class UserServiceTest {
         assertEquals(newPassword, user.getPassword());
 
     }
-*/
+
+
+    @Test
+    @DisplayName("Method returns a User")
+    public void testGetUserByUsername() {
+        // 1. Arrange
+        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
+        //TODO datenbankzugriff
+
+
+        // 3. Assert
+        assertNotNull(service.getUserByUserName("AntjeWinner"));
+        assertEquals(service.getUserByUserName("AntjeWinner").getUserName(), user.getUserName());
+        assertEquals(service.getUserByUserName("AntjeWinner").getPassword(), user.getPassword());
+
+    }
+
 }

@@ -67,10 +67,6 @@ public interface VocabListService {
      */
     List<VocabList> getVocabLists();
 
-    // TODO ANTJE wofür ist diese Methode da? (Nicht im VokabellduellUiController verwendet)
-    void setVocabLists(List<VocabList> vocabLists);
-    // TODO DAO
-
     /**
      * holds logic to get a vocablist by given name
      * @param vocabListName name of the vocablist
@@ -78,7 +74,11 @@ public interface VocabListService {
      */
     VocabList getVocabListByName( String vocabListName);
 
-    //TODO java doc aber brauchen wir die überhaupt?
+    /**
+     * holds logic to get a vocablist by given id
+     * @param id of the requested vocablist
+     * @return
+     */
     VocabList getVocabListById(Long id);
 
 }

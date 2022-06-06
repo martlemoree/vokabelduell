@@ -174,9 +174,6 @@ public class VocabListServiceImpl implements VocabListService {
         return vocabLists;
     }
 
-    public void setVocabLists(List<VocabList> vocabList) {
-        VocabListServiceImpl.vocabLists = vocabList;
-    }
     @Override
     public void editLanguage(VocabList vocabList, String newLanguage) {
         vocabList.setLanguage(newLanguage);
@@ -193,9 +190,16 @@ public class VocabListServiceImpl implements VocabListService {
     }
 
     public VocabList getVocabListByName(String vocabListName) {
-        // TODO DAO
+        //TODO DAO
         return null;
     }
+
+    @Override
+    public VocabList getVocabListById(Long id) {
+        //TODO DAO
+        return null;
+    }
+
     @Override
     public List<VocabList> getRandomVocabLists() {
 
@@ -219,14 +223,5 @@ public class VocabListServiceImpl implements VocabListService {
         return random_lists;
     }
 
-  public VocabList getVocabListById(Long id) {
-
-        for (VocabList v : vocabLists) {
-            if (v.getVocabListId().equals(id)) {
-                return v;
-            }
-        }
-        return null;
-    }
 
 }

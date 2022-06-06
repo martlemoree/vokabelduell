@@ -5,16 +5,12 @@ import java.util.List;
 public interface UserService {
     /**
      * Show the user a list of users without showing the user himself in the list.
-     * @param userId of the current user
+     * @param name of the current user
      * @return userList of all users except the current user
      */
-    List<User> getUserListWOcurrentUser(Long userId);
+    List<User> getUserListWOcurrentUser(String name);
 
-    /**
-     * Let the user choose an opponent for a new game.
-     * @return userId of the chosen opponent
-     */
-    Long chooseUser();
+
 
     /**
      * Offers functionality for user to change password according to given standards
@@ -30,13 +26,6 @@ public interface UserService {
      * @return new user created
      */
     User createUser(String name, String password);
-
-    /**
-     * holds logic to get user by id
-     * @param Id to identify the user
-     * @return the user that belongs to the given id
-     */
-    User getUserById(Long Id);
 
     /**
      * holds logic to get user by userName

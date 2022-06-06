@@ -92,7 +92,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                 view.printMessage("Suche dir aus der Liste von Mitspielern einen Gegner aus!");
 
-                List<User> users = userService.getUserListWOcurrentUser(currentUser.getUserId());
+                List<User> users = userService.getUserListWOcurrentUser(currentUser.getUserName());
                 for (User user : users) {
                     view.printMessage(user.getUserName() + "\n");
                 }

@@ -75,19 +75,5 @@ public class VocabServiceTest {
 
     }
 
-    @Test
-    @DisplayName("new vocab created")
-    public void testCreateVocab() {
-    }
-
-    @DisplayName("checks whether the vocabs are changed correctly.")
-    @Test
-    public void testEditVocabs(){
-    }
-
-    @DisplayName("checks whether the vocabs are changed correctly.")
-    @Test
-    public void testEditTranslation(){
-    }
 
 }

@@ -21,30 +21,17 @@ public class UserServiceImpl implements UserService {
 
     // TODO hier und im Folgenden Datenbankzugriff einfügen
     private static List<User> users;
-    public List<User> getUserListWOcurrentUser(Long userId) {
+    public List<User> getUserListWOcurrentUser(String name) {
 
         List<User>listWOuser = new ArrayList<>(users);
-        listWOuser.remove(getUserById(userId));
+        listWOuser.remove(getUserByUserName(name));
         return listWOuser;
     }
-    public Long chooseUser() {
-        //TODO Benutzereingabe
-        return null;
-    }
+
     public void changePassword(String password, User user) {
         user.setPassword(password);
     }
 
-    public User getUserById(Long Id){
-        // TODO DAO mit find
-
-        for (User u : users){
-            if (u.getUserId().equals(Id)){
-                return u;
-            }
-        }
-        return null;
-    }
 
     // TODO: muss das noch in die DAO/Impl?
     public User getUserByUserName(String userName){
