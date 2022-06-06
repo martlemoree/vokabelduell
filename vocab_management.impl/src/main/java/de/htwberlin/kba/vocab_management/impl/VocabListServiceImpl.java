@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 import java.util.List;
 
+@Service
 public class VocabListServiceImpl implements VocabListService {
 
     public static List<VocabList> vocabLists;
@@ -58,7 +59,6 @@ public class VocabListServiceImpl implements VocabListService {
         for (char c : chars) {
             char_list.add(c);
         }
-        int len = char_list.size();
 
         //iterate through the 1st row of the text file and create list with language, category, name
         List<String> strings = new ArrayList<>();

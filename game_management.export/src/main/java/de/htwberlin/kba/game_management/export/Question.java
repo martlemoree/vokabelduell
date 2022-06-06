@@ -5,9 +5,11 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
+@Service
 @Entity
 @Table(name = "questions")
 public class Question {

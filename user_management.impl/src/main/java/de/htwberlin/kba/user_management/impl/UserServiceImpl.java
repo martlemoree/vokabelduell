@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(Long Id){
         // TODO DAO mit find
-        User returnUser;
 
         for (User u : users){
             if (u.getUserId().equals(Id)){
@@ -49,7 +48,6 @@ public class UserServiceImpl implements UserService {
 
     // TODO: muss das noch in die DAO/Impl?
     public User getUserByUserName(String userName){
-        User returnUser;
 
         for (User u : users){
             if (u.getUserName().equals(userName)){

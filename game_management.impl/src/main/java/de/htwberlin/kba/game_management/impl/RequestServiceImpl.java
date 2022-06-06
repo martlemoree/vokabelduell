@@ -10,6 +10,7 @@ import java.util.List;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
 
+@Service
 public class RequestServiceImpl implements RequestService {
 
     RequestDao requestDao;

@@ -1,15 +1,8 @@
 package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.Question;
 import de.htwberlin.kba.game_management.export.Round;
 import de.htwberlin.kba.game_management.export.RoundService;
-import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.vocab_management.export.VocabList;
-
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -21,7 +21,6 @@ public interface RequestService {
      * @param requestId     is the unique identifier of the request
      * @param requester     is the user who created the request
      * @param receiver      is the user who receives the request
-     * @return a new game request
      */
     void createRequest(Long requestId, User requester, User receiver);
 
