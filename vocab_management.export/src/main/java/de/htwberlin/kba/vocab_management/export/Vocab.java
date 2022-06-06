@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,13 +17,15 @@ public class Vocab {
     @Column(name = "vocab_id")
     private Long vocabId;
 
-    @OneToMany
-    @Column(name = "vocabs")
-    private List<String> vocabs;
+    @ElementCollection
+    private List<String> vocabs=new ArrayList<>();
 
-    @OneToMany
-    @Column(name = "translations")
-    private List<Translation> translations;
+    @ManyToMany(mappedBy = "vocabs")
+    private List<Translation> translations = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
+    private VocabList vocablist;
 
 
     @Autowired

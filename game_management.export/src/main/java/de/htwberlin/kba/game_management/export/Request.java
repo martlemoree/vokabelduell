@@ -1,6 +1,5 @@
 package de.htwberlin.kba.game_management.export;
 
-import de.htwberlin.kba.game_management.export.Status;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +21,11 @@ public class Request {
     private Status requestStatus;
 
     @OneToOne
-    @Column(name = "user_requester")
+    @JoinColumn(name = "user_requester", referencedColumnName = "user_id")
     private User requester;
 
     @OneToOne
-    @Column(name = "user_receiver")
+    @JoinColumn(name = "user_receiver", referencedColumnName = "user_id")
     private User receiver;
 
     @Autowired

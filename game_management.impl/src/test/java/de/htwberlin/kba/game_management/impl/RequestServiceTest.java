@@ -4,9 +4,7 @@ import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.game_management.export.RequestService;
 import de.htwberlin.kba.game_management.export.Status;
 import de.htwberlin.kba.user_management.export.User;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 
 public class RequestServiceTest {
@@ -15,7 +13,7 @@ public class RequestServiceTest {
 
     private RequestService service;
 
-    @Before
+    @BeforeAll
     public void setUp(){
         this.service = new RequestServiceImpl();
     }

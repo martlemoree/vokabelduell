@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,9 +28,8 @@ public class VocabList {
     @Column
     private String language;
 
-    @ManyToOne
-    @JoinColumn
-    private List<Vocab> vocabs;
+    @OneToMany(mappedBy = "vocablist", fetch = FetchType.EAGER)
+    private List<Vocab> vocabs = new ArrayList<>();
 
 
 

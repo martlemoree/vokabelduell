@@ -12,6 +12,11 @@
         <class>de.htwberlin.kba.vocab_management.export.Translation</class>
         <class>de.htwberlin.kba.vocab_management.export.Vocab</class>
         <class>de.htwberlin.kba.vocab_management.export.VocabList</class>
+        <class>de.htwberlin.kba.game_management.export.Game</class>
+        <class>de.htwberlin.kba.game_management.export.Round</class>
+        <class>de.htwberlin.kba.game_management.export.Question</class>
+        <class>de.htwberlin.kba.game_management.export.Request</class>
+        <class>de.htwberlin.kba.user_management.export.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver"

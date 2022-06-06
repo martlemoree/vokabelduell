@@ -3,9 +3,7 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.user_management.export.User;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 
 
@@ -13,7 +11,7 @@ public class GameServiceTest {
 
     private GameService service;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         this.service = new GameServiceImpl();
     }
