@@ -1,11 +1,15 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 @Entity
 @Table(name = "games")
 public class Game {
@@ -33,6 +37,7 @@ public class Game {
     @Column(name = "game_rounds")
     private List<Round> rounds;
 
+    @Autowired
     public Game(Long gameId,  User requester, User receiver) {
         this.gameId = gameId;
         this.requester = requester;

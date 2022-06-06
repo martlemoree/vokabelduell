@@ -1,7 +1,6 @@
 package de.htwberlin.kba.vocab_management.export;
 
 import java.util.List;
-import java.util.Random;
 
 public interface VocabService {
 
@@ -13,14 +12,14 @@ public interface VocabService {
      *                     there are several translations for every different meaning.
      * @return a new vocabulary
      */
-    public Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations);
+    Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations);
 
     /**
      * change the items of a vocabulary
      * @param vocab the object that should be changed
      * @param newVocabs list with the new vocabularies of this object
      */
-    public void editVocabs(Vocab vocab, List<String> newVocabs);
+    void editVocabs(Vocab vocab, List<String> newVocabs);
 
     /**
      * change the translation of a vocabulary

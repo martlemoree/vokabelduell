@@ -4,6 +4,7 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +20,12 @@ import java.util.List;
 public class VocabListServiceImpl implements VocabListService {
 
     public static List<VocabList> vocabLists;
+    VocabListDao vocabListDao;
+
+    @Autowired
+    public VocabListServiceImpl(VocabListDao vocabListDao) {
+        this.vocabListDao = vocabListDao;
+    }
 
     public void removeVocabList(VocabList vocabList){
         //TODO DAO das muss mit der datenbank gemacht werden
@@ -52,7 +59,6 @@ public class VocabListServiceImpl implements VocabListService {
         for (char c : chars) {
             char_list.add(c);
         }
-        int len = char_list.size();
 
         //iterate through the 1st row of the text file and create list with language, category, name
         List<String> strings = new ArrayList<>();

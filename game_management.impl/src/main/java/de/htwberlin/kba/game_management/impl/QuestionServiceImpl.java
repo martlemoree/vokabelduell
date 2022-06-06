@@ -4,12 +4,13 @@ import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Question;
 import de.htwberlin.kba.game_management.export.QuestionService;
 import de.htwberlin.kba.game_management.export.Round;
-import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.impl.VocabListDao;
 import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,15 @@ import java.util.Random;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
+
+    QuestionDao questionDao;
+    VocabListDao vocabListDao;
+
+    @Autowired
+    public QuestionServiceImpl(QuestionDao questionDao, VocabListDao vocabListDao) {
+        this.questionDao = questionDao;
+        this.vocabListDao = vocabListDao;
+    }
 
     public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
 
@@ -36,7 +46,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Translation setAnswerOptions() {
 
         Random rand = new Random();
-        VocabListService vocabListService = new VocabListServiceImpl ();
+        VocabListService vocabListService = new VocabListServiceImpl (vocabListDao);
 
         VocabList randomVocabList = vocabListService.getVocabLists().get(rand.nextInt(vocabListService.getVocabLists().size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();

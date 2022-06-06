@@ -9,6 +9,7 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,13 @@ import java.util.List;
 
 @Service
 public class GameServiceImpl implements GameService {
+
+    GameDao gameDao;
+
+    @Autowired
+    public GameServiceImpl(GameDao gameDao) {
+        this.gameDao = gameDao;
+    }
 
     @Override
     public Game createGame(Long gameId, User requester, User receiver) {

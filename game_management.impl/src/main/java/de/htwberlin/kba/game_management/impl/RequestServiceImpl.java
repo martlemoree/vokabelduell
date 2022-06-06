@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +12,13 @@ import static de.htwberlin.kba.game_management.export.Status.*;
 
 @Service
 public class RequestServiceImpl implements RequestService {
+
+    RequestDao requestDao;
+
+    @Autowired
+    public RequestServiceImpl(RequestDao requestDao) {
+        this.requestDao = requestDao;
+    }
 
     @Override
     public void changeStatus(Boolean accept, Request request) {

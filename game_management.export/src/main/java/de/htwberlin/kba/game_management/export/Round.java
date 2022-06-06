@@ -1,10 +1,14 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Service
 @Entity
 @Table(name = "rounds")
 public class Round {
@@ -35,6 +39,7 @@ public class Round {
     @Column(name = "questions")
     private List<Question> questions;
 
+    @Autowired
     public Round(Long roundId, Game game, int currentRound) {
         this.roundId = roundId;
         this.game = game;

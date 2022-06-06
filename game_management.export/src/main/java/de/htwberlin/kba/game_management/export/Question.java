@@ -3,9 +3,13 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
+@Service
 @Entity
 @Table(name = "questions")
 public class Question {
@@ -14,7 +18,7 @@ public class Question {
     // toString Methode überschreiben, um eine sinnvolle Frage hervorzubringen: z.B.
     // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
 
-    //todo (F) Question.answerQuestion evtl. nach GameService refactoren
+    //TODO (F) Question.answerQuestion evtl. nach GameService refactoren
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +55,7 @@ public class Question {
     @Column(name = "correct_answered_receiver")
     private boolean correctAnsweredReceiver;
 
+    @Autowired
     public Question(Long questionId, Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
         this.questionId = questionId;
         this.round = round;

@@ -1,9 +1,13 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
+@Service
 @Entity
 @Table(name = "requests")
 public class Request {
@@ -24,6 +28,7 @@ public class Request {
     @JoinColumn(name = "user_receiver", referencedColumnName = "user_id")
     private User receiver;
 
+    @Autowired
     public Request(Long requestId, Status requestStatus, User requester, User receiver) {
         this.requestId = requestId;
         this.requestStatus = requestStatus;
