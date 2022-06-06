@@ -4,15 +4,21 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 
-@Service
 public class VocabServiceImpl implements VocabService {
 
-    //todo würde ich wieder rausnehmen da vocabs nur über createvocablist erstellt werden
+    VocabDao vocabDao;
+
+    @Autowired
+    public VocabServiceImpl(VocabDao vocabDao) {
+        this.vocabDao = vocabDao;
+    }
+
     @Override
     public Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations) {
         return new Vocab(vocabId,vocabs,translations );

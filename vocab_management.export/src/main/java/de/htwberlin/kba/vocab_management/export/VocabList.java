@@ -1,7 +1,11 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.util.List;
+
 
 @Entity
 @Table(name = "vocab_lists")
@@ -25,6 +29,9 @@ public class VocabList {
     @JoinColumn
     private List<Vocab> vocabs;
 
+
+
+    @Autowired
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
         this.category = category;

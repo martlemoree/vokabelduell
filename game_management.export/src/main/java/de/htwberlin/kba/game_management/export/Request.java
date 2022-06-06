@@ -2,6 +2,8 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.game_management.export.Status;
 import de.htwberlin.kba.user_management.export.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
@@ -25,6 +27,7 @@ public class Request {
     @Column(name = "user_receiver")
     private User receiver;
 
+    @Autowired
     public Request(Long requestId, Status requestStatus, User requester, User receiver) {
         this.requestId = requestId;
         this.requestStatus = requestStatus;

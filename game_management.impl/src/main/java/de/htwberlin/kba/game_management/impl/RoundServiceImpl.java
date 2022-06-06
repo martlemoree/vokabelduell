@@ -10,12 +10,21 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class RoundServiceImpl implements RoundService {
+
+    RoundDao roundDao;
+
+    @Autowired
+    public RoundServiceImpl(RoundDao roundDao) {
+        this.roundDao = roundDao;
+    }
+
     @Override
     public Round createRound(Long roundId, Game game, int currentRound) {
         return new Round(1L, game, currentRound);
