@@ -22,27 +22,27 @@ public class Question {
     private Long questionId;
 
     @ManyToOne
-    @Column(name = "question_round")
+    @JoinColumn(name = "round_id", referencedColumnName = "round_id")
     private Round round;
 
-    @ManyToMany
-    @Column(name = "translation_wrong_a")
+    @ManyToOne
+    @JoinColumn(name = "translation_wrong_a", referencedColumnName = "translation_id")
     private Translation wrongA;
 
-    @ManyToMany
-    @Column(name = "translation_wrong_b")
+    @ManyToOne
+    @JoinColumn(name = "translation_wrong_b", referencedColumnName = "translation_id")
     private Translation wrongB;
 
-    @ManyToMany
-    @Column(name = "translation_wrong_c")
+    @ManyToOne
+    @JoinColumn(name = "translation_wrong_c", referencedColumnName = "translation_id")
     private Translation wrongC;
 
-    @ManyToMany
-    @Column(name = "translation_right")
+    @ManyToOne
+    @JoinColumn(name = "translation_right", referencedColumnName = "translation_id")
     private Translation rightAnswer;
 
-    @ManyToMany
-    @Column(name = "question_vocab")
+    @ManyToOne
+    @JoinColumn(name = "question_vocab", referencedColumnName = "vocab_id")
     private Vocab vocab;
 
     @Column(name = "correct_answered_requester")

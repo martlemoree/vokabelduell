@@ -5,9 +5,7 @@ import de.htwberlin.kba.game_management.export.Round;
 import de.htwberlin.kba.game_management.export.RoundService;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class RoundServiceTest {
 
     private RoundService service;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         this.service = new RoundServiceImpl();
     }

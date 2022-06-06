@@ -22,11 +22,11 @@ public class Game {
     private int pointsReceiver;
 
     @OneToOne
-    @Column(name = "game_requester")
+    @JoinColumn(name = "requester_id", referencedColumnName = "user_id")
     private User requester;
 
     @OneToOne
-    @Column(name = "game_receiver")
+    @JoinColumn(name = "receiver_id", referencedColumnName = "user_id")
     private User receiver;
 
     @OneToMany

@@ -4,6 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -21,14 +22,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long userId) {
-        TypedQuery<User> query = entityManager.createQuery("SELECT user FROM User user WHERE user.userId=:userId", User.class);
-        query.setParameter("userId", userId);
-        List<User> userResultList = query.getResultList();
-        if (!userResultList.isEmpty()) {
-            User user = userResultList.get(0);
-            return user;
+        User user = entityManager.find(User.class, userId);
+        if (user == null) {
+            throw new EntityNotFoundException("Can't find User with userId" + userId);
         } else {
-            return null;
+            return user;
         }
     }
 
@@ -37,6 +35,7 @@ public class UserDaoImpl implements UserDao {
         entityManager.merge(user);
     }
 
+    @Override
     public List<User> getAllUsers() {
         TypedQuery<User> query = entityManager.createQuery("SELECT users FROM User AS users", User.class);
         List<User> allUsers = query.getResultList();

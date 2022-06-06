@@ -1,5 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,13 +16,12 @@ public class Translation {
     @Column(name = "translation_id")
     private Long translationId;
 
-    @OneToMany
-    @Column(name = "translations")
-    private List<String> translations;
+    @ElementCollection
+    private List<String> translations=new ArrayList<>();
 
-    @OneToMany
-    @Column(name = "vocabs")
-    private  List<Vocab> vocabs;
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "vocab_id", referencedColumnName = "vocab_id")
+    private List<Vocab> vocabs;
 
     public Translation(Long translationId, List<String> translations) {
         this.translationId = translationId;

@@ -11,12 +11,11 @@ import javax.persistence.Persistence;
 
 public class DbTest {
 
+    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpaDemoPU");
+    private EntityManager entityManager = entityManagerFactory.createEntityManager();
+
     @Test
     public void createDbUser() {
-
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         User user = new User(1L,"MartinTheBrain123","123qwe");

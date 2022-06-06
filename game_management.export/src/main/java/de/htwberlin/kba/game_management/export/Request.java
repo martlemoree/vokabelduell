@@ -1,6 +1,5 @@
 package de.htwberlin.kba.game_management.export;
 
-import de.htwberlin.kba.game_management.export.Status;
 import de.htwberlin.kba.user_management.export.User;
 
 import javax.persistence.*;
@@ -18,11 +17,11 @@ public class Request {
     private Status requestStatus;
 
     @OneToOne
-    @Column(name = "user_requester")
+    @JoinColumn(name = "user_requester", referencedColumnName = "user_id")
     private User requester;
 
     @OneToOne
-    @Column(name = "user_receiver")
+    @JoinColumn(name = "user_receiver", referencedColumnName = "user_id")
     private User receiver;
 
     public Request(Long requestId, Status requestStatus, User requester, User receiver) {

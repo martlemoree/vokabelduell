@@ -1,7 +1,5 @@
 package de.htwberlin.kba.game_management.export;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
 import javax.persistence.*;
@@ -17,7 +15,7 @@ public class Round {
     private Long roundId;
 
     @ManyToOne
-    @Column(name = "round_game")
+    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
     private Game game;
 
     // TODO: DAO Das Feld kann weg!!!
@@ -25,7 +23,7 @@ public class Round {
     private int currentRound;
 
     @ManyToOne
-    @Column(name = "vocab_list")
+    @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
     private VocabList vocablist;
 
 

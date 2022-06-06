@@ -1,6 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,9 +22,8 @@ public class VocabList {
     @Column
     private String language;
 
-    @ManyToOne
-    @JoinColumn
-    private List<Vocab> vocabs;
+    @OneToMany(mappedBy = "vocablist", fetch = FetchType.EAGER)
+    private List<Vocab> vocabs = new ArrayList<>();
 
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
