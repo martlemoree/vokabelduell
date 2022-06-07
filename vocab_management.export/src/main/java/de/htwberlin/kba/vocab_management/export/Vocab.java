@@ -20,7 +20,7 @@ public class Vocab {
     @ElementCollection
     private List<String> vocabs=new ArrayList<>();
 
-    @ManyToMany(mappedBy = "vocabs")
+    @ManyToMany
     private List<Translation> translations = new ArrayList<>();
 
     @ManyToOne

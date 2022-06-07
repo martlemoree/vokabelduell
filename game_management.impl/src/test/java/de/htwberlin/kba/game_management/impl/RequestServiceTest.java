@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 
 public class RequestServiceTest {
-
+/*
     //optional
 
     private RequestService service;
@@ -17,7 +17,7 @@ public class RequestServiceTest {
     public void setUp(){
         this.service = new RequestServiceImpl();
     }
-/*
+
     @DisplayName("checks whether a request is created correctly.")
     @Test
     public void testCreateRequest(){

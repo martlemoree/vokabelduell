@@ -8,14 +8,14 @@ import org.junit.jupiter.api.DisplayName;
 
 
 public class GameServiceTest {
-
+/*
     private GameService service;
 
     @BeforeAll
     public void setUp() {
         this.service = new GameServiceImpl();
     }
-/*
+
     @DisplayName("checks whether a Game is created correctly.")
     @Test
     public void testCreateGame() {

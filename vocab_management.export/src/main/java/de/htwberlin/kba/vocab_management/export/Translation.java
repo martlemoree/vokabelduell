@@ -1,6 +1,5 @@
 package de.htwberlin.kba.vocab_management.export;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
@@ -19,12 +18,11 @@ public class Translation {
     @Column(name = "translation_id")
     private Long translationId;
 
-    @OneToMany
+    @ElementCollection
     @Column(name = "translations")
     private List<String> translations;
 
-    @OneToMany
-    @Column(name = "vocabs")
+    @ManyToMany
     private  List<Vocab> vocabs;
 
     public Translation(Long translationId, List<String> translations) {
