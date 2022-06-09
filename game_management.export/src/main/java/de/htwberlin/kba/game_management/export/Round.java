@@ -22,10 +22,6 @@ public class Round {
     @JoinColumn(name = "game_id", referencedColumnName = "game_id")
     private Game game;
 
-    // TODO: DAO Das Feld kann weg!!!
-    @Column(name = "current_round")
-    private int currentRound;
-
     @ManyToOne
     @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
     private VocabList vocablist;
@@ -40,10 +36,9 @@ public class Round {
     private List<Question> questions;
 
     @Autowired
-    public Round(Long roundId, Game game, int currentRound) {
+    public Round(Long roundId, Game game) {
         this.roundId = roundId;
         this.game = game;
-        this.currentRound = currentRound;
         playedByTwo = false;
     }
 
@@ -65,14 +60,6 @@ public class Round {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    public int getCurrentRound() {
-        return currentRound;
-    }
-
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
     }
 
     public VocabList getVocablist() {

@@ -19,13 +19,13 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public Round createRound(Long roundId, Game game, int currentRound) {
-        return new Round(1L, game, currentRound);
+    public Round createRound(Long roundId, Game game) {
+        return new Round(1L, game);
     }
 
     public Round startNewRound(Game game) {
         List<Round> rounds = game.getRounds();
-        Round round = createRound(1L, game, 1);
+        Round round = createRound(1L, game);
         rounds.add(round);
         // der list der round des games hinzufügen
         game.setRounds(rounds);
