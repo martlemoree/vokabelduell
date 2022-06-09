@@ -41,8 +41,8 @@ public class QuestionServiceTest {
     private VocabList vocabList;
     private Translation translation;
     private Vocab vocab;
-
-
+    List<Translation> translations = new ArrayList<>();
+    List<VocabList> vocabLists = new ArrayList<>();;
 
     @Before
     public void setUp(){
@@ -53,13 +53,14 @@ public class QuestionServiceTest {
         List<String> vocabStrings = Arrays.asList("Vocab");
         List<String> translationStrings = Arrays.asList("Translation");
         translation = new Translation(1L, translationStrings);
-        List<Translation> translations = Arrays.asList(translation);
+        translations.add(translation);
 
         vocab = new Vocab(1L, vocabStrings, translations);
         List<Vocab> Vocabs = Arrays.asList(vocab);
         vocabList = new VocabList(1L,"Category", "Name","Language", Vocabs);
 
-        List<VocabList> VocabLists = Arrays.asList(vocabList);
+        vocabLists.add(vocabList);
+
     }
 
     // List<Question> createQuestions(Game game, VocabList chosenVocabList);
@@ -70,6 +71,7 @@ public class QuestionServiceTest {
         // s. setup
 
         //2. Act
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
@@ -85,6 +87,7 @@ public class QuestionServiceTest {
         // s. setup
 
         //2. Act
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
@@ -111,20 +114,55 @@ public class QuestionServiceTest {
     // List<String> giveAnswerOptionsRandom(Question question);
     @Test
     @DisplayName("method gives back List of string")
-    public void testGiveAnswerOptionsRandom(){
+    public void testGiveAnswerOptionsRandomReturn(){
         //1. Arrange
         // s. setup
 
+        List<String> translationStrings2 = Arrays.asList("Translation2");
+        Translation translation2 = new Translation(1L, translationStrings2);
+        List<String> translationStrings3 = Arrays.asList("Translation3");
+        Translation translation3 = new Translation(1L, translationStrings3);
+        List<String> translationStrings4 = Arrays.asList("Translation4");
+        Translation translation4 = new Translation(1L, translationStrings4);
+
+        translations.add(translation2);
+        translations.add(translation3);
+        translations.add(translation4);
 
         //2. Act
-        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
-        Mockito.when(questionService.createAnswerOptions(any(int.class))).thenReturn(translation);
-
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(1L, Round, vocabList);
+        Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
 
         //3. Assert
+        Assert.assertNotNull(answerOptions);
+    }
 
+    @Test
+    @DisplayName("method gives back correct List of string")
+    public void testGiveAnswerOptionsRandomReturnCorrect(){
+        //1. Arrange
+        // s. setup
+        Question question = questionService.createQuestion(1L, Round, vocabList);
+
+        List<String> translationStrings2 = Arrays.asList("Translation2");
+        Translation translation2 = new Translation(1L, translationStrings2);
+        List<String> translationStrings3 = Arrays.asList("Translation3");
+        Translation translation3 = new Translation(1L, translationStrings3);
+        List<String> translationStrings4 = Arrays.asList("Translation4");
+        Translation translation4 = new Translation(1L, translationStrings4);
+
+        translations.add(translation2);
+        translations.add(translation3);
+        translations.add(translation4);
+
+        //2. Act
+        Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
+        List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
+
+        //3. Assert
+        //  Assert.assertTrue(answerOptions.contains());
     }
 /*
     @Test
