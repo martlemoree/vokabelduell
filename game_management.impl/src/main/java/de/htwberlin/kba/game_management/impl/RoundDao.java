@@ -8,12 +8,12 @@ public interface RoundDao {
 
     void createRound(Round round);
 
-    Round getRoundById(Long translationId);
+    Round getRoundById(Long roundId);
 
-    void updateTranslation(Round translation);
+    void updateRound(Round round);
 
-    List<Translation> getAllTranslations();
+    List<Round> getAllRounds();
 
-    void deleteTranslation(Translation translation);
+    void deleteRound(Round round);
 
 }
