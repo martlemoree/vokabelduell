@@ -5,106 +5,129 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListService;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class QuestionServiceTest {
 
-    private QuestionService service;
-    private User martin;
-    private User stella;
-    private Game game;
-    private Round round;
+    @Spy // object is partially mocked. the real methods are being called
+    @InjectMocks
+    private QuestionService questionService = new QuestionServiceImpl();
 
-    private Translation trans1;
-    private Translation trans2;
-    private Translation trans3;
-    private Translation trans4;
-    private List<String> list5;
-    private List<String> list6;
-    private List<String> list7;
+    @Mock
+    private VocabListService mockVocabListService;
+    @Mock
+    private QuestionDao mockQuestionDao;
+    private Round Round;
+    private VocabList vocabList;
+    private Translation translation;
+    private Vocab vocab;
 
-    private VocabList wohnen;
-    private Vocab baum;
-    private Vocab haus;
-   private  Vocab garten;
-    private Vocab dach;
 
-/*
+
     @Before
     public void setUp(){
-        this.service = new QuestionServiceImpl();
-        this.martin = new User(12345L, "MartinTheBrain", "lol123");
-        this.stella = new User(934038L, "stellomello", "123lol");
-        this.game = new Game(430920L,  martin, stella);
-        this.round = new Round(583820L, game, martin, stella, 1);
+        User requester = new User(1L, "Peter", "Test");
+        User receiver = new User(2L, "AuchPeter", "Test123");
+        Game game = new Game(1L, requester, receiver);
+        Round = new Round(1L, game);
+        List<String> vocabStrings = Arrays.asList("Vocab");
+        List<String> translationStrings = Arrays.asList("Translation");
+        translation = new Translation(1L, translationStrings);
+        List<Translation> translations = Arrays.asList(translation);
 
-        //Tranlation for wrongA  Set Up
-        ArrayList<String> list1 = new ArrayList<String>();
-        list1.add("tree");
-        Translation trans1 = new Translation(4L, list1);
+        vocab = new Vocab(1L, vocabStrings, translations);
+        List<Vocab> Vocabs = Arrays.asList(vocab);
+        vocabList = new VocabList(1L,"Category", "Name","Language", Vocabs);
 
-        //Translation for wrongB Set Up
-        ArrayList<String> list2 = new ArrayList<String>();
-        list2.add("home");
-        Translation trans2 = new Translation(5L, list2);
-
-        //Translation for wrongC Set Up
-        ArrayList<String> list3 = new ArrayList<String>();
-        list3.add("garden");
-        list3.add("yard");
-        Translation trans3 = new Translation(6L, list3);
-
-        //Question Set Up
-        ArrayList<String> list4 = new ArrayList<String>();
-        list4.add("roof");
-        Translation trans4 = new Translation(7L, list4);
-
-        //wrongA SetUp
-        this.list5 = new ArrayList<String>();
-        list5.add("baum");
-
-        //wrongB SetUp
-        ArrayList<String> list6 = new ArrayList<String>();
-        list6.add("haus");
-        list6.add("heim");
-
-        //wrongC SetUp
-        ArrayList<String> list7 = new ArrayList<String>();
-        list7.add("garten");
-
-        //CorrectAnswer SetUp
-        ArrayList<String> list8 = new ArrayList<String>();
-        list8.add("dach");
-
-        ArrayList<Translation> transList1 = new ArrayList<Translation>();
-        transList1.add(trans1);
-        ArrayList<Translation> transList2 = new ArrayList<Translation>();
-        transList2.add(trans2);
-        ArrayList<Translation> transList3 = new ArrayList<Translation>();
-        transList3.add(trans3);
-        ArrayList<Translation> transList4 = new ArrayList<Translation>();
-        transList4.add(trans4);
-
-        VocabList wohnen = new VocabList(456L, "Unit1", "Wohnen", "Englisch",null);
-        Vocab baum = new Vocab(583902L, list5, wohnen, transList1);
-        Vocab haus = new Vocab(506040L, list6, wohnen, transList2);
-        Vocab garten = new Vocab(596L, list7, wohnen, transList3);
-        Vocab dach = new Vocab(5670L, list8, wohnen, transList4);
+        List<VocabList> VocabLists = Arrays.asList(vocabList);
     }
 
-    /*
-     * test to check question is true
+    // List<Question> createQuestions(Game game, VocabList chosenVocabList);
+    @Test
+    @DisplayName("A question is created")
+    public void testCreateQuestion() {
+         //1. Arrange
+        // s. setup
+
+        //2. Act
+        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+
+        Question question = questionService.createQuestion(1L, Round, vocabList);
+
+        //3. Assert
+        Assert.assertNotNull(question);
+    }
+
+    @Test
+    @DisplayName("A question is created Correctly")
+    public void testCreateQuestionCorrectly() {
+        //1. Arrange
+        // s. setup
+
+        //2. Act
+        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+
+        Question question = questionService.createQuestion(1L, Round, vocabList);
+
+        //3. Assert
+        Assert.assertEquals(1L, question.getQuestionId());
+        Assert.assertEquals(Round, question.getRound());
+        Assert.assertEquals(translation, question.getRightAnswer());
+        Assert.assertEquals(vocab, question.getVocab());
+    }
+
+
+    /* methods to test:
+
+
+        already (kind of) tested
+        boolean answeredQuestion(String answer, Translation rightAnswer);
+        List<Translation> getAllAnswers(Question question);
+        Question createQuestion(Long questionId, Round);
+        void createAnswerOptions(int index);
      */
+
+
+    // List<String> giveAnswerOptionsRandom(Question question);
+    @Test
+    @DisplayName("method gives back List of string")
+    public void testGiveAnswerOptionsRandom(){
+        //1. Arrange
+        // s. setup
+
+
+        //2. Act
+
+        //3. Assert
+
+    }
 /*
     @Test
     @DisplayName("question was answered correct")
-    public void testAnswerQuestionCorrect(){
+    public void testAnsweredQuestionCorrect(){
         //1. Arrange
         String answer = new String("dach");
-        Question question = service.createQuestion(1L, martin, stella, game, round);
-        question.setQuestion(trans4);
+        Question question = questionService.createQuestion(1L, martin, stella, game, round);
+        question.setQuestions(trans4); // setQuestions gehört jetzt zur Round
         question.setRightAnswer(dach);
         question.setWrongA(baum);
         question.setWrongB(haus);
@@ -112,7 +135,7 @@ public class QuestionServiceTest {
         question.setRightAnswer(dach);
 
         //2. Act
-        boolean givenAnswer = service.answerQuestion(answer,dach,martin,stella, question);
+        boolean givenAnswer = questionService.answerQuestion(answer,dach,martin,stella, question);
 
         //3. Assert
         Assert.assertTrue(givenAnswer);
@@ -121,10 +144,10 @@ public class QuestionServiceTest {
 
     @Test
     @DisplayName("question was answered false")
-    public void testAnswerQuestionFalse() {
+    public void testAnsweredQuestionFalse() {
         //1. Arrange
         String answer = new String("dach");
-        Question question = service.createQuestion(1L, martin, stella, game, round);
+        Question question = questionService.createQuestion(1L, martin, stella, game, round);
         question.setQuestion(trans4);
         question.setRightAnswer(dach);
         question.setWrongA(baum);
@@ -133,43 +156,28 @@ public class QuestionServiceTest {
         question.setRightAnswer(dach);
 
         //2. Act
-        boolean givenAnswer = service.answerQuestion(answer, dach, martin, stella, question);
+        boolean givenAnswer = questionService.answerQuestion(answer, dach, martin, stella, question);
 
         //3. Assert
         Assert.assertFalse(givenAnswer);
 
     }
 
-    @Test
-    @DisplayName("A question is created correctly")
-    public void testCreateQuestion() {
-        //1. Arrange --> see setup
 
-        //2. Act
-        Question question = service.createQuestion(1L, martin, stella, game, round);
-
-        //3. Assert
-        Assert.assertNotNull(question);
-        Assert.assertEquals(1L, question.getQuestionId());
-        Assert.assertEquals(martin,question.getReceiver() );
-        Assert.assertEquals(stella, question.getRequester());
-        Assert.assertEquals(game, question.getGame());
-        Assert.assertEquals(round, question.getRound());
-    }
     @Test
     @DisplayName("The method returns a list with all answer options")
     public void testGetAllAnswers() {
         //1. Arrange --> see setup
 
         //2. Act
-        Question question = service.createQuestion(1L, martin, stella, game, round);
+        Question question = questionService.createQuestion(1L, martin, stella, game, round);
         question.setQuestion(trans4);
         question.setRightAnswer(dach);
         question.setWrongA(baum);
         question.setWrongB(haus);
         question.setWrongC(garten);
         question.setRightAnswer(dach);
-        List<Vocab> answerOptions = service.getAllAnswers();
+        List<Vocab> answerOptions = questionService.getAllAnswers();
 
         //3. Assert
         Assert.assertNotNull(answerOptions);
@@ -184,10 +192,10 @@ public class QuestionServiceTest {
     @DisplayName("The method generates a question and 4 answer options and saves these data in the question object")
     public void testSetAnswerOption() {
         //1. Arrange --> see setup
-        Question question = service.createQuestion(1L, martin, stella, game, round);
+        Question question = questionService.createQuestion(1L, martin, stella, game, round);
 
         //2. Act
-        service.setAnswerOptions(question);
+        questionService.setAnswerOptions(question);
 
         //3. Assert
         Assert.assertNotNull(question.getRightAnswer());
@@ -197,6 +205,38 @@ public class QuestionServiceTest {
         Assert.assertNotNull(question.getQuestion());
     }
 
+
+    /*
+        @DisplayName("checks whether the game creates 6 rounds")
+    @Test
+    public void testPlayGame() {
+        Long gameId = 123456L;
+        User requester = new User(234567L, "MartinTheBrain", "lol123");
+        User receiver = new User(234568L, "stellomello", "123lol");
+
+        //2. Act
+        Game game = new Game(gameId, requester, receiver);
+        service.playGame(game);
+
+        //3. Act
+        Assert.assertEquals(6, game.getRounds().size());
+    }
+
+    @DisplayName("Rounds are being created during a game")
+    @Test
+    public void testPlayGameRoundsAreCreated(){
+        Long gameId = 123456L;
+        User requester= new User(234567L,"MartinTheBrain", "lol123");
+        User receiver = new User(234568L,"stellomello", "123lol");
+
+        //2. Act
+        Game game = new Game(gameId, requester, receiver);
+        service.playGame(game);
+
+        //3. Act
+        Assert.assertNotNull(game.getRounds());
+    }
 */
 
 }
+

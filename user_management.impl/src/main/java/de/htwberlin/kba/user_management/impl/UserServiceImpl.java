@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService {
     private static List<User> users;
     public List<User> getUserListWOcurrentUser(Long userId) {
 
-
         List<User>listWOuser = new ArrayList<>(users);
         listWOuser.remove(getUserById(userId));
         return listWOuser;

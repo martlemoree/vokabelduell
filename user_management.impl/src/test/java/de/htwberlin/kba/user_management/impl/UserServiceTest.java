@@ -5,6 +5,8 @@ import de.htwberlin.kba.user_management.export.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
     private UserService service;
+
+    @Mock
+    private UserDao mockUserDao;
     @BeforeAll
     public void setUp() {
         this.service = new UserServiceImpl();
     }
+
+    // TODO: setUsers gibt es nicht, hier müsste man eigentlich die DAO mocken
 
     @Test
     @DisplayName("getUserList gives back return parameter")
@@ -44,7 +51,7 @@ public class UserServiceTest {
         Long exampleId = 123456L;
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
-        service.setUsers(users);
+       // service.setUsers(users);
 
         boolean bol = false;
 

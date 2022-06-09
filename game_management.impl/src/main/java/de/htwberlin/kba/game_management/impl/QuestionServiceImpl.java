@@ -19,6 +19,9 @@ import java.util.Random;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
+    private List<String> answerOptions;
+    private List<Translation> translations;
+
     public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
 
         Random rand = new Random();
@@ -68,45 +71,34 @@ public class QuestionServiceImpl implements QuestionService {
 
     public List<String> giveAnswerOptionsRandom(Question question) {
 
+        answerOptions.clear();
+        translations.clear();
+
         Random rand = new Random();
-        List<String> answerOptions = new ArrayList<>();
 
         // create translations list to extract answer options randomly
-        List<Translation> translations = getAllAnswers(question);
+        translations = getAllAnswers(question);
 
         // get Random Translation (if various possibilities)
-        int index1 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings1 = translations.get(index1).getTranslations();
+        for (int i = 0; i<5; i++) {
+            int index = rand.nextInt(translations.size()-1);
+            createAnswerOptions(index);
+        }
+
+        return answerOptions;
+    }
+
+    public void createAnswerOptions(int index) {
+
+        Random rand = new Random();
+
+        List<String> translationStrings1 = translations.get(index).getTranslations();
 
         // get Random Translation String (if various possibilities)
         int translationStringsindex1 = rand.nextInt(translationStrings1.size());
-
         // add to answerOptionsList of Strings and remove entry from translations list
         answerOptions.add(translationStrings1.get(translationStringsindex1));
-        translations.remove(index1);
-
-        // das ganze 4 Mal, noch keine einfache Lösung gefunden das auszugliedern
-        int index2 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings2 = translations.get(index2).getTranslations();
-        int translationStringsindex2 = rand.nextInt(translationStrings2.size());
-
-        answerOptions.add(translationStrings2.get(translationStringsindex2));
-        translations.remove(index2);
-
-        int index3 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings3 = translations.get(index3).getTranslations();
-        int translationStringsindex3 = rand.nextInt(translationStrings3.size());
-        String answer3 = translationStrings3.get(translationStringsindex3);
-        translations.remove(index3);
-
-        int index4 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings4 = translations.get(index1).getTranslations();
-        int translationStringsindex4 = rand.nextInt(translationStrings4.size());
-
-        answerOptions.add(translationStrings4.get(translationStringsindex4));
-        translations.remove(index4);
-
-        return answerOptions;
+        translations.remove(index);
     }
 
     public boolean answeredQuestion(String answer, Translation rightAnswer) {

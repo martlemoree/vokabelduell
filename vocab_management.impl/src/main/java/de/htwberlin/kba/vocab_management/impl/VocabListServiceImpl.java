@@ -8,16 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-
-
-import java.util.List;
+import java.util.*;
 
 @Service
 public class VocabListServiceImpl implements VocabListService {
 
+    // TODO Weg Wenn getVocabLists mit der DAO richtig implementiert ist
     public static List<VocabList> vocabLists;
 
     public void removeVocabList(VocabList vocabList){
@@ -172,10 +168,25 @@ public class VocabListServiceImpl implements VocabListService {
     public void editName(VocabList vocabList, String newName) {
         vocabList.setName(newName);
     }
+
     public List<VocabList> getVocabLists() {
+
+        // TODO Hier muss eigentlich alle vocabLists aus der DAO geholt werden
+        // Das ist nur um die Tests zu testen, alles löschen
+        List<String> VocabStrings = Arrays.asList("vocab");
+        List<String> TranslationStrings = Arrays.asList("Translation");
+        Translation Translation = new Translation(1L, TranslationStrings);
+        List<Translation> Translations = Arrays.asList(Translation);
+
+        Vocab Vocab = new Vocab(1L, VocabStrings, Translations);
+        List<Vocab> Vocabs = Arrays.asList(Vocab);
+        VocabList vocabList = new VocabList(1L,"Category", "Name","Language", Vocabs);
+
+        List<VocabList> vocabLists = Arrays.asList(vocabList);
+
         return vocabLists;
     }
-
+    // TODO WEG Wenn getVocabLists mit der DAO richtig implementiert ist
     public void setVocabLists(List<VocabList> vocabList) {
         VocabListServiceImpl.vocabLists = vocabList;
     }

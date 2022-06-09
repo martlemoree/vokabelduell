@@ -11,10 +11,9 @@ public interface RoundService {
      * create a new round
      * @param roundId unique identifier of the round
      * @param game the game in which the round is created
-     * @param currentRound the number of the round in the current game
      * @return a new round
      */
-    Round createRound(Long roundId, Game game, int currentRound);
+    Round createRound(Long roundId, Game game);
 
     /**
      * new round is created and directly added to the list of rounds of the current game
