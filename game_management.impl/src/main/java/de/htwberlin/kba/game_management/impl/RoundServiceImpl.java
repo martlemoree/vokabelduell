@@ -6,6 +6,7 @@ import de.htwberlin.kba.game_management.export.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,14 +19,14 @@ public class RoundServiceImpl implements RoundService {
         this.roundDao = roundDao;
     }
 
-    @Override
-    public Round createRound(Long roundId, Game game) {
-        return new Round(1L, game);
-    }
-
+    // TODO automatische ID vergeben
+    // TODO DB Zugriff
     public Round startNewRound(Game game) {
-        List<Round> rounds = game.getRounds();
-        Round round = createRound(1L, game);
+        List<Round> rounds = new ArrayList<>();
+        if (game.getRounds() != null){
+            rounds = game.getRounds();
+        }
+        Round round = new Round(1L, game);
         rounds.add(round);
         // der list der round des games hinzufügen
         game.setRounds(rounds);
