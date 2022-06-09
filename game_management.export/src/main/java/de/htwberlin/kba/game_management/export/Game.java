@@ -31,8 +31,7 @@ public class Game {
     @Column(name = "game_rounds")
     private List<Round> rounds;
 
-    public Game(Long gameId,  User requester, User receiver) {
-        this.gameId = gameId;
+    public Game(User requester, User receiver) {
         this.requester = requester;
         this.receiver = receiver;
     }

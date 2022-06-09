@@ -17,12 +17,10 @@ public interface RequestService {
 
     /**
      * adds a new game request.
-     *
-     * @param requestId     is the unique identifier of the request
      * @param requester     is the user who created the request
      * @param receiver      is the user who receives the request
      */
-    void createRequest(Long requestId, User requester, User receiver);
+    void createRequest(User requester, User receiver);
 
     /**
      * gives back all requests with status pending, where given user is the receiver

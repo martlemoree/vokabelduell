@@ -19,17 +19,20 @@ public class RoundServiceImpl implements RoundService {
         this.roundDao = roundDao;
     }
 
-    // TODO automatische ID vergeben
-    // TODO DB Zugriff
+
+    // constructor without parameters needed for mockito testing
+    public RoundServiceImpl() {}
+
     public Round startNewRound(Game game) {
         List<Round> rounds = new ArrayList<>();
+
         if (game.getRounds() != null){
             rounds = game.getRounds();
         }
         Round round = new Round(game);
+        roundDao.createRound(round);
 
         rounds.add(round);
-        // der list der round des games hinzufügen
         game.setRounds(rounds);
 
         return round;

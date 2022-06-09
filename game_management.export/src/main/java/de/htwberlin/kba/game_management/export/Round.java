@@ -30,7 +30,7 @@ public class Round {
     @Column(name = "questions")
     private List<Question> questions;
 
-    public Round(Long roundId, Game game) {
+    public Round(Game game) {
         this.roundId = roundId;
         this.game = game;
         playedByTwo = false;

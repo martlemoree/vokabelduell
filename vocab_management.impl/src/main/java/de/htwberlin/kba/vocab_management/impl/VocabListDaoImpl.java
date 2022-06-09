@@ -31,6 +31,7 @@ public class VocabListDaoImpl implements VocabListDao{
         }
     }
 
+
     @Override
     public void updateVocabList(VocabList vocabList) {
         entityManager.merge(vocabList);

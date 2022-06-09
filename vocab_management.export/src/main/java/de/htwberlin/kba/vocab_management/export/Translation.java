@@ -23,8 +23,7 @@ public class Translation {
     @ManyToMany
     private  List<Vocab> vocabs;
 
-    public Translation(Long translationId, List<String> translations) {
-        this.translationId = translationId;
+    public Translation(List<String> translations) {
         this.translations = translations;
     }
 

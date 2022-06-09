@@ -6,43 +6,22 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VocabServiceTest {
 
-    //optional
-    private VocabDao vocabDao;
-    private VocabServiceImpl service = new VocabServiceImpl(vocabDao);
+    @Spy
+    @InjectMocks
+    private VocabServiceImpl service = new VocabServiceImpl();
 
     @Mock
     List<Translation> mock_translations;
-    @Mock
-    private VocabList mock_vocabList;
-    @Mock
-    private Vocab mock_vocab;
-   // removeVocab
-   // getVocabByName
 
-    @Test
-    @DisplayName("the method should return a vocab")
-    public void testgetVocabByNameNotNull(){
-        //1. Arrange
-        List<String> vocab_strings = new ArrayList<>();
-        vocab_strings.add("Hallo");
-        vocab_strings.add("Guten Tag");
-        Vocab v1 = new Vocab(1L, vocab_strings,mock_translations);
-
-        //TODO hier noch den richtigen Test für die Datenbank einfügen
-        // Vocab wird in die Datenbank eingefügt und muss dann gefunden werden
-
-        //TODO eine vocab hat keinen namen sondern nur eine string liste
-        // 3. Assert
-       //Assert.assertNotNull(service.getVocabByName(vocab_strings));
-       //Assert.assertEquals(service.getVocabByName(vocab_strings), v1);
-    }
 
     @Test
     @DisplayName("the method should return a string that is not empty")
@@ -51,7 +30,7 @@ public class VocabServiceTest {
         List<String> vocab_strings = new ArrayList<>();
         vocab_strings.add("Hallo");
         vocab_strings.add("Guten Tag");
-        Vocab v1 = new Vocab(1L, vocab_strings,mock_translations);
+        Vocab v1 = new Vocab(vocab_strings,mock_translations);
 
         //2. Act & 3. Assert
         Assert.assertNotNull(service.giveVocabStringRandom(v1));
@@ -64,16 +43,13 @@ public class VocabServiceTest {
         List<String> vocab_strings = new ArrayList<>();
         vocab_strings.add("Hallo");
         vocab_strings.add("Guten Tag");
-        Vocab v1 = new Vocab(1L, vocab_strings,mock_translations);
+        Vocab v1 = new Vocab(vocab_strings,mock_translations);
 
         //2. Act
         String test_string = service.giveVocabStringRandom(v1);
 
         //3. Assert
         Assert.assertTrue(v1.getVocabs().contains(test_string));
-
-
     }
-
 
 }

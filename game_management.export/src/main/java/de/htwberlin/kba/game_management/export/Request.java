@@ -23,8 +23,7 @@ public class Request {
     @JoinColumn(name = "user_receiver", referencedColumnName = "user_id")
     private User receiver;
 
-    public Request(Long requestId, Status requestStatus, User requester, User receiver) {
-        this.requestId = requestId;
+    public Request(Status requestStatus, User requester, User receiver) {
         this.requestStatus = requestStatus;
         this.requester = requester;
         this.receiver = receiver;

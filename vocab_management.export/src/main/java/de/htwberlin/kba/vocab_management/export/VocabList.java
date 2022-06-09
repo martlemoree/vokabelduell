@@ -28,8 +28,7 @@ public class VocabList {
     private List<Vocab> vocabs = new ArrayList<>();
 
 
-    public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
-        this.vocablistId = vocablistId;
+    public VocabList(String category, String name, String language, List<Vocab> vocabs) {
         this.category = category;
         this.name = name;
         this.language = language;

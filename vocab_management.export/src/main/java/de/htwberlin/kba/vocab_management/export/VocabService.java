@@ -30,12 +30,6 @@ public interface VocabService {
 
     // TODO DAO
 
-    /**
-     * holds logic to identify and get a vocab by given name
-     * @param vocabName supposed name of a vocab
-     * @return vocab with given name
-     */
-    Vocab getVocabByName(String vocabName);
 
     /**
      * holds logic to give a random entry from the list of strings of the given vocab
@@ -43,4 +37,11 @@ public interface VocabService {
      * @return random string entry from list of strings of vocab
      */
     String giveVocabStringRandom(Vocab vocab);
+
+    /**
+     * holds logic to identify and get a vocab by given string
+     * @param vocabString given String
+     * @return vocab with given name
+     */
+    Vocab getVocabByVocabString(String vocabString);
 }

@@ -5,14 +5,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TranslationServiceTest {
 
-    //optional
-    private TranslationDao translationDao;
-    private TranslationService service = new TranslationServiceImpl(translationDao);;
+    @Spy
+    @InjectMocks
+    private TranslationServiceImpl service = new TranslationServiceImpl();
+
+    // there are no relevant methods to be tested for the game logic
+
 
 }

@@ -24,8 +24,7 @@ public class Vocab {
     private VocabList vocablist;
 
 
-    public Vocab(Long vocabId, List<String> vocabs,  List<Translation> translations) {
-        this.vocabId = vocabId;
+    public Vocab( List<String> vocabs,  List<Translation> translations) {
         this.vocabs = vocabs;
         this.translations = translations;
     }

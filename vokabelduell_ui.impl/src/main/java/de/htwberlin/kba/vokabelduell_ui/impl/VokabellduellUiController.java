@@ -101,7 +101,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 // TODO DAO Spieler anhand des Benutzernamens auswählen
                 User receiver = userService.getUserByUserName(userName);
 
-                requestService.createRequest(1L, currentUser, receiver);
+                requestService.createRequest(currentUser, receiver);
                 view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
             }
 
@@ -309,7 +309,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
             // new game is created and starts
-            playGame(gameService.createGame(1L, request.getRequester(), request.getReceiver()), request.getReceiver());
+            playGame(gameService.createGame(request.getRequester(), request.getReceiver()), request.getReceiver());
         } else if (status == Status.REJECTED) {
             view.printMessage("Die Anfrage wurde abgelehnt.");
         }
@@ -371,7 +371,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         view.printMessage("Gib den Namen der zu entfernenden Vokabel ein.");
                         String vocabName = view.userInputString();
 
-                        Vocab vocab = vocabService.getVocabByName(vocabName);
+                        Vocab vocab = vocabService.getVocabByVocabString(vocabName);
                         vocabListService.removeVocab(vocabList, vocab);
 
                     } else if (inputEditVocab == 3) { // Rückkehr ins Hauptmenü

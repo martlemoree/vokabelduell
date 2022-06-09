@@ -17,11 +17,15 @@ public class TranslationServiceImpl implements TranslationService {
         this.translationDao = translationDao;
     }
 
+    // constructor without parameters is needed for mockito tests
+    public TranslationServiceImpl() {}
+
 
     public Translation createTranslation(Long translationId, List<String> translations){
-
-        return new Translation(translationId, translations) ;}
+        // method not implemented and tested because it is not part of the game logic
+        return new Translation(translations) ;}
     public void removeTranslation(Translation translationToBeRemoved){
+        // method not implemented and tested because it is not part of the game logic
         translationDao.deleteTranslation(translationToBeRemoved);
     }
 }

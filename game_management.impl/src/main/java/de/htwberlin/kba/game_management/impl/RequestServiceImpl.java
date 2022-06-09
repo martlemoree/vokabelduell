@@ -20,22 +20,31 @@ public class RequestServiceImpl implements RequestService {
         this.requestDao = requestDao;
     }
 
+    // constructor without parameters needed for mockito testing
+    public RequestServiceImpl(){}
+
     @Override
     public void changeStatus(Boolean accept, Request request) {
 
-        // TODO DAO
+        if (accept) {
+            request.setRequestStatus(ACCEPTED);
+        } else {
+            request.setRequestStatus(REJECTED);
+        }
+        requestDao.updateRequest(request);
+
     }
 
     @Override
-    public void createRequest(Long requestId, User requester, User receiver) {
-        new Request(requestId, PENDING, requester, receiver);
+    public void createRequest(User requester, User receiver) {
+        Request request = new Request(PENDING, requester, receiver);
+        requestDao.createRequest(request);
     }
 
+    @Override
     public List<Request> getPendingRequestsForCurrentUser(User user) {
-        // TODO DAO
-        // Javadoc: gives back all requests with status pending, where given user is the receiver
-        List<Request> requests = new ArrayList<>();
-        return requests;
+        return requestDao.getAllRequests();
+
     }
 
 }
