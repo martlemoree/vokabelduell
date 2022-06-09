@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class RoundServiceImpl implements RoundService {
 
-    RoundDao roundDao;
+    private RoundDao roundDao;
 
     @Autowired
     public RoundServiceImpl(RoundDao roundDao) {

@@ -13,7 +13,7 @@ import java.util.Random;
 @Service
 public class VocabServiceImpl implements VocabService {
 
-    VocabDao vocabDao;
+    private VocabDao vocabDao;
 
     @Autowired
     public VocabServiceImpl(VocabDao vocabDao) {

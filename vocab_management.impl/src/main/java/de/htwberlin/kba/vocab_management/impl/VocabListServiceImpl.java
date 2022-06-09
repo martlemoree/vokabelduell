@@ -20,7 +20,7 @@ import java.util.List;
 public class VocabListServiceImpl implements VocabListService {
 
     public static List<VocabList> vocabLists;
-    VocabListDao vocabListDao;
+    private VocabListDao vocabListDao;
 
     @Autowired
     public VocabListServiceImpl(VocabListDao vocabListDao) {

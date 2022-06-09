@@ -79,6 +79,7 @@ public class UserServiceTest {
         User user = new User(123456L, "AntjeWinner", "StellaIstToll");
         String newPassword = "QWERTZ";
 
+        // TODO datenbankzugriff
         // 2. Act
         service.changePassword(newPassword, user);
 

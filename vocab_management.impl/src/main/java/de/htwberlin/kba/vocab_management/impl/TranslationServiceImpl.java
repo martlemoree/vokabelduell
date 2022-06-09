@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class TranslationServiceImpl implements TranslationService {
 
-    TranslationDao translationDao;
+    private TranslationDao translationDao;
 
     @Autowired
     public TranslationServiceImpl(TranslationDao translationDao) {
@@ -21,7 +21,7 @@ public class TranslationServiceImpl implements TranslationService {
     public Translation createTranslation(Long translationId, List<String> translations){
 
         return new Translation(translationId, translations) ;}
-    public void removeTranslation(Translation translation,String translationToBeRemoved){
-        //Todo irgendwas in der DB machen
+    public void removeTranslation(Translation translationToBeRemoved){
+        translationDao.deleteTranslation(translationToBeRemoved);
     }
 }

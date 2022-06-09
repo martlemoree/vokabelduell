@@ -1,15 +1,11 @@
 package de.htwberlin.kba.vocab_management.export;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Service
+
 @Entity
 @Table(name = "vocab_lists")
 public class VocabList {
@@ -32,8 +28,6 @@ public class VocabList {
     private List<Vocab> vocabs = new ArrayList<>();
 
 
-
-    @Autowired
     public VocabList(Long vocablistId, String category, String name, String language, List<Vocab> vocabs) {
         this.vocablistId = vocablistId;
         this.category = category;

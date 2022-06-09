@@ -1,13 +1,7 @@
 package de.htwberlin.kba.user_management.export;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import javax.persistence.*;
-import java.util.List;
 
-@Service
 @Entity
 @Table(name = "users")
 public class User {

@@ -1,11 +1,9 @@
 package de.htwberlin.kba.vocab_management.export;
 
-import org.springframework.stereotype.Service;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Service
+
 @Entity
 @Table(name = "translations")
 public class Translation {

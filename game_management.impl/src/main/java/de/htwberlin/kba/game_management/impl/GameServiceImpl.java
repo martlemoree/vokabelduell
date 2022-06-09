@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class GameServiceImpl implements GameService {
 
-    GameDao gameDao;
+    private GameDao gameDao;
 
     @Autowired
     public GameServiceImpl(GameDao gameDao) {
