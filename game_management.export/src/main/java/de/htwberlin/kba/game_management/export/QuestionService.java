@@ -49,14 +49,6 @@ public interface QuestionService {
      */
     List<String> giveAnswerOptionsRandom(Question question);
 
-
-    /**
-     * fills answer options list with one of the available translation on given index
-     * @param index given index, which entry from the list of translations should
-     *              be added next to the list of answer options
-     */
-    void createAnswerOptions(int index);
-
     /**
      * checks if the given answer from the user is consistent with one of the translations of the right answer
      * @param answer given answer from the user

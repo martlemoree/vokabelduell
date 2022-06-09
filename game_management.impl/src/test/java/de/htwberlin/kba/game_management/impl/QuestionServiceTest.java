@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -116,6 +117,11 @@ public class QuestionServiceTest {
 
 
         //2. Act
+        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+        Mockito.when(questionService.createAnswerOptions(any(int.class))).thenReturn(translation);
+
+        Question question = questionService.createQuestion(1L, Round, vocabList);
+        List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
 
         //3. Assert
 
