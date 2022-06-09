@@ -26,7 +26,8 @@ public class RoundServiceImpl implements RoundService {
         if (game.getRounds() != null){
             rounds = game.getRounds();
         }
-        Round round = new Round(1L, game);
+        Round round = new Round(game);
+
         rounds.add(round);
         // der list der round des games hinzufügen
         game.setRounds(rounds);

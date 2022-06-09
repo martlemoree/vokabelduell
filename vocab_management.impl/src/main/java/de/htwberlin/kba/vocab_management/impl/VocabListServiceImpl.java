@@ -171,7 +171,7 @@ public class VocabListServiceImpl implements VocabListService {
         vocabList.setName(newName);
     }
     public List<VocabList> getVocabLists() {
-        return vocabLists;
+        return vocabListDao.getAllVocabLists();
     }
 
     @Override

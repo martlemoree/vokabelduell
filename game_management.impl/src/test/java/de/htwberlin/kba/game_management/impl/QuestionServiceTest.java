@@ -6,6 +6,7 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.impl.VocabListDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +32,14 @@ public class QuestionServiceTest {
 
     @Spy // object is partially mocked. the real methods are being called
     @InjectMocks
-    private QuestionService questionService = new QuestionServiceImpl();
+    private QuestionServiceImpl questionService;
 
     @Mock
     private VocabListService mockVocabListService;
     @Mock
     private QuestionDao mockQuestionDao;
+    @Mock
+    private VocabListDao mockVocabListDao;
     private Round Round;
     private VocabList vocabList;
     private Translation translation;
@@ -49,7 +52,7 @@ public class QuestionServiceTest {
         User requester = new User(1L, "Peter", "Test");
         User receiver = new User(2L, "AuchPeter", "Test123");
         Game game = new Game(1L, requester, receiver);
-        Round = new Round(1L, game);
+        Round = new Round(game);
         List<String> vocabStrings = Arrays.asList("Vocab");
         List<String> translationStrings = Arrays.asList("Translation");
         translation = new Translation(1L, translationStrings);
@@ -71,8 +74,8 @@ public class QuestionServiceTest {
         // s. setup
 
         //2. Act
-        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
 

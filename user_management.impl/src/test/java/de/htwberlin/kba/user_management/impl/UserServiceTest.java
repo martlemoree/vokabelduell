@@ -5,6 +5,9 @@ import de.htwberlin.kba.user_management.export.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,8 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
 
+    @Mock
     UserDao userDao;
-    private UserService service = new UserServiceImpl(userDao);
+    @InjectMocks
+    private UserServiceImpl service;
 
     @Test
     @DisplayName("getUserList gives back return parameter")
@@ -29,6 +34,8 @@ public class UserServiceTest {
         users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
         users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
         //ToDo datenbankzugriff
+
+        //Mockito.when(UserDao.setAnswerOptions()).thenReturn(users);
 
         // 2. Act
         List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser("AntjeWinner");

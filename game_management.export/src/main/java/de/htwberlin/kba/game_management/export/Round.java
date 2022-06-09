@@ -36,8 +36,7 @@ public class Round {
     private List<Question> questions;
 
     @Autowired
-    public Round(Long roundId, Game game) {
-        this.roundId = roundId;
+    public Round(Game game) {
         this.game = game;
         playedByTwo = false;
     }

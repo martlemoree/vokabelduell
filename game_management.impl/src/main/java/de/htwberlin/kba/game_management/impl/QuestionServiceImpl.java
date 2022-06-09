@@ -22,16 +22,15 @@ public class QuestionServiceImpl implements QuestionService {
 
     QuestionDao questionDao;
     VocabListDao vocabListDao;
+    VocabListService vocabListService;
 
     @Autowired
-    public QuestionServiceImpl(QuestionDao questionDao, VocabListDao vocabListDao) {
+    public QuestionServiceImpl(QuestionDao questionDao, VocabListDao vocabListDao, VocabListService vocabListService) {
         this.questionDao = questionDao;
         this.vocabListDao = vocabListDao;
+        this.vocabListService = vocabListService;
     }
 
-    public QuestionServiceImpl() {
-        super();
-    }
     public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
 
         Random rand = new Random();
@@ -49,9 +48,9 @@ public class QuestionServiceImpl implements QuestionService {
     public Translation setAnswerOptions() {
 
         Random rand = new Random();
-        VocabListService vocabListService = new VocabListServiceImpl (vocabListDao);
+        List<VocabList> vocablists = vocabListService.getVocabLists();
 
-        VocabList randomVocabList = vocabListService.getVocabLists().get(rand.nextInt(vocabListService.getVocabLists().size()));
+        VocabList randomVocabList = vocablists.get(rand.nextInt(vocablists.size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
         return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
