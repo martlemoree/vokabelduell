@@ -4,10 +4,7 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Service
@@ -39,8 +36,11 @@ public class VocabListDaoImpl implements VocabListDao{
 
     @Override
     public List<VocabList> getAllVocabLists() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
         TypedQuery<VocabList> query = entityManager.createQuery("SELECT vocablists FROM VocabList AS vocablists", VocabList.class);
         List<VocabList> allVocabLists = query.getResultList();
+        entityTransaction.commit();
         return allVocabLists;
     }
 
