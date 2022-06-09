@@ -20,9 +20,9 @@ import java.util.Random;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    QuestionDao questionDao;
-    VocabListDao vocabListDao;
-    VocabListService vocabListService;
+    private QuestionDao questionDao;
+    private VocabListDao vocabListDao;
+    private VocabListService vocabListService;
 
     @Autowired
     public QuestionServiceImpl(QuestionDao questionDao, VocabListDao vocabListDao, VocabListService vocabListService) {
