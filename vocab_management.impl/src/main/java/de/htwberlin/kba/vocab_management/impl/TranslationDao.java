@@ -15,4 +15,5 @@ public interface TranslationDao {
     List<Translation> getAllTranslations();
 
     void deleteTranslation(Translation translation);
+
 }

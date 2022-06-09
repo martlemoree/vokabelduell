@@ -15,4 +15,5 @@ public interface VocabDao {
     List<Vocab> getAllVocabs();
 
     void deleteVocab(Vocab vocab);
+
 }
