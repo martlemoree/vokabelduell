@@ -1,7 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.Round;
-import de.htwberlin.kba.vocab_management.export.Translation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
