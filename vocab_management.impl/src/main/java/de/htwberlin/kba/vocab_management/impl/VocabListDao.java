@@ -16,4 +16,5 @@ public interface VocabListDao {
 
     void deleteVocabList(VocabList vocabList);
 
+
 }

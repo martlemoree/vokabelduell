@@ -16,4 +16,6 @@ public interface RequestDao {
 
     void deleteRequest(Request request);
 
+    List<Request> getAllPendingRequests();
+
 }

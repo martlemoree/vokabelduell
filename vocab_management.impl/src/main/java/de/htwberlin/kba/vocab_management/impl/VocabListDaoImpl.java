@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Service
 @Repository
 public class VocabListDaoImpl implements VocabListDao{
 
@@ -31,6 +30,7 @@ public class VocabListDaoImpl implements VocabListDao{
             return vocabList;
         }
     }
+
 
     @Override
     public void updateVocabList(VocabList vocabList) {

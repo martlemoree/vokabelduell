@@ -31,6 +31,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByName(String name) {
+        User user = entityManager.find(User.class, name);
+        if (user == null) {
+            throw new EntityNotFoundException("Can't find User with User Name" + name);
+        } else {
+            return user;
+        }
+    }
+
+    @Override
     public void updateUser(User user) {
         entityManager.merge(user);
     }

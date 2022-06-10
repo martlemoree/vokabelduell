@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class QuestionServiceTest {
-
+/*
     @Spy // object is partially mocked. the real methods are being called
     @InjectMocks
     private QuestionServiceImpl questionService;
@@ -116,7 +116,7 @@ public class QuestionServiceTest {
         Question createQuestion(Long questionId, Round);
         void createAnswerOptions(int index);
      */
-
+/*
 
     // List<String> giveAnswerOptionsRandom(Question question);
     @Test

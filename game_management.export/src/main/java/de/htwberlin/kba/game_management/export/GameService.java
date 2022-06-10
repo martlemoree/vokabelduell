@@ -9,12 +9,11 @@ public interface GameService {
 
     /**
      * creates a new Game.
-     * @param gameId is the unique identifier of the game.
      * @param requester is the user who sent the request for the game.
      * @param receiver is the user who received and accepted the game request.
      * @return a new game
      */
-    Game createGame(Long gameId, User requester, User receiver);
+    Game createGame(User requester, User receiver);
 
     /**
      * method calculates points for given user and changes value accordingly

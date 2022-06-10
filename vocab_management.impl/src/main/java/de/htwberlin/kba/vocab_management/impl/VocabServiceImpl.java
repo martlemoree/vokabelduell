@@ -13,34 +13,40 @@ import java.util.Random;
 @Service
 public class VocabServiceImpl implements VocabService {
 
-    VocabDao vocabDao;
+    private VocabDao vocabDao;
 
     @Autowired
     public VocabServiceImpl(VocabDao vocabDao) {
         this.vocabDao = vocabDao;
     }
 
+    //Constructor without parameters is needed for Mockito Tests
+    public VocabServiceImpl() {}
+
     @Override
     public Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations) {
-        return new Vocab(vocabId,vocabs,translations );
+        // method not implmeneted and tested because it is not part of the game logic
+        return new Vocab(vocabs,translations );
     }
 
     @Override
     public void editVocabs(Vocab vocab, List<String> newVocabs) {
+        // method not implemented and tested because it is not part of the game logic
         vocab.setVocabs(newVocabs);
     }
 
     @Override
     public void editTranslations(Vocab vocab, List<Translation> translations) {
+        // method not implemented and tested because it is not part of the game logic
         vocab.setTranslations(translations);
     }
 
     public void removeVocab(){
-        //todo dao das muss mit der datenbank gemacht werden muss
+        // method not implemented and tested because it is not part of the game logic
     }
 
-    public Vocab getVocabByName(String vocabName) {
-        //todo dao das muss mit der datenbank gemacht werden muss
+    public Vocab getVocabByVocabString(String vocabString) {
+        // method not implemented and tested because it is not part of the game logic
         return null;
     }
 
