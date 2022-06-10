@@ -29,6 +29,9 @@ public class QuestionServiceImpl implements QuestionService {
         this.vocabListDao = vocabListDao;
     }
 
+    public QuestionServiceImpl() {
+        super();
+    }
     public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
 
         Random rand = new Random();

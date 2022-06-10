@@ -1,7 +1,6 @@
 package de.htwberlin.kba.configuration;
 
 import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.user_management.impl.UserDaoImpl;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
@@ -17,27 +16,24 @@ public class DbTest {
     public void createDbUser() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
-        User user = new User(1L,"MartinTheBrain123","123qwe");
+        User user = new User("MartinTheBrain123","123qwe");
         entityManager.persist(user);
         entityTransaction.commit();
     }
-     */
 
-    /*
     @Test
     public void findUserByUserName() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
-        TypedQuery<User> q = entityManager.createQuery("SELECT users FROM User AS users WHERE users.userName <= :value", User.class);
+        TypedQuery<User> q = entityManager.createQuery("FROM User AS users WHERE users.userName <= :value", User.class);
         q.setParameter("value", "MartinTheBrain123");
         List<User> userList = q.getResultList();
         System.out.println(userList);
         entityTransaction.commit();
     }
-    */
 
     @Test
-    public void deleteUserById() {
+    public void deleteAllUsers() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         List<User> users = entityManager.createQuery("FROM User AS users", User.class).getResultList();
@@ -47,7 +43,6 @@ public class DbTest {
         entityTransaction.commit();
     }
 
-    /*
     @Test
     public void updateUserName() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -57,6 +52,16 @@ public class DbTest {
             entityManager.merge(user);
         }
         entityTransaction.commit();
+    }*/
+
+    @Test
+    public List<User> getAllUsers() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        TypedQuery<User> query = entityManager.createQuery("FROM User AS users", User.class);
+        List<User> allUsers = query.getResultList();
+        entityTransaction.commit();
+        return allUsers;
     }
-     */
+
 }

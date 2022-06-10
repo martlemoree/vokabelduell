@@ -38,8 +38,8 @@ public class RoundServiceTest {
     @DisplayName("checks whether the method returns a round")
     @Test
     public void testStartNewRound() {
-        User requester = new User(1L, "MartinTheBrain", "lol123");
-        User receiver = new User(2L, "stellomello", "123lol");
+        User requester = new User("MartinTheBrain", "lol123");
+        User receiver = new User("stellomello", "123lol");
         Game game = new Game(3L, requester, receiver);
 
         Assert.assertNotNull(service.startNewRound(game));

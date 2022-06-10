@@ -24,8 +24,7 @@ public class User {
     private String password;
 
 
-    public User(Long userId, String userName, String password) {
-        this.userId = userId;
+    public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
@@ -37,10 +36,6 @@ public class User {
     public Long getUserId() {
         return userId;
     }
-
-    public void setUserId(long userID) {
-        this.userId = userId;
-    } // eigentlich überflüssig, da id generatedValue ist
 
     public String getUserName() {
         return userName;

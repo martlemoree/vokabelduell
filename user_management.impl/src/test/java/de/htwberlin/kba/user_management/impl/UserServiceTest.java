@@ -26,8 +26,8 @@ public class UserServiceTest {
         // 1. Arrange
         List<User> users = new ArrayList<>();
         Long exampleId = 123456L;
-        users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
-        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+        users.add(new User("AntjeWinner", "StellaIstToll"));
+        users.add(new User("MartinTheBrain", "IchLiebeKBA"));
         //ToDo datenbankzugriff
 
         // 2. Act
@@ -43,8 +43,8 @@ public class UserServiceTest {
         // 1. Arrange
         List<User> users = new ArrayList<>();
         Long exampleId = 123456L;
-        users.add(new User(exampleId, "AntjeWinner", "StellaIstToll"));
-        users.add(new User(456789L, "MartinTheBrain", "IchLiebeKBA"));
+        users.add(new User("AntjeWinner", "StellaIstToll"));
+        users.add(new User("MartinTheBrain", "IchLiebeKBA"));
         //ToDo datenbankzugriff
 
         boolean bol = false;
@@ -69,7 +69,7 @@ public class UserServiceTest {
     @DisplayName("user chooses a new password")
     public void changePassword() {
         // 1. Arrange
-        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
+        User user = new User("AntjeWinner", "StellaIstToll");
         String newPassword = "QWERTZ";
 
         // 2. Act
@@ -85,7 +85,7 @@ public class UserServiceTest {
     @DisplayName("Method returns a User")
     public void testGetUserByUsername() {
         // 1. Arrange
-        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
+        User user = new User("AntjeWinner", "StellaIstToll");
         //TODO datenbankzugriff
 
 

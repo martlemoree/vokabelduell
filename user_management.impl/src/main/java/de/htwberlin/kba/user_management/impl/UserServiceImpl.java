@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     public User createUser(String name, String password){
         //TODO automatische ID vergeben
-        User u = new User(1L, name, password);
+        User u = new User(name, password);
         this.users.add(u);
         return u;
     }

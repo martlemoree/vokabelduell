@@ -36,11 +36,8 @@ public class VocabListDaoImpl implements VocabListDao{
 
     @Override
     public List<VocabList> getAllVocabLists() {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         TypedQuery<VocabList> query = entityManager.createQuery("SELECT vocablists FROM VocabList AS vocablists", VocabList.class);
         List<VocabList> allVocabLists = query.getResultList();
-        entityTransaction.commit();
         return allVocabLists;
     }
 
