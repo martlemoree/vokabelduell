@@ -59,8 +59,11 @@ public class QuestionServiceTest {
         translations.add(translation);
 
         vocab = new Vocab(1L, vocabStrings, translations);
-        List<Vocab> Vocabs = Arrays.asList(vocab);
-        vocabList = new VocabList(1L,"Category", "Name","Language", Vocabs);
+        List<Vocab> vocabs = new ArrayList<>();
+        vocabs.add(vocab);
+
+        translation.setVocabs(vocabs);
+        vocabList = new VocabList(1L,"Category", "Name","Language", vocabs);
 
         vocabLists.add(vocabList);
 
@@ -70,12 +73,12 @@ public class QuestionServiceTest {
     @Test
     @DisplayName("A question is created")
     public void testCreateQuestion() {
-        //1. Arrange
+        // 1. Arrange
         // s. setup
 
-        //2. Act
-        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+        // 2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
+      //  Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
 
@@ -91,7 +94,8 @@ public class QuestionServiceTest {
 
         //2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+     //
+        //   Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
 
@@ -135,7 +139,9 @@ public class QuestionServiceTest {
         //2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(1L, Round, vocabList);
+
         Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
+
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
 
         //3. Assert
@@ -147,6 +153,7 @@ public class QuestionServiceTest {
     public void testGiveAnswerOptionsRandomReturnCorrect(){
         //1. Arrange
         // s. setup
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(1L, Round, vocabList);
 
         List<String> translationStrings2 = Arrays.asList("Translation2");
@@ -165,7 +172,10 @@ public class QuestionServiceTest {
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
 
         //3. Assert
-        //  Assert.assertTrue(answerOptions.contains());
+        Assert.assertTrue(answerOptions.contains("Translation"));
+        Assert.assertTrue(answerOptions.contains("Translation2"));
+        Assert.assertTrue(answerOptions.contains("Translation3"));
+        Assert.assertTrue(answerOptions.contains("Translation4"));
     }
 /*
     @Test

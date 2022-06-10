@@ -58,12 +58,12 @@ public class Translation {
         this.vocabs = vocabs;
     }
 
-    @Override
+   /* @Override
     public String toString() {
         String result = "+";
         for (String translation : translations) {
             result += translation + "/";
         }
         return result;
-    }
+    }*/
 }

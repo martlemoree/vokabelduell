@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -42,7 +43,10 @@ public class QuestionServiceImpl implements QuestionService {
         Translation wrongB = setAnswerOptions();
         Translation wrongC = setAnswerOptions();
 
-        return new Question(1L, round, wrongA, wrongB, wrongC, rightAnswer, vocab);
+        return new Question(1L, round, wrongA,
+                wrongB,
+                wrongC,
+                rightAnswer, vocab);
     }
 
     public Translation setAnswerOptions() {
@@ -53,7 +57,8 @@ public class QuestionServiceImpl implements QuestionService {
         VocabList randomVocabList = vocablists.get(rand.nextInt(vocablists.size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
-        return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
+        Translation translation = randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
+        return translation;
     }
 
     public List<Translation> getAllAnswers(Question question) {
@@ -108,15 +113,14 @@ public class QuestionServiceImpl implements QuestionService {
         int index3 = rand.nextInt(translations.size()-1);
         List<String> translationStrings3 = translations.get(index3).getTranslations();
         int translationStringsindex3 = rand.nextInt(translationStrings3.size());
-        String answer3 = translationStrings3.get(translationStringsindex3);
+        answerOptions.add(translationStrings3.get(translationStringsindex3));
         translations.remove(index3);
 
-        int index4 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings4 = translations.get(index1).getTranslations();
+        List<String> translationStrings4 = translations.get(0).getTranslations();
         int translationStringsindex4 = rand.nextInt(translationStrings4.size());
 
         answerOptions.add(translationStrings4.get(translationStringsindex4));
-        translations.remove(index4);
+        translations.remove(0);
 
         return answerOptions;
     }
