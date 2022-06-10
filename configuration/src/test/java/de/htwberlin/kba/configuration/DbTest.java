@@ -1,6 +1,8 @@
 package de.htwberlin.kba.configuration;
 
+import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.user_management.export.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
@@ -11,7 +13,6 @@ public class DbTest {
     private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpaDemoPU");
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-    /*
     @Test
     public void createDbUser() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -52,7 +53,7 @@ public class DbTest {
             entityManager.merge(user);
         }
         entityTransaction.commit();
-    }*/
+    }
 
     @Test
     public List<User> getAllUsers() {
@@ -61,7 +62,19 @@ public class DbTest {
         TypedQuery<User> query = entityManager.createQuery("FROM User AS users", User.class);
         List<User> allUsers = query.getResultList();
         entityTransaction.commit();
+
+        Assertions.assertEquals(3, allUsers.size());
         return allUsers;
+    }
+
+    @Test
+    public List<Request> getAllPendingRequestsTest() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        TypedQuery<Request> query = entityManager.createQuery("FROM Request AS requests WHERE requests.requestStatus = 'PENDING'", Request.class);
+        List<Request> allPendingRequests = query.getResultList();
+        entityTransaction.commit();
+        return allPendingRequests;
     }
 
 }
