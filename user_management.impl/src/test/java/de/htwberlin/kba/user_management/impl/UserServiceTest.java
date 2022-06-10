@@ -1,14 +1,15 @@
 package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +28,7 @@ public class UserServiceTest {
     //getUserListWOcurrentUser --> ist da 2x aber geht nicht
     //getUserByUserName --> braucht man eigtl nicht, mal sollte gleich die DAO aufrufen
 
-    @Before
+    @BeforeAll
     public void setUp(){
         List<User> users = new ArrayList<>();
         User antje = new User("AntjeWinner", "StellaIstToll");
@@ -73,7 +74,7 @@ public class UserServiceTest {
         }
 
         // 3. Assert
-        Assert.assertTrue(bol);
+        Assertions.assertEquals(true, bol);
     }
 
 
