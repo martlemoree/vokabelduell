@@ -9,13 +9,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "questions")
 public class Question {
-    // Vorschlag wurden in Kempas Beispiel lediglich in der Entitäten-Klasse umgesetzt (Category),
-    // nirgends anders (CategoryServiceImpl/CategoryService)
-    // toString Methode überschreiben, um eine sinnvolle Frage hervorzubringen: z.B.
-    // return "Was bedeutet " + Vokabel + " auf " + Fremdsprache + "?";
-
-    //TODO (F) Question.answerQuestion evtl. nach GameService refactoren
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
@@ -51,8 +44,7 @@ public class Question {
     @Column(name = "correct_answered_receiver")
     private boolean correctAnsweredReceiver;
 
-    public Question(Long questionId, Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
-        this.questionId = questionId;
+    public Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
         this.round = round;
         this.wrongA = wrongA;
         this.wrongB = wrongB;

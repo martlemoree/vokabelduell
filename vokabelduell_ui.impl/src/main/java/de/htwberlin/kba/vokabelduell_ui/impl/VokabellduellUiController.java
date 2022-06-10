@@ -14,11 +14,6 @@ import java.util.*;
 @Controller
 public class VokabellduellUiController implements VokabellduellUi {
 
-    // TODO: Im Controller nur Verschachtelung von Services und View
-    // get user by name, get vocablist by name: eindeutige namen
-    // TODO: Genutzte Services hier und in der bean und in der springimpl der config vermerken ?
-    // TODO: ungültige Usereingaben verarbeiten
-    // TODO: userName muss eindeutig sein --> Implementierung in DAO???!!!
     private VokabelduellView view;
     private GameService gameService;
     private UserService userService;
@@ -98,7 +93,6 @@ public class VokabellduellUiController implements VokabellduellUi {
                 }
 
                 String userName = view.userInputString();
-                // TODO DAO Spieler anhand des Benutzernamens auswählen
                 User receiver = userService.getUserByUserName(userName);
 
                 requestService.createRequest(currentUser, receiver);

@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
         this.vocabListService = vocabListService;
     }
 
-    public Question createQuestion(Long questionId, Round round, VocabList vocabList) {
+    public Question createQuestion(Round round, VocabList vocabList) {
 
         Random rand = new Random();
 
@@ -43,7 +43,7 @@ public class QuestionServiceImpl implements QuestionService {
         Translation wrongB = setAnswerOptions();
         Translation wrongC = setAnswerOptions();
 
-        return new Question(1L, round, wrongA,
+        return new Question(round, wrongA,
                 wrongB,
                 wrongC,
                 rightAnswer, vocab);
@@ -57,8 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
         VocabList randomVocabList = vocablists.get(rand.nextInt(vocablists.size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
-        Translation translation = randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
-        return translation;
+        return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
     }
 
     public List<Translation> getAllAnswers(Question question) {
@@ -73,9 +72,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     public List<Question> createQuestions(Game game, VocabList chosenVocabList) {
         List<Question> questions = new ArrayList<>();
-        Question question1 = createQuestion(1L, game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
-        Question question2 = createQuestion(1L, game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
-        Question question3 = createQuestion(1L, game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
+        Question question1 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
+        Question question2 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
+        Question question3 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
         questions.add(question1);
         questions.add(question2);
         questions.add(question3);

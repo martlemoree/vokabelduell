@@ -13,11 +13,10 @@ public interface QuestionService {
     /**
      * create a new question including the vocab and the correct translation from the chosen VocabList by the user
      * as well as three wrong answer options
-     * @param questionId the unique identifier of the question
      * @param round the round of a game in which the question is created
      * @return  a new question
      */
-    Question createQuestion(Long questionId, Round round, VocabList vocabList);
+    Question createQuestion(Round round, VocabList vocabList);
 
     /**
      * A translation is randomly generated for a wrong answer option to the question.
