@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
     public UserServiceImpl(UserDao userDao){
@@ -19,39 +19,32 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    // TODO hier und im Folgenden Datenbankzugriff einfügen
-    private static List<User> users;
-    public List<User> getUserListWOcurrentUser(String name) {
+    // constructor without parameters needed for mockito tests
+    public UserServiceImpl(){}
 
-        List<User>listWOuser = new ArrayList<>(users);
+    public List<User> getUserListWOcurrentUser(String name) {
+        List<User>listWOuser = userDao.getAllUsers();
         listWOuser.remove(getUserByUserName(name));
         return listWOuser;
     }
 
     public void changePassword(String password, User user) {
+        // method not implemented and tested because it is not part of the game logic
         user.setPassword(password);
     }
 
 
-    // TODO: muss das noch in die DAO/Impl?
     public User getUserByUserName(String userName){
-
-        for (User u : users){
-            if (u.getUserName().equals(userName)){
-                return u;
-            }
-        }
-        return null;
+        return userDao.getUserByName(userName);
     }
 
     public User createUser(String name, String password){
-        //TODO automatische ID vergeben
         User u = new User(name, password);
-        this.users.add(u);
+        userDao.createUser(u);
         return u;
     }
 
     public void removeUser(User user){
-        // TODO User aus der DB löschen
+        // method not implemented and tested because it is not part of the game logic
     }
 }

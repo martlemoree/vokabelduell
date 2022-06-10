@@ -1,14 +1,20 @@
 package de.htwberlin.kba.configuration;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import de.htwberlin.kba.vokabelduell_ui.export.VokabellduellUi;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
+@ComponentScan
 public class ConfigurationImpl {
 
+    private static ConfigurableApplicationContext context = new AnnotationConfigApplicationContext("de.htwberlin");
+
     public static void main(String[] args) {
-        SpringApplication.run(ConfigurationImpl.class, args);
+        VokabellduellUi controller = context.getBean(VokabellduellUi.class);
+        controller.run();
     }
+
 
 }

@@ -10,18 +10,22 @@ import java.util.List;
 @Service
 public class TranslationServiceImpl implements TranslationService {
 
-    TranslationDao translationDao;
+    private TranslationDao translationDao;
 
     @Autowired
     public TranslationServiceImpl(TranslationDao translationDao) {
         this.translationDao = translationDao;
     }
 
+    // constructor without parameters is needed for mockito tests
+    public TranslationServiceImpl() {}
+
 
     public Translation createTranslation(Long translationId, List<String> translations){
-
-        return new Translation(translationId, translations) ;}
-    public void removeTranslation(Translation translation,String translationToBeRemoved){
-        //Todo irgendwas in der DB machen
+        // method not implemented and tested because it is not part of the game logic
+        return new Translation(translations) ;}
+    public void removeTranslation(Translation translationToBeRemoved){
+        // method not implemented and tested because it is not part of the game logic
+        translationDao.deleteTranslation(translationToBeRemoved);
     }
 }

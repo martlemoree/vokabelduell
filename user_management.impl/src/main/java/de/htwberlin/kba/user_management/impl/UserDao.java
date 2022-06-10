@@ -10,9 +10,13 @@ public interface UserDao {
 
     User getUserById(Long userId);
 
+    User getUserByName(String name);
+
     void updateUser(User user);
 
     List<User> getAllUsers();
 
     void deleteUser(User user);
-}
+
+
+    }

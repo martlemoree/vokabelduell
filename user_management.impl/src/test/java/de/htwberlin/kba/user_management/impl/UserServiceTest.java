@@ -1,91 +1,89 @@
 package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.user_management.export.UserService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
 
+    @Spy
+    @InjectMocks
+    private UserServiceImpl service;
+
+    @Mock
     UserDao userDao;
-    private UserService service = new UserServiceImpl(userDao);
+
+    User u1;
+    List<User> users;
+    //getUserListWOcurrentUser --> ist da 2x aber geht nicht
+    //getUserByUserName --> braucht man eigtl nicht, mal sollte gleich die DAO aufrufen
+
+    @Before
+    public void setUp(){
+        List<User> users = new ArrayList<>();
+        User antje = new User("AntjeWinner", "StellaIstToll");
+        users.add(new User( "MartinTheBrain", "IchLiebeKBA"));
+        users.add(antje);
+    }
 
     @Test
     @DisplayName("getUserList gives back return parameter")
     public void testGetUserListWOcurrentUserNotEmpty(){
         // 1. Arrange
-        List<User> users = new ArrayList<>();
-        Long exampleId = 123456L;
-        users.add(new User("AntjeWinner", "StellaIstToll"));
-        users.add(new User("MartinTheBrain", "IchLiebeKBA"));
-        //ToDo datenbankzugriff
+        List<User> result = new ArrayList<>(users);
+        result.remove(u1);
 
         // 2. Act
+        Mockito.when(userDao.getUserByName("AntjeWinner")).thenReturn(u1);
+        Mockito.when(userDao.getAllUsers()).thenReturn(users);
         List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser("AntjeWinner");
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
+        assertEquals(usersWithoutCurrentUser.size(), result.size());
     }
 
     @Test
     @DisplayName("get all users without current user")
     public void testGetUserListWOcurrentUser(){
         // 1. Arrange
-        List<User> users = new ArrayList<>();
-        Long exampleId = 123456L;
-        users.add(new User("AntjeWinner", "StellaIstToll"));
-        users.add(new User("MartinTheBrain", "IchLiebeKBA"));
-        //ToDo datenbankzugriff
-
-        boolean bol = false;
+        String example_name = "Antje_Winner";
+        boolean bol = true;
 
         // 2. Act
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser("AntjeWinner");
+        Mockito.when(userDao.getUserByName(example_name)).thenReturn(u1);
+        Mockito.when(userDao.getAllUsers()).thenReturn(users);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(example_name);
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
-            if (!exampleId.equals(usersWithoutCurrentUser.get(i).getUserId())) {
-                bol = true;
+            if (example_name.equals(usersWithoutCurrentUser.get(i).getUserName())) {
+                bol = false;
                 break;
             }
             i++;
         }
 
         // 3. Assert
-        //assertTrue(bol);
+        Assert.assertTrue(bol);
     }
 
 
-    @Test
-    @DisplayName("user chooses a new password")
-    public void changePassword() {
-        // 1. Arrange
-        User user = new User("AntjeWinner", "StellaIstToll");
-        String newPassword = "QWERTZ";
-
-        // 2. Act
-        service.changePassword(newPassword, user);
-
-        // 3. Assert
-        assertEquals(newPassword, user.getPassword());
-
-    }
 
 
-    @Test
+   /* @Test
     @DisplayName("Method returns a User")
     public void testGetUserByUsername() {
         // 1. Arrange
-        User user = new User("AntjeWinner", "StellaIstToll");
+        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
         //TODO datenbankzugriff
 
 
@@ -94,6 +92,6 @@ public class UserServiceTest {
         assertEquals(service.getUserByUserName("AntjeWinner").getUserName(), user.getUserName());
         assertEquals(service.getUserByUserName("AntjeWinner").getPassword(), user.getPassword());
 
-    }
+    }*/
 
 }

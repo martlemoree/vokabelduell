@@ -18,26 +18,33 @@ import java.util.List;
 @Service
 public class GameServiceImpl implements GameService {
 
-    GameDao gameDao;
+    private GameDao gameDao;
 
     @Autowired
     public GameServiceImpl(GameDao gameDao) {
         this.gameDao = gameDao;
     }
 
-    @Override
-    public Game createGame(Long gameId, User requester, User receiver) {
+    // constructor without parameters is needed for mockito testing
+    public GameServiceImpl() {}
 
-        return new Game (gameId, requester, receiver);
+    @Override
+    public Game createGame(User requester, User receiver) {
+        Game game =  new Game (requester, receiver);
+       // gameDao.createGame(game); // TODO Datenbank
+
+        return game;
     }
 
 
     public void calculatePoints(Game game, User user, int points) {
         if (user.equals(game.getReceiver ())) {
             game.setPointsReceiver (points);
+            // TODO Datenbank
         }
         if (user.equals(game.getRequester ())) {
             game.setPointsRequester (points);
+            // TODO Datenbank
         }
     }
 

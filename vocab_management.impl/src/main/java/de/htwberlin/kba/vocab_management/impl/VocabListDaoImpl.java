@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.*;
 import java.util.List;
 
-@Service
 @Repository
 public class VocabListDaoImpl implements VocabListDao{
 
@@ -28,6 +27,7 @@ public class VocabListDaoImpl implements VocabListDao{
             return vocabList;
         }
     }
+
 
     @Override
     public void updateVocabList(VocabList vocabList) {

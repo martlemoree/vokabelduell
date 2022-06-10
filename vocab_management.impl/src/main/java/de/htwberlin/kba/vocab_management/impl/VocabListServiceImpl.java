@@ -20,15 +20,17 @@ import java.util.List;
 public class VocabListServiceImpl implements VocabListService {
 
     public static List<VocabList> vocabLists;
-    VocabListDao vocabListDao;
+    private VocabListDao vocabListDao;
 
     @Autowired
     public VocabListServiceImpl(VocabListDao vocabListDao) {
         this.vocabListDao = vocabListDao;
     }
 
+    // constructor without parameters needed for mockito testing
+    public VocabListServiceImpl() {}
     public void removeVocabList(VocabList vocabList){
-        //TODO DAO das muss mit der datenbank gemacht werden
+        // method not implemented and tested because it is not part of the game logic
     }
 
     public String readFile(String path) throws FileNotFoundException {
@@ -42,9 +44,12 @@ public class VocabListServiceImpl implements VocabListService {
 
         return fileContent;
     }
-    @Override
-    public VocabList createVocabList(String text) throws FileNotFoundException {
 
+    @Override
+    public VocabList createVocabList(String text)  {
+
+        TranslationDao translationDao = new TranslationDaoImpl();
+        VocabDao vocabDao = new VocabDaoImpl();
 
         //split text into chars and convert to list of chars
         char[] chars = text.toCharArray();
@@ -92,7 +97,6 @@ public class VocabListServiceImpl implements VocabListService {
         List<Vocab> vocabs_init = new ArrayList<>();
 
         //iterate through every group and create objects
-        //TODO ids automatisch generieren
         for (String group: groups) {
             left = group.substring(0,group.indexOf(":")-1);
             right = group.substring(group.indexOf(':')+1);
@@ -114,7 +118,8 @@ public class VocabListServiceImpl implements VocabListService {
                 } else if (c  == '}') {
                     if (!synoym_left.trim().isEmpty()){
                         synonyms_left.add(synoym_left);
-                        vocab_list.add(new Vocab(1L, new ArrayList<>(synonyms_left), null));
+                        vocab_list.add(new Vocab(new ArrayList<>(synonyms_left), null));
+                        vocabDao.createVocab(vocab_list.get(vocab_list.size()-1));
                     }
                     synonyms_left.clear();
                     synoym_left = new String();
@@ -139,7 +144,8 @@ public class VocabListServiceImpl implements VocabListService {
                 } else if (c  == '}') {
                     if (!synoym.trim().isEmpty()) {
                         synonyms.add(synoym);
-                        translation_list.add(new Translation(1L, new ArrayList<>(synonyms)));
+                        translation_list.add(new Translation(new ArrayList<>(synonyms)));
+                        translationDao.createTranslation(translation_list.get(translation_list.size()-1));
                     }
                     synonyms.clear();
                     synoym = new String();
@@ -161,53 +167,58 @@ public class VocabListServiceImpl implements VocabListService {
 
         }
 
-        VocabList v1 = new VocabList(1L,category_string, name_string, language_string, vocabs_init);
+        VocabList v1 = new VocabList(category_string, name_string, language_string, vocabs_init);
+        vocabListDao.createVocabList(v1);
 
         return v1;
     }
 
     @Override
     public void editName(VocabList vocabList, String newName) {
+        // method not implemented and tested because it is not part of the game logic
         vocabList.setName(newName);
+
     }
+
+    @Override
     public List<VocabList> getVocabLists() {
-        return vocabLists;
+        return vocabListDao.getAllVocabLists();
     }
 
     @Override
     public void editLanguage(VocabList vocabList, String newLanguage) {
+        // method not implemented and tested because it is not part of the game logic
         vocabList.setLanguage(newLanguage);
     }
 
     @Override
     public void editCategory(VocabList vocabList, String newCat) {
+        // method not implemented and tested because it is not part of the game logic
         vocabList.setCategory(newCat);
     }
 
     @Override
     public void removeVocab(VocabList vocabList, Vocab vocab) {
-    //TODO irgendwas mit der DB machen
+        // method not implemented and tested because it is not part of the game logic
     }
 
     public VocabList getVocabListByName(String vocabListName) {
-        //TODO DAO
+        // method not implemented and tested because it is not part of the game logic
         return null;
     }
+
 
     @Override
     public VocabList getVocabListById(Long id) {
         //TODO DAO
+        // brauchen wir für getRandomVocabLists
         return null;
     }
 
     @Override
     public List<VocabList> getRandomVocabLists() {
 
-        List<Long> allVocabLists = new ArrayList<>();
-
-        for (VocabList vlist: vocabLists) {
-            allVocabLists.add(vlist.getVocabListId());
-        }
+        List<VocabList> allVocabLists = getVocabLists();
 
         Random rand = new Random();
         int element1 = rand.nextInt(allVocabLists.size());
@@ -216,9 +227,9 @@ public class VocabListServiceImpl implements VocabListService {
 
         List<VocabList> random_lists = new ArrayList<>();
 
-        random_lists.add(getVocabListById(allVocabLists.get(element1)));
-        random_lists.add(getVocabListById(allVocabLists.get(element2)));
-        random_lists.add(getVocabListById(allVocabLists.get(element3)));
+        random_lists.add(allVocabLists.get(element1));
+        random_lists.add(allVocabLists.get(element2));
+        random_lists.add(allVocabLists.get(element3));
 
         return random_lists;
     }

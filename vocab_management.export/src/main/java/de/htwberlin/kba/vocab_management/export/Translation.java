@@ -1,11 +1,9 @@
 package de.htwberlin.kba.vocab_management.export;
 
-import org.springframework.stereotype.Service;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Service
+
 @Entity
 @Table(name = "translations")
 public class Translation {
@@ -25,8 +23,7 @@ public class Translation {
     @ManyToMany
     private  List<Vocab> vocabs;
 
-    public Translation(Long translationId, List<String> translations) {
-        this.translationId = translationId;
+    public Translation(List<String> translations) {
         this.translations = translations;
     }
 
@@ -58,12 +55,12 @@ public class Translation {
         this.vocabs = vocabs;
     }
 
-    @Override
+   /* @Override
     public String toString() {
         String result = "+";
         for (String translation : translations) {
             result += translation + "/";
         }
         return result;
-    }
+    }*/
 }

@@ -6,6 +6,7 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.impl.VocabListDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,15 +29,17 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class QuestionServiceTest {
-
+/*
     @Spy // object is partially mocked. the real methods are being called
     @InjectMocks
-    private QuestionService questionService = new QuestionServiceImpl();
+    private QuestionServiceImpl questionService;
 
     @Mock
     private VocabListService mockVocabListService;
     @Mock
     private QuestionDao mockQuestionDao;
+    @Mock
+    private VocabListDao mockVocabListDao;
     private Round Round;
     private VocabList vocabList;
     private Translation translation;
@@ -49,15 +52,18 @@ public class QuestionServiceTest {
         User requester = new User("Peter", "Test");
         User receiver = new User("AuchPeter", "Test123");
         Game game = new Game(1L, requester, receiver);
-        Round = new Round(1L, game);
+        Round = new Round(game);
         List<String> vocabStrings = Arrays.asList("Vocab");
         List<String> translationStrings = Arrays.asList("Translation");
         translation = new Translation(1L, translationStrings);
         translations.add(translation);
 
         vocab = new Vocab(1L, vocabStrings, translations);
-        List<Vocab> Vocabs = Arrays.asList(vocab);
-        vocabList = new VocabList(1L,"Category", "Name","Language", Vocabs);
+        List<Vocab> vocabs = new ArrayList<>();
+        vocabs.add(vocab);
+
+        translation.setVocabs(vocabs);
+        vocabList = new VocabList(1L,"Category", "Name","Language", vocabs);
 
         vocabLists.add(vocabList);
 
@@ -67,12 +73,12 @@ public class QuestionServiceTest {
     @Test
     @DisplayName("A question is created")
     public void testCreateQuestion() {
-        //1. Arrange
+        // 1. Arrange
         // s. setup
 
-        //2. Act
+        // 2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+      //  Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
 
@@ -88,7 +94,8 @@ public class QuestionServiceTest {
 
         //2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
+     //
+        //   Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
         Question question = questionService.createQuestion(1L, Round, vocabList);
 
@@ -109,7 +116,7 @@ public class QuestionServiceTest {
         Question createQuestion(Long questionId, Round);
         void createAnswerOptions(int index);
      */
-
+/*
 
     // List<String> giveAnswerOptionsRandom(Question question);
     @Test
@@ -132,7 +139,9 @@ public class QuestionServiceTest {
         //2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(1L, Round, vocabList);
+
         Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
+
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
 
         //3. Assert
@@ -144,6 +153,7 @@ public class QuestionServiceTest {
     public void testGiveAnswerOptionsRandomReturnCorrect(){
         //1. Arrange
         // s. setup
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(1L, Round, vocabList);
 
         List<String> translationStrings2 = Arrays.asList("Translation2");
@@ -162,7 +172,10 @@ public class QuestionServiceTest {
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
 
         //3. Assert
-        //  Assert.assertTrue(answerOptions.contains());
+        Assert.assertTrue(answerOptions.contains("Translation"));
+        Assert.assertTrue(answerOptions.contains("Translation2"));
+        Assert.assertTrue(answerOptions.contains("Translation3"));
+        Assert.assertTrue(answerOptions.contains("Translation4"));
     }
 /*
     @Test

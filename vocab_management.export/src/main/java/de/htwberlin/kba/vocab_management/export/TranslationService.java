@@ -15,8 +15,7 @@ public interface TranslationService {
     /**
      * removes a specific translation from the String list of translations.
      * @param translation the object that should be changed
-     * @param translationToBeRemoved is the translations that should be removed from the VocabList
-     */
-    void removeTranslation(Translation translation,String translationToBeRemoved);
+     * */
+    void removeTranslation(Translation translation);
 
 }
