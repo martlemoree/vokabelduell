@@ -1,5 +1,6 @@
 package de.htwberlin.kba.configuration;
 
+import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.user_management.export.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -62,8 +63,18 @@ public class DbTest {
         List<User> allUsers = query.getResultList();
         entityTransaction.commit();
 
-        Assertions.assertEquals(7, allUsers.size());
+        Assertions.assertEquals(3, allUsers.size());
         return allUsers;
+    }
+
+    @Test
+    public List<Request> getAllPendingRequestsTest() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        TypedQuery<Request> query = entityManager.createQuery("FROM Request AS requests WHERE requests.requestStatus = 'PENDING'", Request.class);
+        List<Request> allPendingRequests = query.getResultList();
+        entityTransaction.commit();
+        return allPendingRequests;
     }
 
 }
