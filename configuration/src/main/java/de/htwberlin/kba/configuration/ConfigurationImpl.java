@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 public class ConfigurationImpl {
 
+    // hier fehlt noch code zur konfiguration für PersistenceContext, die von Herr Kempa geliefert werden soll
     private static ConfigurableApplicationContext context = new AnnotationConfigApplicationContext("de.htwberlin");
 
     public static void main(String[] args) {

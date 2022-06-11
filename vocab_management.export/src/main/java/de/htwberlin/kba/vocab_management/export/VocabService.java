@@ -28,9 +28,6 @@ public interface VocabService {
      */
     void editTranslations(Vocab vocab, List<Translation> translations);
 
-    // TODO DAO
-
-
     /**
      * holds logic to give a random entry from the list of strings of the given vocab
      * @param vocab given vocab
