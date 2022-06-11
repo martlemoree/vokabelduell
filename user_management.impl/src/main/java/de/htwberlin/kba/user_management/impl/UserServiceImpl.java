@@ -24,7 +24,8 @@ public class UserServiceImpl implements UserService {
 
     public List<User> getUserListWOcurrentUser(String name) {
         List<User>listWOuser = userDao.getAllUsers();
-        listWOuser.remove(getUserByUserName(name));
+        User user = this.getUserByUserName(name);
+        listWOuser.remove(user);
         return listWOuser;
     }
 
@@ -35,10 +36,12 @@ public class UserServiceImpl implements UserService {
 
 
     public User getUserByUserName(String userName){
+        // method not tested because it is not part of the game logic
         return userDao.getUserByName(userName);
     }
 
     public User createUser(String name, String password){
+        // method not tested because it is not part of the game logic
         User u = new User(name, password);
         userDao.createUser(u);
         return u;

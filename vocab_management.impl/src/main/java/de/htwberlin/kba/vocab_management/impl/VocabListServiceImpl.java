@@ -18,8 +18,6 @@ import java.util.List;
 
 @Service
 public class VocabListServiceImpl implements VocabListService {
-
-    public static List<VocabList> vocabLists;
     private VocabListDao vocabListDao;
 
     @Autowired
@@ -210,8 +208,7 @@ public class VocabListServiceImpl implements VocabListService {
 
     @Override
     public VocabList getVocabListById(Long id) {
-        //TODO DAO
-        // brauchen wir für getRandomVocabLists
+        vocabListDao.getVocabListById(id);
         return null;
     }
 

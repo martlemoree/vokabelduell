@@ -2,13 +2,6 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.user_management.export.UserService;
-import de.htwberlin.kba.user_management.impl.UserServiceImpl;
-import de.htwberlin.kba.vocab_management.export.Translation;
-import de.htwberlin.kba.vocab_management.export.Vocab;
-import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListService;
-import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +15,7 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     public GameServiceImpl(GameDao gameDao) {
+        super();
         this.gameDao = gameDao;
     }
 
@@ -31,8 +25,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game createGame(User requester, User receiver) {
         Game game =  new Game (requester, receiver);
-       // gameDao.createGame(game); // TODO Datenbank
-
+        this.gameDao.createGame(game);
         return game;
     }
 
@@ -40,17 +33,22 @@ public class GameServiceImpl implements GameService {
     public void calculatePoints(Game game, User user, int points) {
         if (user.equals(game.getReceiver ())) {
             game.setPointsReceiver (points);
-            // TODO Datenbank
         }
         if (user.equals(game.getRequester ())) {
             game.setPointsRequester (points);
-            // TODO Datenbank
         }
+        gameDao.updateGame(game);
     }
 
     public List<Game> getGamesFromCurrentUser(User user) {
-        // TODO: DAO, am besten auch, wo die List<Round> weniger als 6 Einträge hat, aber nur wenn nicht zu viel Aufwand :)
-        return null;
+        List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user.getUserId());
+
+        for (Game g:gamesFromUser ) {
+            if (g.getRounds().size() >= 6){
+                gamesFromUser.remove(g);
+            }
+        }
+        return gamesFromUser;
     }
 
 

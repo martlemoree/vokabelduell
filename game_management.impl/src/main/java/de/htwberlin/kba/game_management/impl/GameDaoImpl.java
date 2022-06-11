@@ -46,4 +46,11 @@ public class GameDaoImpl implements GameDao{
     public void deleteGame(Game game) {
         entityManager.remove(game);
     }
+
+    @Override
+    public List<Game> getAllGamesFromUser(Long gameId) {
+        TypedQuery<Game> query = entityManager.createQuery("FROM Game AS games WHERE games.requester_id = gameId OR games.receiver_id = gameId ", Game.class);
+        List<Game> allGames = query.getResultList();
+        return allGames;
+    }
 }

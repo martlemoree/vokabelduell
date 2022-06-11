@@ -1,19 +1,23 @@
 package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
     @Spy
@@ -21,43 +25,41 @@ public class UserServiceTest {
     private UserServiceImpl service;
 
     @Mock
-    UserDao userDao;
+    private UserDaoImpl userDao;
 
-    User u1;
-    List<User> users;
-    //getUserListWOcurrentUser --> ist da 2x aber geht nicht
-    //getUserByUserName --> braucht man eigtl nicht, mal sollte gleich die DAO aufrufen
+    private User u1;
+    private User u2;
+    private List<User> users = new ArrayList<>();
 
-    @BeforeAll
+    @Before
     public void setUp(){
-        List<User> users = new ArrayList<>();
-        User antje = new User("AntjeWinner", "StellaIstToll");
-        users.add(new User( "MartinTheBrain", "IchLiebeKBA"));
-        users.add(antje);
+        u1 = new User("AntjeWinner", "StellaIstToll");
+        u2 = new User( "MartinTheBrain", "IchLiebeKBA");
+        this.users.add(u1);
+        this.users.add(u2);
     }
 
     @Test
     @DisplayName("getUserList gives back return parameter")
     public void testGetUserListWOcurrentUserNotEmpty(){
         // 1. Arrange
-        List<User> result = new ArrayList<>(users);
-        result.remove(u1);
+        String name = "AntjeWinner";
 
         // 2. Act
-        Mockito.when(userDao.getUserByName("AntjeWinner")).thenReturn(u1);
-        Mockito.when(userDao.getAllUsers()).thenReturn(users);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser("AntjeWinner");
+        Mockito.when(userDao.getAllUsers()).thenReturn(this.users);
+        Mockito.when(userDao.getUserByName(name)).thenReturn(this.u1);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(name);
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
-        assertEquals(usersWithoutCurrentUser.size(), result.size());
+        assertEquals(1, usersWithoutCurrentUser.size());
     }
 
     @Test
     @DisplayName("get all users without current user")
     public void testGetUserListWOcurrentUser(){
         // 1. Arrange
-        String example_name = "Antje_Winner";
+        String example_name = "AntjeWinner";
         boolean bol = true;
 
         // 2. Act
@@ -76,23 +78,5 @@ public class UserServiceTest {
         // 3. Assert
         Assertions.assertEquals(true, bol);
     }
-
-
-
-
-   /* @Test
-    @DisplayName("Method returns a User")
-    public void testGetUserByUsername() {
-        // 1. Arrange
-        User user = new User(123456L, "AntjeWinner", "StellaIstToll");
-        //TODO datenbankzugriff
-
-
-        // 3. Assert
-        assertNotNull(service.getUserByUserName("AntjeWinner"));
-        assertEquals(service.getUserByUserName("AntjeWinner").getUserName(), user.getUserName());
-        assertEquals(service.getUserByUserName("AntjeWinner").getPassword(), user.getPassword());
-
-    }*/
 
 }

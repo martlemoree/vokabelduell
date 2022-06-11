@@ -43,7 +43,6 @@ public class RequestDaoImpl implements RequestDao{
         return allRequests;
     }
 
-    // TODO hier sollen einfach nur alle pending requests zurückgegeben werden - kriege ich nicht hin lol
     @Override
     public List<Request> getAllPendingRequests() {
         TypedQuery<Request> query = entityManager.createQuery("FROM Request AS requests WHERE requests.requestStatus = 'PENDING'", Request.class);

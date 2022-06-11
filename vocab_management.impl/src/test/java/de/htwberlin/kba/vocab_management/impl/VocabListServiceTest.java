@@ -7,16 +7,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class VocabListServiceTest {
     @Spy // object is partially mocked. the real methods are being called
     @InjectMocks
@@ -30,11 +31,6 @@ public class VocabListServiceTest {
     @Mock
     private List<Vocab> mock_vocabs;
 
-    // getVocabLists -> hab ich, klappt nicht
-    // readFile -> hab ich, klappt nicht
-    // createVocabList -> hab ich, klappt nicht
-    // getVocabListById -> hab ich, klappt nicht
-    // getRandomVocabLists -> hab ich, klappt nicht
     @Before
     public void setUp(){
 
@@ -70,6 +66,7 @@ public class VocabListServiceTest {
 
         vocabLists.add(vocabList);
 
+        Mockito.when(vocabListDao.getAllVocabLists()).thenReturn(vocabLists);
         Mockito.when(service.getVocabLists()).thenReturn(vocabLists);
 
 
@@ -86,7 +83,7 @@ public class VocabListServiceTest {
         VocabList vlist = new VocabList("category", "name", "language", mock_vocabs);
 
         // 2. Act
-        Mockito.when(service.getVocabListById(1L)).thenReturn(vlist);
+        Mockito.when(service.getVocabListById(1l)).thenReturn(vlist);
 
 
         // 3. Assert
@@ -129,7 +126,7 @@ public class VocabListServiceTest {
 
     @DisplayName("Method returns a vocablist")
     @Test
-    public void testCreateVocabList() {
+    public void testCreateVocabList() throws FileNotFoundException {
         //1. Arrange
         String input = "{{{family_and_year}}}{{{English}}}{{{Deutsch}}}{{{schreiner_4_klasse}}}|{brother} : {Bruder}|";
         List<String> transl_string = new ArrayList<>();
@@ -145,16 +142,17 @@ public class VocabListServiceTest {
         VocabList vlist = new VocabList("schreiner_4_klasse", "family_and_year", "English", vocabs);
 
 
-
         // 2. Act
         Mockito.doNothing().when(vocabDao).createVocab(Mockito.any(Vocab.class));
         Mockito.doNothing().when(translationDao).createTranslation(Mockito.any(Translation.class));
+        Mockito.doNothing().when(vocabListDao).createVocabList(Mockito.any(VocabList.class));
+
 
         // 3. Assert
-       /* Assert.assertNotNull(service.createVocabList(input));
+        Assert.assertNotNull(service.createVocabList(input));
         Assert.assertEquals(service.createVocabList(input).getCategory(), vlist.getCategory());
         Assert.assertEquals(service.createVocabList(input).getLanguage(), vlist.getLanguage());
-        Assert.assertEquals(service.createVocabList(input).getName(), vlist.getName());*/
+        Assert.assertEquals(service.createVocabList(input).getName(), vlist.getName());
 
     }
 

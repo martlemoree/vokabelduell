@@ -11,21 +11,24 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+@RunWith(MockitoJUnitRunner.class)
 public class RoundServiceTest {
 
 
     @Spy
     @InjectMocks
-    private RoundService service;
+    private RoundServiceImpl service;
 
     @Mock
     RoundDao roundDao;
