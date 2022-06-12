@@ -19,9 +19,6 @@ public class GameServiceImpl implements GameService {
         this.gameDao = gameDao;
     }
 
-    // constructor without parameters is needed for mockito testing
-   // public GameServiceImpl() {}
-
     @Override
     public Game createGame(User requester, User receiver) {
         Game game =  new Game (requester, receiver);
