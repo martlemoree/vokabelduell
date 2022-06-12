@@ -160,7 +160,6 @@ public class VocabListServiceImpl implements VocabListService {
             for (Translation t: translation_list) {
                 t.setVocabs(vocab_list);
             }
-
         }
 
         VocabList v1 = new VocabList(category_string, name_string, language_string, vocabs_init);

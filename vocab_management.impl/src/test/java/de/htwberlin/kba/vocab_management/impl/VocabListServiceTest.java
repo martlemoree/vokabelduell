@@ -74,24 +74,6 @@ public class VocabListServiceTest {
 
     }
 
-    @DisplayName("Method returns a Vocablist")
-    @Test
-    public void testgetVocabListById()  {
-        //1. Arrange
-        VocabList vlist = new VocabList("category", "name", "language", mock_vocabs);
-
-        // 2. Act
-        Mockito.when(service.getVocabListById(1L)).thenReturn(vlist);
-
-
-        // 3. Assert
-        Assert.assertNotNull(service.getVocabListById(1L));
-        Assert.assertEquals(service.getVocabListById(1L).getName(), vlist.getName());
-        Assert.assertEquals(service.getVocabListById(1L).getLanguage(), vlist.getLanguage());
-        Assert.assertEquals(service.getVocabListById(1L).getCategory(), vlist.getCategory());
-
-    }
-
     @DisplayName("Method returns a String")
     @Test
     public void testreadFile() throws FileNotFoundException {
