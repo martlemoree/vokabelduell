@@ -20,7 +20,7 @@ public class GameServiceImpl implements GameService {
     }
 
     // constructor without parameters is needed for mockito testing
-    public GameServiceImpl() {}
+   // public GameServiceImpl() {}
 
     @Override
     public Game createGame(User requester, User receiver) {
@@ -32,10 +32,12 @@ public class GameServiceImpl implements GameService {
 
     public void calculatePoints(Game game, User user, int points) {
         if (user.equals(game.getReceiver ())) {
-            game.setPointsReceiver (points);
+            int sum = game.getPointsReceiver()+points;
+            game.setPointsReceiver(sum);
         }
         if (user.equals(game.getRequester ())) {
-            game.setPointsRequester (points);
+            int sum = game.getPointsReceiver()+points;
+            game.setPointsRequester(sum);
         }
         gameDao.updateGame(game);
     }

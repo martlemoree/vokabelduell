@@ -23,7 +23,7 @@ public class GameServiceTest {
 
     @Spy
     @InjectMocks
-    private GameServiceImpl service = new GameServiceImpl();
+    private GameServiceImpl service;
     @Mock
     private GameDaoImpl gameDao;
     @Mock
@@ -33,7 +33,7 @@ public class GameServiceTest {
 
     @Before
     public void setUp() {
-        this.service = new GameServiceImpl();
+        //this.service = new GameServiceImpl();
         this.requester = new User("MartinTheBrain", "lol123");
         this.receiver = new User("stellomello", "123lol");
     }
@@ -126,6 +126,7 @@ public class GameServiceTest {
         for (Game g:gamesOfUser) {
             if (g.getRounds().size() >= 6){
                 bol = false;
+                break;
             }
         }
 

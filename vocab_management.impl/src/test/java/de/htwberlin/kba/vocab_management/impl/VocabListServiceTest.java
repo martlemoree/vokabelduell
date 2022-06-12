@@ -21,7 +21,7 @@ import java.util.*;
 public class VocabListServiceTest {
     @Spy // object is partially mocked. the real methods are being called
     @InjectMocks
-    private VocabListService service = new VocabListServiceImpl();
+    private VocabListServiceImpl service;
     @Mock
     private VocabListDaoImpl vocabListDao;
     @Mock
@@ -32,9 +32,7 @@ public class VocabListServiceTest {
     private List<Vocab> mock_vocabs;
 
     @Before
-    public void setUp(){
-
-
+    public void setUp() {
     }
 
 
@@ -83,7 +81,7 @@ public class VocabListServiceTest {
         VocabList vlist = new VocabList("category", "name", "language", mock_vocabs);
 
         // 2. Act
-        Mockito.when(service.getVocabListById(1l)).thenReturn(vlist);
+        Mockito.when(service.getVocabListById(1L)).thenReturn(vlist);
 
 
         // 3. Assert
@@ -97,6 +95,7 @@ public class VocabListServiceTest {
     @DisplayName("Method returns a String")
     @Test
     public void testreadFile() throws FileNotFoundException {
+        // To successfully test this method, put file under given file_path
         String file_path = "C:\\KBA\\vocabulary\\family_and_year.txt";
         Assert.assertNotNull(service.readFile(file_path));
     }
@@ -127,6 +126,8 @@ public class VocabListServiceTest {
     @DisplayName("Method returns a vocablist")
     @Test
     public void testCreateVocabList() throws FileNotFoundException {
+
+        // To successfully test this method, put file under given file_path
         //1. Arrange
         String input = "{{{family_and_year}}}{{{English}}}{{{Deutsch}}}{{{schreiner_4_klasse}}}|{brother} : {Bruder}|";
         List<String> transl_string = new ArrayList<>();

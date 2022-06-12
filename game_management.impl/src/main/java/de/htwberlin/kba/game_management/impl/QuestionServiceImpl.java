@@ -43,10 +43,10 @@ public class QuestionServiceImpl implements QuestionService {
         Translation wrongB = setAnswerOptions();
         Translation wrongC = setAnswerOptions();
 
-        return new Question(round, wrongA,
-                wrongB,
-                wrongC,
-                rightAnswer, vocab);
+        Question question = new Question(round, wrongA,wrongB,wrongC,rightAnswer, vocab);
+        questionDao.createQuestion(question);
+
+        return question;
     }
 
     public Translation setAnswerOptions() {

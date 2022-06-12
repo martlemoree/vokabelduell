@@ -25,8 +25,6 @@ public class VocabListServiceImpl implements VocabListService {
         this.vocabListDao = vocabListDao;
     }
 
-    // constructor without parameters needed for mockito testing
-    public VocabListServiceImpl() {}
     public void removeVocabList(VocabList vocabList){
         // method not implemented and tested because it is not part of the game logic
     }

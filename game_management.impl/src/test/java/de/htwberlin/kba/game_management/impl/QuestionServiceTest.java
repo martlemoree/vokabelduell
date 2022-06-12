@@ -6,7 +6,6 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
-import de.htwberlin.kba.vocab_management.impl.VocabListDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,6 +31,8 @@ public class QuestionServiceTest {
     private QuestionServiceImpl questionService;
     @Mock
     private VocabListService mockVocabListService;
+    @Mock
+    private QuestionDao questionDao;
     private Round round;
     private VocabList vocabList;
     private Translation translation;
@@ -79,7 +77,8 @@ public class QuestionServiceTest {
         // s. setup
 
         // 2. Act
-        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
+        Mockito.doNothing().when(questionDao).createQuestion(Mockito.any(Question.class));
+        when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Translation translationRandom = questionService.setAnswerOptions();
 
         //3. Assert
@@ -131,7 +130,6 @@ public class QuestionServiceTest {
         Question question = questionService.createQuestion(round, vocabList);
 
         // 3. Assert
-        Assert.assertEquals(1L, question.getQuestionId());
         Assert.assertEquals(round, question.getRound());
         Assert.assertEquals(translation, question.getRightAnswer());
         Assert.assertEquals(vocab, question.getVocab());
