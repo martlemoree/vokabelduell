@@ -14,19 +14,12 @@ public class VocabDaoImpl implements VocabDao{
 
     @Override
     public void createVocab(Vocab vocab) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         entityManager.persist(vocab);
-        entityTransaction.commit();
-
     }
 
     @Override
     public Vocab getVocabById(Long vocabId) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         Vocab vocab = entityManager.find(Vocab.class, vocabId);
-        entityTransaction.commit();
         if (vocab == null) {
             throw new EntityNotFoundException("Can't find Vocab with vocabId" + vocabId);
         } else {
@@ -36,28 +29,18 @@ public class VocabDaoImpl implements VocabDao{
 
     @Override
     public void updateVocab(Vocab vocab) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         entityManager.merge(vocab);
-        entityTransaction.commit();
     }
 
     @Override
     public List<Vocab> getAllVocabs() {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
-        TypedQuery<Vocab> query = entityManager.createQuery("SELECT vocabs FROM Vocab AS vocabs", Vocab.class);
+        TypedQuery<Vocab> query = entityManager.createNamedQuery("getAllVocabs", Vocab.class);
         List<Vocab> allVocabs = query.getResultList();
-        entityTransaction.commit();
         return allVocabs;
     }
 
     @Override
     public void deleteVocab(Vocab vocab) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         entityManager.remove(vocab);
-        entityTransaction.commit();
     }
-
 }

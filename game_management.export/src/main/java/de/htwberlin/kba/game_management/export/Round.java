@@ -4,6 +4,7 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import javax.persistence.*;
 import java.util.List;
 
+@NamedQuery(name="getAllRounds", query="FROM Round AS rounds")
 @Entity
 @Table(name = "rounds")
 public class Round {

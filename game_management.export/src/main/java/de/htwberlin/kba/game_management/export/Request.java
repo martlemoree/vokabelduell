@@ -1,8 +1,13 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+
 import javax.persistence.*;
 
+@NamedQueries({
+        @NamedQuery(name = "getAllRequests", query = "FROM Request AS requests"),
+        @NamedQuery(name = "getAllPendingRequests", query = "FROM Request AS requests WHERE requests.requestStatus = 'PENDING'")
+})
 @Entity
 @Table(name = "requests")
 public class Request {

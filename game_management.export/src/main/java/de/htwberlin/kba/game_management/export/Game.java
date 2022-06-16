@@ -4,6 +4,10 @@ import de.htwberlin.kba.user_management.export.User;
 import javax.persistence.*;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(name="getAllGames", query="FROM Game AS games"),
+        @NamedQuery(name="getAllGamesFromUser", query="FROM Game AS games WHERE games.requester_id = gameId OR games.receiver_id = gameId")
+})
 @Entity
 @Table(name = "games")
 public class Game {

@@ -3,7 +3,7 @@ package de.htwberlin.kba.vocab_management.export;
 import javax.persistence.*;
 import java.util.List;
 
-
+@NamedQuery(name="getAllTranslations", query="FROM Translation AS translations")
 @Entity
 @Table(name = "translations")
 public class Translation {

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQuery(name="getAllVocabs", query="FROM Vocab AS vocabs")
 @Entity
 @Table(name = "vocabs")
 public class Vocab {
