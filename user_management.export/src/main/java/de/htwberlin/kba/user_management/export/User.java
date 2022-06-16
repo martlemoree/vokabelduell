@@ -2,6 +2,7 @@ package de.htwberlin.kba.user_management.export;
 
 import javax.persistence.*;
 
+@NamedQuery(name="getAllUsers", query="FROM User AS users")
 @Entity
 @Table(name = "users")
 public class User {

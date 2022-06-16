@@ -58,7 +58,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUsers() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
-        TypedQuery<User> query = entityManager.createQuery("FROM User AS users", User.class);
+        TypedQuery<User> query = entityManager.createNamedQuery("getAllUsers", User.class);
         List<User> allUsers = query.getResultList();
         entityTransaction.commit();
         return allUsers;

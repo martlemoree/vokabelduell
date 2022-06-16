@@ -19,11 +19,11 @@ public class Game {
     @Column(name = "points_receiver")
     private int pointsReceiver;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "requester_id", referencedColumnName = "user_id")
     private User requester;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "receiver_id", referencedColumnName = "user_id")
     private User receiver;
 
