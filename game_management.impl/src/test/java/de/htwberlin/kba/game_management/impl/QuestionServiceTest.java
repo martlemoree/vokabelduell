@@ -94,7 +94,7 @@ public class QuestionServiceTest {
 
         // 2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        List<Question> questions= questionService.createQuestions(game, vocabList);
+        List<Question> questions= questionService.createQuestions(game, vocabList, round);
 
         //3. Assert
         Assert.assertNotNull(questions);

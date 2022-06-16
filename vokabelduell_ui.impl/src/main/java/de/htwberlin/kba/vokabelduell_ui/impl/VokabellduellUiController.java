@@ -140,7 +140,13 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                 for (Game game : games) {
                     if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
-                        playGame(game, currentUser);
+                        // View Aufruf hier:
+                        VocabList vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+                        List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
+                        for (int j = 0; j<4; j++) {
+                            // View Aufruf hier:
+                            askQuestions(game, currentUser, questions, j);
+                        }
                     }
                 }
             }
@@ -227,56 +233,17 @@ public class VokabellduellUiController implements VokabellduellUi {
         }
         return null;
     }
-    public void playGame(Game game, User currentUser) {
-
-        List<Question> questions;
-        List<Round> rounds = game.getRounds();
-
-        // if game has not just been created and the last round was not played by both players
-        // the last existing round of the game is played
-        if (!rounds.isEmpty() & !rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
-            Round round = game.getRounds().get(game.getRounds().size()-1);
-            questions = round.getQuestions();
-
-            for (int i = 0; i<4; i++) {
-                askQuestions(game, currentUser, questions, i);
-            }
-
-            round.setPlayedByTwo(true);
-        }
-
-        // if game has just been started OR the last round of the game was played by both players
-        // (happens in the if clause above)
-        // new Round must be started
-        Round round = roundService.startNewRound(game);
-
-        // get 3 random vocablists to choose from
-        List<VocabList> randomVocabLists = vocabListService.getRandomVocabLists();
-
-        // user chooses vocablist for round
-        VocabList chosenVocabList = chooseVocablist(randomVocabLists);
-
-        // generate Questions
-        questions = questionService.createQuestions(game, chosenVocabList);
-        // der Round hinzufügen
-        round.setQuestions(questions);
-
-        for (int i = 0; i<4; i++) {
-            askQuestions(game, currentUser, questions, i);
-        }
-        // now its the other players turn who has to login and play now
-    }
 
     public void askQuestions(Game game, User currentUser, List<Question> questions, int i) {
 
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions.get(i));
         String vocabString = vocabService.giveVocabStringRandom(questions.get(i).getVocab());
 
-        view.printMessage("Wie kann" + vocabString + " richtig übersetzt werden? \n " +
+        view.printMessage("Wie kann" + vocabString + " richtig übersetzt werden? Gib die richtige Antwort ein.\n " +
                 "1 - " + answerOptions.get(0) + ",\n " +
                 "2 - " + answerOptions.get(1) + "oder \n " +
-                "2 - " + answerOptions.get(2) + "oder \n " +
-                "3 - " + answerOptions.get(3) + "?");
+                "3 - " + answerOptions.get(2) + "oder \n " +
+                "4 - " + answerOptions.get(3) + "?");
         // user answers question
         String answer = view.userInputString();
         // is answer correct?
@@ -302,8 +269,19 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
-            // new game is created and starts
-            playGame(gameService.createGame(request.getRequester(), request.getReceiver()), request.getReceiver());
+            // new game is created and starts immediately
+            Game game = gameService.createGame(request.getRequester(), request.getReceiver());
+            for (int i = 0; i<2; i++) {
+                VocabList vocabList = null;
+                if (i==1) {
+                    vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+                }
+                List<Question> questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
+                for (int j = 0; j<4; j++) {
+                    // View Aufruf hier:
+                    askQuestions(game, request.getReceiver(), questions, j);
+                }
+            }
         } else if (status == Status.REJECTED) {
             view.printMessage("Die Anfrage wurde abgelehnt.");
         }

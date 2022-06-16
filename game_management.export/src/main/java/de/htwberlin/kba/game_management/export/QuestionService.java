@@ -37,7 +37,7 @@ public interface QuestionService {
      * @param chosenVocabList the chosen vocablist from which the questions should be created
      * @return List of three questions
      */
-    List<Question> createQuestions(Game game, VocabList chosenVocabList);
+    List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round);
 
     /**
      * the answer options for a question should not always be given in the same order

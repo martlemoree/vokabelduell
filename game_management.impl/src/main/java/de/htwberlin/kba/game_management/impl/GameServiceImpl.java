@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,16 @@ import java.util.List;
 public class GameServiceImpl implements GameService {
 
     private GameDao gameDao;
+    private RoundService roundService;
+    private QuestionService questionService;
+
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao) {
+    public GameServiceImpl(GameDao gameDao, RoundService roundService, QuestionService questionService) {
         super();
         this.gameDao = gameDao;
+        this.roundService = roundService;
+        this.questionService = questionService;
     }
 
     @Override
@@ -49,6 +55,22 @@ public class GameServiceImpl implements GameService {
         }
         return gamesFromUser;
     }
+
+    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) {
+
+        List<Round> rounds = game.getRounds();
+
+        if (!rounds.isEmpty() & !rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
+            Round round = rounds.get(game.getRounds().size()-1);
+
+            round.setPlayedByTwo(true);
+            return round.getQuestions();
+        }
+
+        Round round = roundService.startNewRound(game);
+        return questionService.createQuestions(game, vocabList, round);
+    }
+
 
 
 }

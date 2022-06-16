@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
+import de.htwberlin.kba.vocab_management.export.VocabList;
 
 import java.util.List;
 
@@ -29,5 +30,7 @@ public interface GameService {
      * @return list of all existing games of current user
      */
     List<Game> getGamesFromCurrentUser(User user);
+
+    List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList);
 
 }

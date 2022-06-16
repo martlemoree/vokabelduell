@@ -70,7 +70,7 @@ public class QuestionServiceImpl implements QuestionService {
         return translations;
     }
 
-    public List<Question> createQuestions(Game game, VocabList chosenVocabList) {
+    public List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) {
         List<Question> questions = new ArrayList<>();
         Question question1 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
         Question question2 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
@@ -78,6 +78,9 @@ public class QuestionServiceImpl implements QuestionService {
         questions.add(question1);
         questions.add(question2);
         questions.add(question3);
+
+        // der Round hinzufügen
+        round.setQuestions(questions);
 
         return questions;
     }
