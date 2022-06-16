@@ -60,6 +60,8 @@ public class GameServiceImpl implements GameService {
 
         List<Round> rounds = game.getRounds();
 
+        // if game has not just been created and the last round was not played by both players
+        // the last existing round of the game is played
         if (!rounds.isEmpty() & !rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
             Round round = rounds.get(game.getRounds().size()-1);
 
@@ -67,10 +69,12 @@ public class GameServiceImpl implements GameService {
             return round.getQuestions();
         }
 
+        // if game has just been started OR the last round of the game was played by both players
+        // (happens in the if clause above)
+        // new Round must be started
         Round round = roundService.startNewRound(game);
+
+        // generate Questions
         return questionService.createQuestions(game, vocabList, round);
     }
-
-
-
 }

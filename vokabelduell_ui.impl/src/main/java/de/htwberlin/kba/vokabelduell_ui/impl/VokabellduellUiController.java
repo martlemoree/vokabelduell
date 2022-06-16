@@ -131,7 +131,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 List<Game> games = gameService.getGamesFromCurrentUser(currentUser);
                 view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
                 for (Game game : games) {
-                    if (game.getRounds().size() > 6) { // TODO > 6, was wenn man die 6. Runde beendet?
+                    if (game.getRounds().size() < 6) { // TODO > 6, was wenn man die 6. Runde beendet?
                         view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
                     }
                 }
@@ -140,8 +140,12 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                 for (Game game : games) {
                     if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
+                        // vocabList just needs to be chosen if old round has been finished by the other player
                         // View Aufruf hier:
-                        VocabList vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+                        VocabList vocabList = null;
+                        if (!game.getRounds().get(game.getRounds().size()-1).getisPlayedByTwo()) {
+                            vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+                        }
                         List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
                         for (int j = 0; j<4; j++) {
                             // View Aufruf hier:
