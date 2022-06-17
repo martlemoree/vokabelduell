@@ -7,6 +7,7 @@ import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 public class VocabListServiceImpl implements VocabListService {
+
     private VocabListDao vocabListDao;
 
     @Autowired
@@ -42,7 +44,8 @@ public class VocabListServiceImpl implements VocabListService {
     }
 
     @Override
-    public VocabList createVocabList(String text)  {
+    @Transactional
+    public VocabList createVocabList(String text) {
 
         TranslationDao translationDao = new TranslationDaoImpl();
         VocabDao vocabDao = new VocabDaoImpl();
@@ -176,6 +179,7 @@ public class VocabListServiceImpl implements VocabListService {
     }
 
     @Override
+    @Transactional
     public List<VocabList> getVocabLists() {
         return vocabListDao.getAllVocabLists();
     }
@@ -202,8 +206,8 @@ public class VocabListServiceImpl implements VocabListService {
         return null;
     }
 
-
     @Override
+    @Transactional
     public VocabList getVocabListById(Long id) {
         vocabListDao.getVocabListById(id);
         return null;
@@ -227,6 +231,4 @@ public class VocabListServiceImpl implements VocabListService {
 
         return random_lists;
     }
-
-
 }

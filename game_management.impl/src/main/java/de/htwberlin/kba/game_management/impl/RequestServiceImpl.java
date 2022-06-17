@@ -5,7 +5,7 @@ import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
@@ -24,27 +24,26 @@ public class RequestServiceImpl implements RequestService {
     public RequestServiceImpl(){}
 
     @Override
+    @Transactional
     public void changeStatus(Boolean accept, Request request) {
-
         if (accept) {
             request.setRequestStatus(ACCEPTED);
         } else {
             request.setRequestStatus(REJECTED);
         }
         requestDao.updateRequest(request);
-
     }
 
     @Override
+    @Transactional
     public void createRequest(User requester, User receiver) {
         Request request = new Request(PENDING, requester, receiver);
         requestDao.createRequest(request);
     }
 
     @Override
+    @Transactional
     public List<Request> getPendingRequestsForCurrentUser(User user) {
         return requestDao.getAllRequests();
-
     }
-
 }

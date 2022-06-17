@@ -6,8 +6,8 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
-
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -26,13 +26,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    @Transactional
     public Game createGame(User requester, User receiver) {
         Game game =  new Game (requester, receiver);
         this.gameDao.createGame(game);
         return game;
     }
 
-
+    @Transactional
     public void calculatePoints(Game game, User user, int points) {
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;
@@ -45,6 +46,7 @@ public class GameServiceImpl implements GameService {
         gameDao.updateGame(game);
     }
 
+    @Transactional
     public List<Game> getGamesFromCurrentUser(User user) {
         List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user.getUserId());
 

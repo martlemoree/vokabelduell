@@ -5,6 +5,7 @@ import de.htwberlin.kba.vocab_management.export.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -20,11 +21,13 @@ public class TranslationServiceImpl implements TranslationService {
     // constructor without parameters is needed for mockito tests
     public TranslationServiceImpl() {}
 
-
-    public Translation createTranslation(Long translationId, List<String> translations){
+    public Translation createTranslation(Long translationId, List<String> translations) {
         // method not implemented and tested because it is not part of the game logic
-        return new Translation(translations) ;}
-    public void removeTranslation(Translation translationToBeRemoved){
+        return new Translation(translations);
+    }
+
+    @Transactional
+    public void removeTranslation(Translation translationToBeRemoved) {
         // method not implemented and tested because it is not part of the game logic
         translationDao.deleteTranslation(translationToBeRemoved);
     }

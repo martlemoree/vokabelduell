@@ -2,7 +2,6 @@ package de.htwberlin.kba.vocab_management.impl;
 
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
-import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +55,4 @@ public class VocabServiceImpl implements VocabService {
         int index = rand.nextInt(vocab.getVocabs().size()-1);
         return vocab.getVocabs().get(index);
     }
-
-
 }

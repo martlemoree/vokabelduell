@@ -9,12 +9,11 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import de.htwberlin.kba.vocab_management.impl.VocabListDao;
-import de.htwberlin.kba.vocab_management.impl.VocabListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +31,7 @@ public class QuestionServiceImpl implements QuestionService {
         this.vocabListService = vocabListService;
     }
 
+    @Transactional
     public Question createQuestion(Round round, VocabList vocabList) {
 
         Random rand = new Random();
