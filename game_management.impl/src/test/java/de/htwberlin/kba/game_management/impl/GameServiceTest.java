@@ -45,7 +45,7 @@ public class GameServiceTest {
         //s. Set Up
 
         //2. Act
-        Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
+        //Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
         Game game = service.createGame(requester, receiver);
 
         //3. Assert
@@ -62,7 +62,7 @@ public class GameServiceTest {
         int newPoints = 500;
 
         //2. Act
-        Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
         service.calculatePoints(game, requester, newPoints);
 
         // 3. Assert
@@ -78,7 +78,7 @@ public class GameServiceTest {
         int morePoints = 200;
 
         //2. Act
-        Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
         service.calculatePoints(game, receiver, newPoints);
         service.calculatePoints(game, receiver, morePoints);
         int sum = newPoints+morePoints;
@@ -120,7 +120,7 @@ public class GameServiceTest {
         boolean bol = true;
 
         // 2. Act
-        Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
+       // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
         List<Game> gamesOfUser = service.getGamesFromCurrentUser(user);
 
         for (Game g:gamesOfUser) {

@@ -77,7 +77,8 @@ public class QuestionServiceTest {
         // s. setup
 
         // 2. Act
-        Mockito.doNothing().when(questionDao).createQuestion(Mockito.any(Question.class));
+      //  Mockito.doNothing().when(questionDao).createQuestion(Mockito.any(Question.class));
+      //  Mockito.doNothing().when(questionDao).createQuestion(Mockito.any(Question.class));
         when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Translation translationRandom = questionService.setAnswerOptions();
 

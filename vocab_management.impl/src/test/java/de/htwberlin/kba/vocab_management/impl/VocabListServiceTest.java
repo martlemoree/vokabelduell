@@ -5,6 +5,7 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -25,15 +26,10 @@ public class VocabListServiceTest {
     @Mock
     private VocabListDaoImpl vocabListDao;
     @Mock
-    private VocabDaoImpl vocabDao;
-    @Mock
     private TranslationDaoImpl translationDao;
     @Mock
-    private List<Vocab> mock_vocabs;
+    private VocabDaoImpl vocabDao;
 
-    @Before
-    public void setUp() {
-    }
 
 
     @DisplayName("Method returns a list with three vocablists")
@@ -105,9 +101,10 @@ public class VocabListServiceTest {
 
     }
 
+
     @DisplayName("Method returns a vocablist")
     @Test
-    public void testCreateVocabList() throws FileNotFoundException {
+    public void testCreateVocabList() {
 
         // To successfully test this method, put file under given file_path
         //1. Arrange
@@ -126,9 +123,9 @@ public class VocabListServiceTest {
 
 
         // 2. Act
-        Mockito.doNothing().when(vocabDao).createVocab(Mockito.any(Vocab.class));
-        Mockito.doNothing().when(translationDao).createTranslation(Mockito.any(Translation.class));
-        Mockito.doNothing().when(vocabListDao).createVocabList(Mockito.any(VocabList.class));
+       // Mockito.doNothing().when(vocabDao).createVocab(Mockito.any(Vocab.class));
+       // Mockito.doNothing().when(translationDao).createTranslation(Mockito.any(Translation.class));
+      //  Mockito.doNothing().when(vocabListDao).createVocabList(Mockito.any(VocabList.class));
 
 
         // 3. Assert

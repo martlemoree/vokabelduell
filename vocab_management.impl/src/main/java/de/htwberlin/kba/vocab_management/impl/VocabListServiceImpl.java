@@ -21,10 +21,14 @@ import java.util.List;
 public class VocabListServiceImpl implements VocabListService {
 
     private VocabListDao vocabListDao;
+   private TranslationDao translationDao;
+    private VocabDao vocabDao;
 
     @Autowired
-    public VocabListServiceImpl(VocabListDao vocabListDao) {
+    public VocabListServiceImpl(VocabListDao vocabListDao, TranslationDao translationDao, VocabDao vocabDao) {
         this.vocabListDao = vocabListDao;
+        this.vocabDao = vocabDao;
+        this.translationDao = translationDao;
     }
 
     public void removeVocabList(VocabList vocabList){
@@ -46,9 +50,6 @@ public class VocabListServiceImpl implements VocabListService {
     @Override
     @Transactional
     public VocabList createVocabList(String text) {
-
-        TranslationDao translationDao = new TranslationDaoImpl();
-        VocabDao vocabDao = new VocabDaoImpl();
 
         //split text into chars and convert to list of chars
         char[] chars = text.toCharArray();
