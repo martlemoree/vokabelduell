@@ -19,7 +19,7 @@ public class GameDaoImpl implements GameDao{
 
     @Override
     public Game getGameById(Long gameId) {
-        Game game = entityManager.find(Game.class, gameId);
+        Game game = entityManager.find(Game.class, gameId, LockModeType.OPTIMISTIC);
         if (game == null) {
             throw new EntityNotFoundException("Can't find Game with gameId" + gameId);
         } else {

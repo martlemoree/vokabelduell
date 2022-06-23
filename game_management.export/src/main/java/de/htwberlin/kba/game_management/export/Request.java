@@ -28,6 +28,9 @@ public class Request {
     @JoinColumn(name = "user_receiver", referencedColumnName = "user_id")
     private User receiver;
 
+    @Version
+    private Integer version;
+
     public Request(Status requestStatus, User requester, User receiver) {
         this.requestStatus = requestStatus;
         this.requester = requester;

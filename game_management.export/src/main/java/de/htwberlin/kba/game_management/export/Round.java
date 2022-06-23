@@ -22,7 +22,6 @@ public class Round {
     @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
     private VocabList vocablist;
 
-
     // TODO: DAO NEUE FELDER:
     private boolean playedByTwo;
 
@@ -30,6 +29,9 @@ public class Round {
     @OneToMany
     @Column(name = "questions")
     private List<Question> questions;
+
+    @Version
+    private Integer version;
 
     public Round(Game game) {
         this.roundId = roundId;

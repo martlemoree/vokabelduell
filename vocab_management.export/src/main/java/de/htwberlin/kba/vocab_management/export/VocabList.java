@@ -26,6 +26,8 @@ public class VocabList {
     @OneToMany(mappedBy = "vocablist", fetch = FetchType.EAGER)
     private List<Vocab> vocabs = new ArrayList<>();
 
+    @Version
+    private Integer version;
 
     public VocabList(String category, String name, String language, List<Vocab> vocabs) {
         this.category = category;

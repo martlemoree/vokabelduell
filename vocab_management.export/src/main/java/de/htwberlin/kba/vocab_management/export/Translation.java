@@ -23,6 +23,9 @@ public class Translation {
     @ManyToMany
     private  List<Vocab> vocabs;
 
+    @Version
+    private Integer version;
+
     public Translation(List<String> translations) {
         this.translations = translations;
     }

@@ -18,6 +18,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Version
+    private Integer version;
 
     public User(String userName, String password) {
         this.userName = userName;

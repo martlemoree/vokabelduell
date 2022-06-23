@@ -24,6 +24,8 @@ public class Vocab {
     @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
     private VocabList vocablist;
 
+    @Version
+    private Integer version;
 
     public Vocab( List<String> vocabs,  List<Translation> translations) {
         this.vocabs = vocabs;

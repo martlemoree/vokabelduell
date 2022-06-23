@@ -45,6 +45,9 @@ public class Question {
     @Column(name = "correct_answered_receiver")
     private boolean correctAnsweredReceiver;
 
+    @Version
+    private Integer version;
+
     public Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab) {
         this.round = round;
         this.wrongA = wrongA;
