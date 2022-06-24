@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 
 @Configuration
 public class AppConfig {
+
     @Bean
     public LocalEntityManagerFactoryBean entityManagerFactory() {
         LocalEntityManagerFactoryBean localEmfBean = new LocalEntityManagerFactoryBean();

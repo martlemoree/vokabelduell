@@ -19,7 +19,7 @@ public class GameDaoImpl implements GameDao{
 
     @Override
     public Game getGameById(Long gameId) {
-        Game game = entityManager.find(Game.class, gameId, LockModeType.OPTIMISTIC);
+        Game game = entityManager.find(Game.class, gameId);
         if (game == null) {
             throw new EntityNotFoundException("Can't find Game with gameId" + gameId);
         } else {
@@ -45,7 +45,7 @@ public class GameDaoImpl implements GameDao{
     }
 
     @Override
-    public List<Game> getAllGamesFromUser(Long gameId) {
+    public List<Game> getAllGamesFromUser(Long userId) {
         TypedQuery<Game> query = entityManager.createNamedQuery("getAllGamesFromUser", Game.class);
         List<Game> allGamesFromUser = query.getResultList();
         return allGamesFromUser;

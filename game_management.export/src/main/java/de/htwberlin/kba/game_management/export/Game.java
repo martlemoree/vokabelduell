@@ -5,9 +5,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @NamedQueries({
-        @NamedQuery(name="getAllGames", query="FROM Game AS games", lockMode = LockModeType.OPTIMISTIC),
-        @NamedQuery(name="getAllGamesFromUser", query="FROM Game AS games WHERE games.requester_id = gameId OR games.receiver_id = gameId", lockMode = LockModeType.OPTIMISTIC)
+        @NamedQuery(name="getAllGames", query="FROM Game AS games"),
+        @NamedQuery(name="getAllGamesFromUser", query="FROM Game AS games WHERE games.requester = :userId OR games.receiver = :userId")
 })
+
 @Entity
 @Table(name = "games")
 public class Game {
