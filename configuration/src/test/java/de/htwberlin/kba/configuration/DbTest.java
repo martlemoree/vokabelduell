@@ -77,4 +77,14 @@ public class DbTest {
         return allPendingRequests;
     }
 
+    @Test
+    public List<User> getAllGamesFromUserTest() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        TypedQuery<User> query = entityManager.createNamedQuery("getAllGamesFromUser", User.class);
+        List<User> allGamesFromUser = query.getResultList();
+        entityTransaction.commit();
+        return allGamesFromUser;
+    }
+
 }

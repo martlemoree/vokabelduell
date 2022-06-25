@@ -5,23 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>Vokabelduell</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>template_module</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <modules>
-    <module>game_management.export</module>
-    <module>game_management.impl</module>
-    <module>user_management.export</module>
-    <module>user_management.impl</module>
-    <module>vocab_management.export</module>
-    <module>vocab_management.impl</module>
-    <module>configuration</module>
-    <module>vokabelduell_ui.export</module>
-    <module>vokabelduell_ui.impl</module>
-      <module>template_module</module>
-  </modules>
 
-  <name>Vokabelduell</name>
+  <name>template_module</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -33,53 +20,11 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.sqlserver</groupId>
-      <artifactId>mssql-jdbc</artifactId>
-      <version>9.5.0.jre8-preview</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>5.3.20</version>
-    </dependency>
-  <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.8.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.36 </version>
-    </dependency>
-    <dependency>
-      <groupId>javax.persistence</groupId>
-      <artifactId>javax.persistence-api</artifactId>
-      <version>2.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.36 </version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>5.6.9.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.3.1</version>
-    </dependency>
-
   </dependencies>
 
   <build>
