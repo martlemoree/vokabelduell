@@ -10,6 +10,7 @@
         <module name="Configuration" />
         <module name="vokabelduell_ui.export" />
         <module name="configuration" />
+        <module name="game_management.rest_client" />
         <module name="GameManagementExport" />
         <module name="UserManagementExport" />
         <module name="game_ui.export" />
