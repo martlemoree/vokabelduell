@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User createUser(String name, String password){
-        // method not tested because it is not part of the game logic
+        // method not tested because it would only be a database test
         User u = new User(name, password);
         userDao.createUser(u);
         return u;

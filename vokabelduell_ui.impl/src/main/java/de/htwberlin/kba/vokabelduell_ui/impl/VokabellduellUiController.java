@@ -69,6 +69,16 @@ public class VokabellduellUiController implements VokabellduellUi {
     @Override
     public void run() throws FileNotFoundException, UserAlreadyExistAuthenticationException {
 
+        List<User> users1 = userService.getUserList();
+        for (User user : users1) {
+            view.printMessage("Das sind se Username:" + user.getUserName() + "Passwort: " + user.getPassword() + "\n") ;
+        }
+        view.printMessage("Gib den Benutzernamen ein");
+        String userName1 = view.userInputString();
+        User user1 = userService.getUserByUserName(userName1);
+
+        view.printMessage("Das ist dein Passwort:" + user1.getPassword());
+
         // Login
         User currentUser = logIn();
 
@@ -198,8 +208,11 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     bol = true;
                                 }
                             } else {
-                                view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal");
+                                view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal oder drücke enter, um die Auswahl abzubrechen.");
                                 bol = true;
+                                if (chosenUser.isEmpty()) {
+                                    bol=false;
+                                }
                             }
 
                         }
@@ -216,26 +229,38 @@ public class VokabellduellUiController implements VokabellduellUi {
             if (input == 5) {
                 view.printMessage("Was möchtest du tun? \n " +
                         "1 - Konto löschen \n " +
-                        "2 - Passwort ändern");
+                        "2 - Passwort ändern \n " +
+                        "3 - Rückkehr ins Hauptmenü");
 
-                int userManagementInput = view.userInputInt();
+                boolean bol = true;
+                do {
+                    int userManagementInput = view.userInputInt();
 
-                if (userManagementInput == 1) {
-                    view.printMessage("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
-                            "1 - Ja \n " +
-                            "2 - Nein");
-                    int deleteUserInput = view.userInputInt();
-                    if (deleteUserInput == 1) {
-                        userService.removeUser(currentUser);
-                        view.printMessage("Dein Konto wurde gelöscht.");
-                    } else if (deleteUserInput == 2) {
-                        break;
+                    if (userManagementInput == 1) {
+                        view.printMessage("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
+                                "1 - Ja \n " +
+                                "2 - Nein");
+                        int deleteUserInput = view.userInputInt();
+                        if (deleteUserInput == 1) {
+                            userService.removeUser(currentUser);
+                            view.printMessage("Dein Konto wurde gelöscht.");
+                            view.printMessage("Bis zum nächsten Mal! :)");
+                            System.exit(0);
+                        } else if (deleteUserInput == 2) {
+                            break;
+                        }
+                    } else if (userManagementInput == 2) {
+                        view.printMessage("Gib Dein neues Password ein.");
+                        String newPassword = view.userInputString();
+                        userService.changePassword(newPassword, currentUser);
+                    } else if (userManagementInput == 3) {
+                        bol = false;
+                    } else {
+                        view.printMessage("Gib eine der Auswahlmöglichkeiten aus dem Menü ein.");
                     }
-                } else if (userManagementInput == 2) {
-                    view.printMessage("Gib Dein neues Password ein.");
-                    String newPassword = view.userInputString();
-                    userService.changePassword(newPassword, currentUser);
-                }
+
+                }  while (bol) ;
+
             }
         } while (input != 6);
 
@@ -272,10 +297,12 @@ public class VokabellduellUiController implements VokabellduellUi {
                         user = userService.getUserByUserName(userName);
                         if (user.getPassword().equals(password)) {
                             bol = false;
+                            view.printMessage("Du bist eingeloggt.");
                         } else {
-                            throw new UserAlreadyExistAuthenticationException("Die Kombination aus Benutzername und Passwort konnte leider nicht gefunden werden. Versuche es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
+                            view.printMessage("Die Kombination aus Benutzername und Passwort konnte leider nicht gefunden werden. Versuche es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                         }
-                    } catch (UserAlreadyExistAuthenticationException e) {
+                    } catch (IllegalArgumentException e) {
+                        view.printMessage("Den Benutzernamen gibt es leider nicht. Probiere es noch einmal.");
                         if (userName.isEmpty() & password.isEmpty()) {
                             break;
                         }
@@ -287,15 +314,16 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                 boolean bol = true;
 
+                String userName = null;
                 do {
                     try {
                         rightNumber = false;
                         view.printMessage("Wie soll dein Benutzername lauten");
-                        String userName = view.userInputString();
+                        userName = view.userInputString();
 
                         for (User alreadyExistingUser : userService.getUserList()) {
                             if (alreadyExistingUser.getUserName().equals(userName)) {
-                                throw new IllegalArgumentException();
+                                throw new UserAlreadyExistAuthenticationException("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                             }
                         }
 
@@ -305,8 +333,11 @@ public class VokabellduellUiController implements VokabellduellUi {
                         user = userService.createUser(userName, password);
 
                         view.printMessage("Das ist deine UserId: " + user.getUserId());
-                    } catch (IllegalArgumentException e) {
-                        view.printMessage("Diesen Benutzernamen gibt es leider schon.");
+                    } catch (UserAlreadyExistAuthenticationException e) {
+                        bol=true;
+                        if (userName.isEmpty()) {
+                            break;
+                        }
                     }
                 } while (bol);
 
@@ -396,7 +427,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         text = vocabListService.readFile(path);
                         bol = false;
                     } catch (FileNotFoundException e) {
-                        view.printMessage("Das hat leider nicht funktioniert. Probiere es noch mal oder drücke enter zum Verlassen des Menüpunkts");
+                        view.printMessage("Das hat leider nicht funktioniert. Probiere es noch mal oder drücke enter zum Verlassen des Menüpunkts.");
                         if (path == null) {
                             break;
                         }
@@ -406,9 +437,23 @@ public class VokabellduellUiController implements VokabellduellUi {
                 vocabListService.createVocabList(text);
             } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
                 view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
-                String vocabListName = view.userInputString();
+                boolean bol=true;
+                VocabList vocabList =null;
+                String vocabListName =null;
+                do {
+                    try {
+                        vocabListName = view.userInputString();
+                        vocabList = vocabListService.getVocabListByName(vocabListName);
+                        bol=false;
+                    } catch (IllegalArgumentException e) {
+                        view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
+                        if (vocabListName.isEmpty()) {
+                            inputVocabListManagementMenu = 4;
+                            break;
+                        }
+                    }
+                } while (bol);
 
-                VocabList vocabList = vocabListService.getVocabListByName(vocabListName);
 
                 view.printMessage("Was möchtest du bearbeiten? \n " +
                         "1 - Namen der Vokabelliste \n " +
@@ -437,51 +482,82 @@ public class VokabellduellUiController implements VokabellduellUi {
                     view.printMessage("Was möchtest du tun? \n " +
                             "1 - Vokabel aus der Vokabelliste entfernen \n " +
                             "2 - Rückkehr ins Hauptmenü");
-                    int inputEditVocab = view.userInputInt();
 
-                    if (inputEditVocab == 1) {
-                        view.printMessage("Gib den Namen der zu entfernenden Vokabel ein.");
-                        String vocabName = view.userInputString();
+                    bol = true;
+                    do {
+                        try {
+                            int inputEditVocab = view.userInputInt();
 
-                        Vocab vocab = vocabService.getVocabByVocabString(vocabName);
-                        vocabListService.removeVocab(vocabList, vocab);
+                            if (inputEditVocab == 1) {
+                                view.printMessage("Gib den Namen der zu entfernenden Vokabel ein.");
+                                String vocabName = view.userInputString();
 
-                    } else if (inputEditVocab == 3) { // Rückkehr ins Hauptmenü
-                        break;
-                    }
+                                Vocab vocab = vocabService.getVocabByVocabString(vocabName);
+                                vocabListService.removeVocab(vocabList, vocab);
+                                bol=false;
+                                view.printMessage("Die Vokabel wurde entfernt.");
+
+                            } else if (inputEditVocab == 2) { // Rückkehr ins Hauptmenü
+                                break;
+                            }
+                        } catch (IllegalArgumentException e) {
+                            view.printMessage("Die Vokabel wurde nicht gefunden. Probier es noch einmal.");
+                        }
+                    } while (bol);
+
+
                 } else if (inputEditVocabList == 5) { // Rückkehr ins Hauptmenü
                     inputVocabListManagementMenu = 4;
                 }
 
             } else if (inputVocabListManagementMenu == 3) { // Vokabelliste löschen
-                view.printMessage("Gib den Namen der zu löschenden Vokabelliste ein.");
-                String vocabListName = view.userInputString();
+                String vocabListName=null;
+                try {
+                    view.printMessage("Gib den Namen der zu löschenden Vokabelliste ein.");
+                    vocabListName = view.userInputString();
 
-                VocabList vocabList = vocabListService.getVocabListByName(vocabListName);
-                vocabListService.removeVocabList(vocabList);
+                    VocabList vocabList = vocabListService.getVocabListByName(vocabListName);
+                    vocabListService.removeVocabList(vocabList);
+                } catch (IllegalArgumentException e) {
+                    view.printMessage("Diese Vokabelliste gibt es nicht. Probiere es noch einmal. Oder drücke enter, um die Auswahl abzubrechen");
+                    if (vocabListName.isEmpty()) {
+                        break;
+                    }
+                }
+
             }
         } while (inputVocabListManagementMenu != 4);
     }
 
     public VocabList chooseVocablist(List<VocabList> randomVocabLists) {
 
-        view.printMessage("Welche Vokabelliste möchtest du wählen? \n " +
-                "1 - " + randomVocabLists.get(0).getName() + ",\n " +
-                "2 - " + randomVocabLists.get(1).getName() + "oder \n " +
-                "3 - " + randomVocabLists.get(2).getName() + "?");
-
-        int input = view.userInputInt();
+        boolean bol=false;
         VocabList randomVocabList = null;
 
-        if (input == 1) {
-            randomVocabList = randomVocabLists.get(0);
-        }
-        if (input == 2) {
-            randomVocabList = randomVocabLists.get(1);
-        }
-        if (input == 3) {
-            randomVocabList = randomVocabLists.get(2);
-        }
+        do {
+
+            view.printMessage("Welche Vokabelliste möchtest du wählen? \n " +
+                    "1 - " + randomVocabLists.get(0).getName() + ",\n " +
+                    "2 - " + randomVocabLists.get(1).getName() + "oder \n " +
+                    "3 - " + randomVocabLists.get(2).getName() + "? \n " +
+                    "4 - " + "Rückkehr ins Hauptmenü?");
+
+            int input = view.userInputInt();
+
+            if (input == 1) {
+                randomVocabList = randomVocabLists.get(0);
+            }
+            if (input == 2) {
+                randomVocabList = randomVocabLists.get(1);
+            }
+            if (input == 3) {
+                randomVocabList = randomVocabLists.get(2);
+            } else {
+                view.printMessage("Gib eine Zahl aus dem Menü ein.");
+                bol=true;
+            }
+
+        } while (bol);
 
         return randomVocabList;
     }
