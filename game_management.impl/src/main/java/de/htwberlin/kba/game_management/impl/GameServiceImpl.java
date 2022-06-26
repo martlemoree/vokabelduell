@@ -82,4 +82,10 @@ public class GameServiceImpl implements GameService {
         // generate Questions
         return questionService.createQuestions(game, vocabList, round);
     }
+
+    @Transactional
+    @Override
+    public void createGame(Game game) {
+        this.gameDao.createGame(game);
+    }
 }

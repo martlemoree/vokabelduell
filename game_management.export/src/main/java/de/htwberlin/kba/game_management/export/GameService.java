@@ -42,4 +42,9 @@ public interface GameService {
      */
     List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList);
 
+    /**
+     * for post request in game controller
+     * @param game that should be created
+     */
+    void createGame(Game game);
 }

@@ -56,4 +56,9 @@ public interface QuestionService {
      */
     boolean answeredQuestion(String answer, Translation rightAnswer);
 
+    /**
+     * necessary for RestController
+     * @param question
+     */
+    void createQuestion(Question question);
 }

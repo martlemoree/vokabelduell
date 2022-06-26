@@ -139,4 +139,10 @@ public class QuestionServiceImpl implements QuestionService {
 
         return false;
     }
+
+    @Transactional
+    @Override
+    public void createQuestion(Question question) {
+        this.questionDao.createQuestion(question);
+    }
 }
