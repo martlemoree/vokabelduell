@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -35,7 +37,15 @@ public class VocabListServiceImpl implements VocabListService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public String readFile(String path) throws FileNotFoundException {
+    public String readFile(String filename) throws FileNotFoundException {
+        // get path with filename
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        String sub = "vocab_management.impl";
+        int index = s.indexOf(sub);
+        s = s.substring(0,index);
+        String path = s + "txt_vocabulary\\" + filename;
+
         //read file
         File file = new File(path);
         Scanner sc = new Scanner(file);

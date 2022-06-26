@@ -10,6 +10,7 @@
         <module name="Configuration" />
         <module name="vokabelduell_ui.export" />
         <module name="configuration" />
+        <module name="game_management.rest_client" />
         <module name="GameManagementExport" />
         <module name="UserManagementExport" />
         <module name="game_ui.export" />
@@ -26,10 +27,12 @@
         <module name="vocab_management.export" />
         <module name="game_management.export" />
         <module name="VocabManagement" />
+        <module name="game_management.rest_server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="GameManagementTest" target="1.7" />
+      <module name="test" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

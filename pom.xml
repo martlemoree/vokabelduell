@@ -11,6 +11,8 @@
   <modules>
     <module>game_management.export</module>
     <module>game_management.impl</module>
+    <module>game_management.rest_server</module>
+    <module>game_management.rest_client</module>
     <module>user_management.export</module>
     <module>user_management.impl</module>
     <module>vocab_management.export</module>

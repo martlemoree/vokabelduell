@@ -2,10 +2,7 @@ package de.htwberlin.kba.vocab_management.impl;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -15,7 +12,10 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,16 +73,19 @@ public class VocabListServiceTest {
     @DisplayName("Method returns a String")
     @Test
     public void testreadFile() throws FileNotFoundException {
-        // To successfully test this method, put file under given file_path
-        String file_path = "C:\\KBA\\vocabulary\\family_and_year.txt";
-        Assert.assertNotNull(service.readFile(file_path));
+
+        // 1. Arrange
+        String filename = "family_and_year.txt";
+
+        // 2. Act & 3. Assert
+        Assert.assertNotNull(service.readFile(filename));
     }
 
     @DisplayName("Method returns a list of vocablists")
     @Test
     public void testGetVocablists() {
 
-        // 1. Assert
+        // 1. Arrange
         VocabList vlist1 = new VocabList();
         VocabList vlist2 = new VocabList();
         VocabList vlist3 = new VocabList();
@@ -95,8 +98,10 @@ public class VocabListServiceTest {
         vlists.add(vlist3);
         vlists.add(vlist4);
 
+        // 2. Act
         Mockito.when(service.getVocabLists()).thenReturn(vlists);
 
+        // 3. Assert
         Assert.assertNotNull(service.getVocabLists());
 
     }
