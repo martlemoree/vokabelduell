@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -70,8 +71,10 @@ public class VokabellduellUiController implements VokabellduellUi {
         // Login
         User currentUser = logIn();
 
-        int input;
+        int input = 0;
         do {
+            boolean rightInput = true;
+
             view.printMessage("Was möchtest du tun? \n " +
                     "1 - Neue Anfrage verschicken \n " +
                     "2 - Anfragen verwalten \n " +
@@ -80,7 +83,15 @@ public class VokabellduellUiController implements VokabellduellUi {
                     "5 - Konto verwalten \n " +
                     "6 - Anwendung beenden");
 
-            input = view.userInputInt();
+            while (rightInput) {
+                input = view.userInputInt();
+                if (input < 7 & input > 0) {
+                    rightInput = false;
+                } else {
+                    view.printMessage("Bitte gib eine Zahl zwischen 1 und 6 ein.");
+                }
+            }
+
 
             // Neue Anfrage verschicken
             if (input == 1) {
@@ -93,7 +104,17 @@ public class VokabellduellUiController implements VokabellduellUi {
                 }
 
                 String userName = view.userInputString();
-                User receiver = userService.getUserByUserName(userName);
+                User receiver = null;
+
+
+                receiver = userService.getUserByUserName(userName);
+                /*
+                try {
+
+                } catch () {
+
+                }
+*/
 
                 requestService.createRequest(currentUser, receiver);
                 view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
@@ -304,9 +325,19 @@ public class VokabellduellUiController implements VokabellduellUi {
 
             // Neue Vokabelliste hinzufügen
             if (inputVocabListManagementMenu == 1) {
-                view.printMessage("Gib den Dateipfad der neuen Vokabelliste ein.");
-                String path = view.userInputString();
-                String text = vocabListService.readFile(path);
+                String text = null;
+                String path = null;
+                try {
+                    view.printMessage("Gib den Dateipfad der neuen Vokabelliste ein.");
+                    path = view.userInputString();
+                    text = vocabListService.readFile(path);
+                } catch (IOException e) {
+                    view.printMessage("Das hat leider nicht funktioniert. Probiere es noch mal oder drücke enter zum Verlassen des Menüpunkts");
+                    if (path == null) {
+                        break;
+                    }
+                }
+
                 vocabListService.createVocabList(text);
             } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
                 view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");

@@ -169,7 +169,6 @@ public class GameServiceTest {
         // s. setup
 
         //2. Act
-        //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
         when(mockRoundService.startNewRound(Mockito.any(Game.class))).thenReturn(round);
         when(mockQuestionService.createQuestions(game, vocabList, round)).thenReturn(questions);
 
@@ -180,39 +179,37 @@ public class GameServiceTest {
         Assert.assertEquals(round.getisPlayedByTwo(), false);
     }
 
-    /*
-     List<Round> rounds = new ArrayList<>();
-        rounds = game.getRounds();
-
-        // if game has not just been created and the last round was not played by both players
-        // the last existing round of the game is played
-        if (!(rounds==null)) {
-            if (!rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
-                Round round = rounds.get(game.getRounds().size()-1);
-
-                round.setPlayedByTwo(true);
-                return round.getQuestions();
-            }
-        }
-     */
-
-    @DisplayName("checks whether questions are returned when game already has rounds")
+    @DisplayName("checks whether questions are returned when game already has rounds and game has not been played by both players")
     @Test
-    public void testGiveQuestionsRoundsReturn() {
+    public void testGiveQuestionsRoundsIsPlayedByTwoFalse() {
         // 1. Arrange
         // s. setup
         List<Round> rounds = Arrays.asList(round);
+        round.setQuestions(questions);
         game.setRounds(rounds);
 
         //2. Act
-        //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
+
+        // 3. Assert
+        Assert.assertEquals(true, round.getisPlayedByTwo());
+        Assert.assertNotNull(givenQuestions);
+    }
+
+    @DisplayName("checks whether questions are returned when game already has rounds and game has already been played by both players")
+    @Test
+    public void testGiveQuestionsRoundsIsPlayedByTwoTrue() {
+        // 1. Arrange
+        // s. setup
+
+        //2. Act
         when(mockRoundService.startNewRound(Mockito.any(Game.class))).thenReturn(round);
         when(mockQuestionService.createQuestions(game, vocabList, round)).thenReturn(questions);
 
         List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
 
         // 3. Assert
-        Assert.assertEquals(round.getisPlayedByTwo(), true);
+        Assert.assertEquals(false, round.getisPlayedByTwo());
         Assert.assertNotNull(givenQuestions);
     }
 
