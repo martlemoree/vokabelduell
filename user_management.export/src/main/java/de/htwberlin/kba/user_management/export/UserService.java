@@ -4,13 +4,17 @@ import java.util.List;
 
 public interface UserService {
     /**
-     * Show the user a list of users without showing the user himself in the list.
+     * Shows the user a list of users without showing the user himself in the list.
      * @param name of the current user
      * @return userList of all users except the current user
      */
     List<User> getUserListWOcurrentUser(String name);
 
-
+    /**
+     * Gives back list of all registered users
+     * @return userList of all users
+     */
+    List<User> getUserList();
 
     /**
      * Offers functionality for user to change password according to given standards

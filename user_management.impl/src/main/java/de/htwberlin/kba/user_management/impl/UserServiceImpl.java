@@ -30,6 +30,12 @@ public class UserServiceImpl implements UserService {
         return listWOuser;
     }
 
+    @Transactional
+    public List<User> getUserList() {
+        List<User> listOfUsers = userDao.getAllUsers();
+        return listOfUsers;
+    }
+
     public void changePassword(String password, User user) {
         // method not implemented and tested because it is not part of the game logic
         user.setPassword(password);

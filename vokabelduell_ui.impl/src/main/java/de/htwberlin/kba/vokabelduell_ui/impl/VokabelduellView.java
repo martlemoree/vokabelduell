@@ -13,14 +13,17 @@ public class VokabelduellView {
     }
 
     public int userInputInt() throws InputMismatchException {
-        Scanner scanner = new Scanner (System.in);
         int input = 0;
+        boolean rightInput = true;
+        Scanner scanner = null;
 
-        while (true) {
+        while (rightInput) {
             try {
+                scanner = new Scanner (System.in);
                 input = scanner.nextInt();
+                rightInput = false;
             } catch (InputMismatchException exception) {
-                System.out.println("Bitte gib eine Zahl zwischen 1 und 4 ein. Drücke enter um die Auswahl zu verlassen.");
+                System.out.println("Bitte gib eine Zahl entsprechend den Zahlen des Menüs ein. Drücke enter um die Auswahl zu verlassen.");
                 if (scanner.next().isEmpty()) {
                     break;
                 }
@@ -30,18 +33,44 @@ public class VokabelduellView {
     }
 
     public String userInputString() throws InputMismatchException {
-        Scanner scanner = new Scanner (System.in);
         String input = null;
+        boolean rightInput = true;
+        Scanner scanner = null;
 
-        while (true) {
+        while (rightInput) {
             try {
+                scanner = new Scanner (System.in);
                 input = scanner.nextLine();
+                rightInput = false;
             } catch (InputMismatchException exception) {
-                System.out.println("Bitte gib einen Test ein. Drücke enter um die Auswahl zu verlassen.");
+                System.out.println("Bitte gib einen Text ein. Drücke enter um die Auswahl zu verlassen.");
                 if (scanner.next().isEmpty()) {
                     break;
                 }
             }
+        }
+        return input;
+    }
+
+    public long userInputLong() {
+
+        Long input = 0L;
+        boolean rightInput = true;
+        Scanner scanner = null;
+
+        while (rightInput) {
+            try {
+                scanner = new Scanner(System.in);
+                input = scanner.nextLong();
+                rightInput = false;
+
+            } catch (Exception e) {
+                System.out.println("Bitte gib einen Text ein. Drücke enter um die Auswahl zu verlassen.");
+                if (scanner.next().isEmpty()) {
+                    break;
+                }
+            }
+
         }
         return input;
     }

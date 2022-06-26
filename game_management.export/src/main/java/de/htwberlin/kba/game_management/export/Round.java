@@ -22,8 +22,10 @@ public class Round {
     @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
     private VocabList vocablist;
 
-    // TODO: DAO NEUE FELDER:
+    // TODO: DAO ZWEI NEUE FELDER:
     private boolean playedByTwo;
+
+    private String lastUserPlayedName;
 
     // Sorry Martin, das musste ich hier schon mal einfügen weil sonst Fehlermeldung
     @OneToMany
@@ -34,7 +36,6 @@ public class Round {
     private Integer version;
 
     public Round(Game game) {
-        this.roundId = roundId;
         this.game = game;
         playedByTwo = false;
     }
@@ -81,6 +82,13 @@ public class Round {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public void setLastUserPlayedName(String lastUserPlayedName) {
+        this.lastUserPlayedName = lastUserPlayedName;
+    }
+    public String getLastUserPlayedName() {
+        return lastUserPlayedName;
     }
 
 }
