@@ -1,8 +1,11 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.Round;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.Translation;
+import de.htwberlin.kba.vocab_management.export.Vocab;
+import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +18,10 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -23,19 +29,41 @@ public class GameServiceTest {
 
     @Spy
     @InjectMocks
-    private GameServiceImpl service;
+    private GameServiceImpl gameService;
     @Mock
     private GameDaoImpl gameDao;
     @Mock
-    private User requester;
+    private RoundService mockRoundService;
     @Mock
+    private QuestionService mockQuestionService;
+    private User requester;
     private User receiver;
+    private Game game;
+    private Round round;
+    List<Question> questions;
+    VocabList vocabList = new VocabList();
 
     @Before
     public void setUp() {
-        //this.service = new GameServiceImpl();
+        //this.gameService = new GameServiceImpl();
         this.requester = new User("MartinTheBrain", "lol123");
         this.receiver = new User("stellomello", "123lol");
+        game = new Game( requester, receiver);
+        round = new Round(game);
+
+        List<String> vocabStrings = Arrays.asList("Vocab");
+        String translationString = "Translation";
+        List<String> translationStrings = Arrays.asList(translationString);
+        Translation translation = new Translation(translationStrings);
+        List<Translation> translations = new ArrayList<>();
+        translations.add(translation);
+        Vocab vocab = new Vocab(vocabStrings, translations);
+        List<Vocab> vocabs = new ArrayList<>();
+        vocabs.add(vocab);
+        vocabList = new VocabList("Category", "Name","Language", vocabs);
+        Question question = new Question(round, translation, translation, translation, translation, vocab);
+
+        questions= Arrays.asList(question);
     }
 
     @DisplayName("checks whether a Game is created correctly.")
@@ -46,24 +74,24 @@ public class GameServiceTest {
 
         //2. Act
         //Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
-        Game game = service.createGame(requester, receiver);
+        Game createdGame = gameService.createGame(requester, receiver);
 
         //3. Assert
-        Assert.assertNotNull(game);
-        Assert.assertEquals(requester, game.getRequester());
-        Assert.assertEquals(receiver, game.getReceiver());
+        Assert.assertNotNull(createdGame);
+        Assert.assertEquals(requester, createdGame.getRequester());
+        Assert.assertEquals(receiver, createdGame.getReceiver());
     }
 
     @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
     @Test
     public void testCalculatePointsOnce() {
         // 1. Arrange
-        Game game = new Game( requester, receiver);
+
         int newPoints = 500;
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
-        service.calculatePoints(game, requester, newPoints);
+        gameService.calculatePoints(game, requester, newPoints);
 
         // 3. Assert
         Assert.assertEquals(newPoints, game.getPointsRequester());
@@ -73,14 +101,13 @@ public class GameServiceTest {
     @Test
     public void testCalculatePointsMultipleTimes() {
         // 1. Arrange
-        Game game = new Game(requester, receiver);
         int newPoints = 500;
         int morePoints = 200;
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
-        service.calculatePoints(game, receiver, newPoints);
-        service.calculatePoints(game, receiver, morePoints);
+        gameService.calculatePoints(game, receiver, newPoints);
+        gameService.calculatePoints(game, receiver, morePoints);
         int sum = newPoints+morePoints;
 
         // 3. Assert
@@ -121,7 +148,7 @@ public class GameServiceTest {
 
         // 2. Act
        // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
-        List<Game> gamesOfUser = service.getGamesFromCurrentUser(user);
+        List<Game> gamesOfUser = gameService.getGamesFromCurrentUser(user);
 
         for (Game g:gamesOfUser) {
             if (g.getRounds().size() >= 6){
@@ -133,6 +160,60 @@ public class GameServiceTest {
         // 3. Assert
         Assert.assertNotNull(gamesOfUser);
         Assert.assertEquals(true, bol);
+    }
+
+    @DisplayName("checks whether questions are returned when game has no rounds yet")
+    @Test
+    public void testGiveQuestionsNoRoundsReturn() {
+        // 1. Arrange
+        // s. setup
+
+        //2. Act
+        //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        when(mockRoundService.startNewRound(Mockito.any(Game.class))).thenReturn(round);
+        when(mockQuestionService.createQuestions(game, vocabList, round)).thenReturn(questions);
+
+        List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
+
+        // 3. Assert
+        Assert.assertNotNull(givenQuestions);
+        Assert.assertEquals(round.getisPlayedByTwo(), false);
+    }
+
+    /*
+     List<Round> rounds = new ArrayList<>();
+        rounds = game.getRounds();
+
+        // if game has not just been created and the last round was not played by both players
+        // the last existing round of the game is played
+        if (!(rounds==null)) {
+            if (!rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
+                Round round = rounds.get(game.getRounds().size()-1);
+
+                round.setPlayedByTwo(true);
+                return round.getQuestions();
+            }
+        }
+     */
+
+    @DisplayName("checks whether questions are returned when game already has rounds")
+    @Test
+    public void testGiveQuestionsRoundsReturn() {
+        // 1. Arrange
+        // s. setup
+        List<Round> rounds = Arrays.asList(round);
+        game.setRounds(rounds);
+
+        //2. Act
+        //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        when(mockRoundService.startNewRound(Mockito.any(Game.class))).thenReturn(round);
+        when(mockQuestionService.createQuestions(game, vocabList, round)).thenReturn(questions);
+
+        List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
+
+        // 3. Assert
+        Assert.assertEquals(round.getisPlayedByTwo(), true);
+        Assert.assertNotNull(givenQuestions);
     }
 
 }

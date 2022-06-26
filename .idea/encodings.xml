@@ -4,13 +4,24 @@
     <file url="file://$PROJECT_DIR$/configuration/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/configuration/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/game_management.export/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/game_management.export/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/game_management.impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/game_management.impl/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/template_module/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/template_module/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user_management.export/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user_management.export/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user_management.impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user_management.impl/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/vocab_management.export/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/vocab_management.export/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/vocab_management.impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/vocab_management.impl/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/vokabelduell_ui.export/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/vokabelduell_ui.export/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/vokabelduell_ui.impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/vokabelduell_ui.impl/src/main/resources" charset="UTF-8" />
   </component>
 </project>

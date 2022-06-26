@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,11 +65,13 @@ public class GameServiceImpl implements GameService {
 
         // if game has not just been created and the last round was not played by both players
         // the last existing round of the game is played
-        if (!rounds.isEmpty() & !rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
-            Round round = rounds.get(game.getRounds().size()-1);
+        if (!(rounds==null)) {
+            if (!rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
+                Round round = rounds.get(game.getRounds().size()-1);
 
-            round.setPlayedByTwo(true);
-            return round.getQuestions();
+                round.setPlayedByTwo(true);
+                return round.getQuestions();
+            }
         }
 
         // if game has just been started OR the last round of the game was played by both players

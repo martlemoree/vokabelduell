@@ -147,8 +147,8 @@ public class VokabellduellUiController implements VokabellduellUi {
                             vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
                         }
                         List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
+                        // Schleife koordiniert den View Aufruf:
                         for (int j = 0; j<4; j++) {
-                            // View Aufruf hier:
                             askQuestions(game, currentUser, questions, j);
                         }
                     }
@@ -166,7 +166,6 @@ public class VokabellduellUiController implements VokabellduellUi {
             }
             // Konto verwalten
             if (input == 5) {
-                // TODO Gibt es hier noch mehr Möglichkeiten?
                 view.printMessage("Was möchtest du tun? \n " +
                         "1 - Konto löschen \n " +
                         "2 - Passwort ändern");
@@ -280,6 +279,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 if (i==1) {
                     vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
                 }
+                // vocablist wurde ausgewählt und wird hier übergeben:
                 List<Question> questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
                 for (int j = 0; j<4; j++) {
                     // View Aufruf hier:

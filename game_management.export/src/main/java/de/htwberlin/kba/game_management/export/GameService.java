@@ -32,15 +32,13 @@ public interface GameService {
     List<Game> getGamesFromCurrentUser(User user);
 
     /**
-     * returns questions for game for three cases:
-     * game has just been created
-     * game was already played, old round has to be finished
-     * game was already played, new round has to be created
+     * returns questions for current game for two cases:
+     * old round has to be finished
+     * new round has to be created
      * @param game game thats being played
      * @param currentUser user who plays
-     * @param vocabList depending on whether round was already started from another player and vocabList has already been chosen,
-     *                  can be null if game has just been created or new round has to start
-     * @return
+     * @param vocabList chosen vocabList by player or opponent
+     * @return correct list of questions for the round
      */
     List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList);
 
