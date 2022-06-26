@@ -191,6 +191,8 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     for (int j = 0; j < 4; j++) {
                                         askQuestions(game, currentUser, questions, j);
                                     }
+
+                                    game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(currentUser.getUserName());
                                 } else {
                                     view.printMessage("Hier ist dein Mitspieler dran. Versuche es noch einmal");
                                     bol = true;
