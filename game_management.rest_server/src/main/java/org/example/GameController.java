@@ -20,7 +20,6 @@ public class GameController
 {
     private final GameService service;
     private final UserService userService;
-
     private final VocabListService vocabListService;
 
 
@@ -32,8 +31,9 @@ public class GameController
     }
 
     @PostMapping(value ="/addGame")
-    public void createGame(@RequestBody Game game) {
+    public String createGame(@RequestBody Game game) {
         service.createGame(game);
+        return "Game created successfully";
     }
 
     @PutMapping(value ="/calculatePoints/{gameId}/{userName}/{points}")
