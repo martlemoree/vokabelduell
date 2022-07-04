@@ -37,7 +37,7 @@ public class GameController
     }
 
     @PutMapping(value ="/calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("userId") String userName,
+    public void calculatePoints(@PathVariable("userName") String userName,
                                 @PathVariable("points") int points, @RequestBody Game game) {
 
         service.calculatePoints(game, userService.getUserByUserName(userName), points);
@@ -56,6 +56,13 @@ public class GameController
         VocabList vlist = vocabListService.getVocabListById(vocablistId);
 
         return service.giveQuestions(game, user, vlist);
+    }
+
+    @GetMapping("/getUsers")
+    public List<User> giveQuestions(){
+        List<User> users = userService.getUserList();
+
+        return users;
     }
 
 

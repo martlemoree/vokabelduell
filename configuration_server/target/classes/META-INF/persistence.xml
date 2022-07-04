@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="jpaDemoPU"
+                      transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>de.htwberlin.kba.vocab_management.export.Translation</class>
+        <class>de.htwberlin.kba.vocab_management.export.Vocab</class>
+        <class>de.htwberlin.kba.vocab_management.export.VocabList</class>
+        <class>de.htwberlin.kba.game_management.export.Game</class>
+        <class>de.htwberlin.kba.game_management.export.Round</class>
+        <class>de.htwberlin.kba.game_management.export.Question</class>
+        <class>de.htwberlin.kba.game_management.export.Request</class>
+        <class>de.htwberlin.kba.user_management.export.User</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver"
+                      value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:sqlserver://sqlservervier.f4.htw-berlin.de" />
+            <property name="javax.persistence.jdbc.user" value="u554789" />
+            <property name="javax.persistence.jdbc.password"
+                      value="p554789" />
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.SQLServer2012Dialect" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <!-- clean, update, clean-drop -->
+        </properties>
+    </persistence-unit>
+</persistence>

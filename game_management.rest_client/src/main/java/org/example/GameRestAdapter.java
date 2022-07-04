@@ -1,6 +1,10 @@
 package org.example;
 
 import de.htwberlin.kba.game_management.export.Game;
+import de.htwberlin.kba.game_management.export.GameService;
+import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -10,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class GameRestAdapter
+public class GameRestAdapter // implements GameService
 {
     //Todo was müssen hier für methoden rein?
 
@@ -21,7 +25,8 @@ public class GameRestAdapter
         this.restTemplate =  restTemplate;
     }
 
-    public String createGame(Game game){
+
+   /* public String createGame(Game game){
 
         final String URL = "http://localhost:8080/game/addGame/";
 
@@ -31,7 +36,7 @@ public class GameRestAdapter
         HttpEntity<Game> entity = new HttpEntity<>(game);
 
        return restTemplate.exchange(URL, HttpMethod.POST, entity, String.class).getBody();
-    }
+    }*/
     /*
     public void calculatePoints(String userName, int points){
         RestTemplate restTemplate = new RestTemplate();

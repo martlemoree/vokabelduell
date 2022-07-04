@@ -362,6 +362,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         // user answers question
         String answer = view.userInputString();
         // is answer correct?
+        // TODO answeredQuestion(question.get(i), answer)
         boolean rightOrWrong = questionService.answeredQuestion(answer, questions.get(i).getRightAnswer());
 
         int points;

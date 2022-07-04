@@ -17,10 +17,10 @@
     <module>user_management.impl</module>
     <module>vocab_management.export</module>
     <module>vocab_management.impl</module>
-    <module>configuration</module>
+    <module>configuration_client</module>
     <module>vokabelduell_ui.export</module>
     <module>vokabelduell_ui.impl</module>
-      <module>template_module</module>
+    <module>configuration_server</module>
   </modules>
 
   <name>Vokabelduell</name>
