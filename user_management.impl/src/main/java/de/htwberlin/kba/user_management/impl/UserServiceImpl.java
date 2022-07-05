@@ -58,4 +58,5 @@ public class UserServiceImpl implements UserService {
     public void removeUser(User user){
         // method not implemented and tested because it is not part of the game logic
     }
+
 }
