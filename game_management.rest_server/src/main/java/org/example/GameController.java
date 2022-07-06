@@ -3,9 +3,9 @@ package org.example;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.game_management.impl.GameServiceImpl;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
-import de.htwberlin.kba.user_management.impl.UserServiceImpl;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +18,13 @@ import java.util.List;
 @RequestMapping("/game")
 public class GameController
 {
+
     private final GameService service;
     private final UserService userService;
     private final VocabListService vocabListService;
 
-
     @Autowired
-    public GameController(GameService service, UserServiceImpl userService, VocabListService vocabListService) {
+    public GameController(GameService service, UserService userService, VocabListService vocabListService) {
         this.service = service;
         this.userService = userService;
         this.vocabListService = vocabListService;
@@ -37,7 +37,7 @@ public class GameController
     }
 
     @PutMapping(value ="/calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("userId") String userName,
+    public void calculatePoints(@PathVariable("userName") String userName,
                                 @PathVariable("points") int points, @RequestBody Game game) {
 
         service.calculatePoints(game, userService.getUserByUserName(userName), points);
@@ -57,7 +57,19 @@ public class GameController
 
         return service.giveQuestions(game, user, vlist);
     }
+/*
+    //@GetMapping("/getUsers")
+    @RequestMapping("/hello")
+    public String hello(){
+       // String users = userService.apiTest();
 
+        return "hallo es klappt";
+    }
+*/
 
+    @RequestMapping("/{id}")
+    public String getExample(@PathVariable("id") String id){
+        return "lol " + id;
+    }
 
 }

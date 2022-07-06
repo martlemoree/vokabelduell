@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/game")
 public class QuestionController {
 
-    private final QuestionService service;
+  /*  private final QuestionService service;
     private final VocabListService vocabListService;
 
     //    public Translation setAnswerOptions() {
@@ -46,6 +46,6 @@ public class QuestionController {
     @PutMapping(value ="/answerQuestion/{answer}/{rightAnswer}")
     public boolean answeredQuestion(@PathVariable("answer") String answer, @PathVariable("rightAnswer") Translation rightAnswer) {
         return service.answeredQuestion(answer, rightAnswer);
-    }
+    }*/
 
 }

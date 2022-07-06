@@ -6,8 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="template_module" />
-        <module name="Configuration" />
         <module name="vokabelduell_ui.export" />
         <module name="configuration" />
         <module name="game_management.rest_client" />
@@ -18,11 +16,13 @@
         <module name="vocab-management.impl" />
         <module name="user_management.impl" />
         <module name="user_management.export" />
+        <module name="configuration_client" />
         <module name="user-management.impl" />
         <module name="vocab_management.impl" />
         <module name="UserManagement" />
         <module name="game_ui.impl" />
         <module name="vokabelduell_ui.impl" />
+        <module name="configuration_server" />
         <module name="GameManagement" />
         <module name="vocab_management.export" />
         <module name="game_management.export" />
@@ -34,5 +34,10 @@
       <module name="GameManagementTest" target="1.7" />
       <module name="test" target="1.7" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="configuration_server" options="-parameters" />
+    </option>
   </component>
 </project>
