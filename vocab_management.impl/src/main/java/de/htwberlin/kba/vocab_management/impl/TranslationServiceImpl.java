@@ -27,8 +27,8 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     @Transactional
-    public void removeTranslation(Translation translationToBeRemoved) {
+    public void removeTranslation(Long translationId) {
         // method not implemented and tested because it is not part of the game logic
-        translationDao.deleteTranslation(translationToBeRemoved);
+        translationDao.deleteTranslation(translationId);
     }
 }

@@ -3,26 +3,32 @@ package org.example;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
+@Service
 public class TranslationRestAdapter {
 
-    private static final String localhost = "http://localhost:8080/";
-
     private RestTemplate restTemplate;
+
+    final String localhostTranslation = "http://localhost:8080/translation/";
 
     @Autowired
     public TranslationRestAdapter(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    /*
-    public ResponseEntity<String> createTranslation(List<String> translations) {
-        HttpEntity<Translation> request = new HttpEntity<>(new Translation(translations));
+    public String createTranslation(Translation translation) {
+        final String URL = localhostTranslation + "create";
+        HttpEntity<Translation> httpEntity = new HttpEntity<>(translation);
+        return restTemplate.exchange(URL, HttpMethod.POST, httpEntity, String.class).getBody();
+    }
 
+    public String removeTranslation(Long translationId) {
+        final String URL = localhostTranslation + "delete/" + translationId;
+        HttpEntity<Long> httpEntity = new HttpEntity<>(translationId);
+        return restTemplate.exchange(URL, HttpMethod.DELETE, httpEntity, String.class).getBody();
+    }
 
-    }*/
 }

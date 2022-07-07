@@ -40,7 +40,7 @@ public class TranslationDaoImpl implements TranslationDao{
     }
 
     @Override
-    public void deleteTranslation(Translation translation) {
-        entityManager.remove(translation);
+    public void deleteTranslation(Long translationId) {
+        entityManager.remove(translationId);
     }
 }

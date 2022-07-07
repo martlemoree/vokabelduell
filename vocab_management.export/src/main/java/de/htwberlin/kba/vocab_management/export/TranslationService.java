@@ -14,8 +14,8 @@ public interface TranslationService {
 
     /**
      * removes a specific translation from the String list of translations.
-     * @param translation the object that should be changed
+     * @param translationId the object that should be changed
      * */
-    void removeTranslation(Translation translation);
+    void removeTranslation(Long translationId);
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
 public class VocabListServiceImpl implements VocabListService {
 
     private VocabListDao vocabListDao;
-   private TranslationDao translationDao;
+    private TranslationDao translationDao;
     private VocabDao vocabDao;
 
     @Autowired
