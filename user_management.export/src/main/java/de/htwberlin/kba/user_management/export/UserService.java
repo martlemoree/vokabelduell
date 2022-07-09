@@ -42,6 +42,6 @@ public interface UserService {
      * holds logic to remove given user
      * @param user which should be removed
      */
-    void removeUser(User user);
+    boolean removeUser(User user);
 
 }

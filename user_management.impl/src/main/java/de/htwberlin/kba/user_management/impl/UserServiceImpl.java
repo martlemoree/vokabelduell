@@ -55,8 +55,12 @@ public class UserServiceImpl implements UserService {
         return u;
     }
 
-    public void removeUser(User user){
-        // method not implemented and tested because it is not part of the game logic
-    }
+    public boolean removeUser(User user){
+        if (!userDao.getAllUsers().contains(userDao.getUserById(user.getUserId()))){
+            return false;
+        }
 
+        userDao.deleteUser(user);
+        return true;
+    }
 }

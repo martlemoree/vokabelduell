@@ -4,6 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -24,7 +25,7 @@ public class UserRestAdapter {
     }
 
     public List<User> getUserListWOcurrentUser(String userName) {
-        final String URL = localhostUser + "all" + userName;
+        final String URL = localhostUser + "all/" + userName;
         HttpEntity<String> httpEntity = new HttpEntity<>(userName);
         return restTemplate.exchange(URL, HttpMethod.GET, httpEntity, List.class).getBody();
     }
@@ -40,22 +41,22 @@ public class UserRestAdapter {
         return restTemplate.exchange(URL, HttpMethod.GET, httpEntity, User.class).getBody();
     }
 
-    public String createUser(User user) {
+    public User createUser(User user) {
         final String URL = localhostUser + "create";
         HttpEntity<User> httpEntity = new HttpEntity<>(user);
-        return restTemplate.exchange(URL, HttpMethod.POST, httpEntity, String.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.POST, httpEntity, User.class).getBody();
     }
 
     public String changePassword(String userName, String password) {
-        final String URL = localhostUser + "edit/" + userName + "/" + password;
+        final String URL = localhostUser + "edit/" + userName;
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(multiValueMap);
         return restTemplate.exchange(URL, HttpMethod.PUT, httpEntity, String.class).getBody();
     }
 
-    public String removeUser(String userName) {
+    public Void removeUser(String userName) {
         final String URL = localhostUser + "delete/" + userName;
         HttpEntity<String> httpEntity = new HttpEntity<>(userName);
-        return restTemplate.exchange(URL, HttpMethod.DELETE, httpEntity, String.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.DELETE, httpEntity, Void.class).getBody();
     }
 }
