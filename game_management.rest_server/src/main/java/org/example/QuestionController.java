@@ -30,6 +30,7 @@ public class QuestionController {
         service.createQuestion(question);
     }
 
+    // TODO Antje hier auch sorry
     @GetMapping("/getAllAnswers")
     public List<Translation> getAllAnswers(@RequestBody Question question){
         return service.getAllAnswers(question);
@@ -39,10 +40,13 @@ public class QuestionController {
         VocabList vlist = vocabListService.getVocabListById(vlistId);
         return service.createQuestions(game, vlist, round);
     }
+
+    // TODO Antje; sorry musste wegen Kempas feedback die methode ändern und will hier nichts kaputt machen
     @PostMapping(value ="/giveAnswerOptionsRandom")
     public List<String> giveAnswerOptionsRandom(@RequestBody Question question) {
         return service.giveAnswerOptionsRandom(question);
     }
+    // TODO Antje sorry hier auch
     @PutMapping(value ="/answerQuestion/{answer}/{rightAnswer}")
     public boolean answeredQuestion(@PathVariable("answer") String answer, @PathVariable("rightAnswer") Translation rightAnswer) {
         return service.answeredQuestion(answer, rightAnswer);

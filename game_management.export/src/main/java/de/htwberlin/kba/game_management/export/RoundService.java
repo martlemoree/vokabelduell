@@ -14,4 +14,11 @@ public interface RoundService {
      * @return new round started
      */
     Round startNewRound(Game game);
+
+    /**
+     * change the player who last played a round in the game
+     * @param game current game
+     * @param user current user
+     */
+    void changeLastPlayer(Game game, User user);
 }

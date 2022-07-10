@@ -60,7 +60,9 @@ public class QuestionServiceImpl implements QuestionService {
         return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
     }
 
-    public List<Translation> getAllAnswers(Question question) {
+    public List<Translation> getAllAnswers(List<Question> questions, int i) {
+        Question question = questions.get(i);
+
         List<Translation> translations = new ArrayList<> ();
         translations.add(question.getRightAnswer());
         translations.add(question.getWrongA ());
@@ -85,13 +87,14 @@ public class QuestionServiceImpl implements QuestionService {
         return questions;
     }
 
-    public List<String> giveAnswerOptionsRandom(Question question) {
+    public List<String> giveAnswerOptionsRandom(List<Question> questions, int i) {
 
+        Question question = questions.get(i);
         Random rand = new Random();
         List<String> answerOptions = new ArrayList<>();
 
         // create translations list to extract answer options randomly
-        List<Translation> translations = getAllAnswers(question);
+        List<Translation> translations = getAllAnswers(questions, i);
 
         // get Random Translation (if various possibilities)
         int index1 = rand.nextInt(translations.size()-1);
@@ -127,8 +130,9 @@ public class QuestionServiceImpl implements QuestionService {
         return answerOptions;
     }
 
-    public boolean answeredQuestion(String answer, Translation rightAnswer) {
+    public boolean answeredQuestion(String answer, List<Question> questions, int i) {
 
+        Translation rightAnswer = questions.get(i).getRightAnswer();
         List<String> translations = rightAnswer.getTranslations();
 
         for (String translation : translations) {
@@ -145,4 +149,14 @@ public class QuestionServiceImpl implements QuestionService {
     public void createQuestion(Question question) {
         this.questionDao.createQuestion(question);
     }
+
+    public String giveVocabStringRandom(List<Question> questions, int i) {
+        Vocab vocab = questions.get(i).getVocab();
+        Random rand = new Random();
+
+        int index = rand.nextInt(vocab.getVocabs().size()-1);
+        return vocab.getVocabs().get(index);
+    }
+
+
 }

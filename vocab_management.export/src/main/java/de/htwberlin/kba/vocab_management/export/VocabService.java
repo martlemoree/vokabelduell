@@ -29,13 +29,6 @@ public interface VocabService {
     void editTranslations(Vocab vocab, List<Translation> translations);
 
     /**
-     * holds logic to give a random entry from the list of strings of the given vocab
-     * @param vocab given vocab
-     * @return random string entry from list of strings of vocab
-     */
-    String giveVocabStringRandom(Vocab vocab);
-
-    /**
      * holds logic to identify and get a vocab by given string
      * @param vocabString given String
      * @return vocab with given name

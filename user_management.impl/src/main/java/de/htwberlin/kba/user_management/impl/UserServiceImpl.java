@@ -23,9 +23,8 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(){}
 
     @Transactional
-    public List<User> getUserListWOcurrentUser(String name) {
+    public List<User> getUserListWOcurrentUser(User user) {
         List<User>listWOuser = userDao.getAllUsers();
-        User user = this.getUserByUserName(name);
         listWOuser.remove(user);
         return listWOuser;
     }

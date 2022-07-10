@@ -8,6 +8,7 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +75,8 @@ public class GameServiceTest {
 
         //2. Act
         //Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
-        Game createdGame = gameService.createGame(requester, receiver);
+        Request request = new Request(Status.PENDING, requester, receiver);
+        Game createdGame = gameService.createGame(request);
 
         //3. Assert
         Assert.assertNotNull(createdGame);
@@ -212,5 +214,4 @@ public class GameServiceTest {
         Assert.assertEquals(false, round.getisPlayedByTwo());
         Assert.assertNotNull(givenQuestions);
     }
-
 }

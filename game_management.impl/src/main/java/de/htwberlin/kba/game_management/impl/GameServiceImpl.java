@@ -29,8 +29,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public Game createGame(User requester, User receiver) {
-        Game game =  new Game (requester, receiver);
+    public Game createGame(Request request) {
+        Game game =  new Game (request.getRequester(), request.getReceiver());
         this.gameDao.createGame(game);
         return game;
     }
@@ -89,4 +89,6 @@ public class GameServiceImpl implements GameService {
     public void createGame(Game game) {
         this.gameDao.createGame(game);
     }
+
+
 }

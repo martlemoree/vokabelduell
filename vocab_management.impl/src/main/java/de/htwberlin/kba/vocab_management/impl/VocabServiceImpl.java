@@ -48,11 +48,4 @@ public class VocabServiceImpl implements VocabService {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }
-
-    public String giveVocabStringRandom(Vocab vocab) {
-        Random rand = new Random();
-
-        int index = rand.nextInt(vocab.getVocabs().size()-1);
-        return vocab.getVocabs().get(index);
-    }
 }

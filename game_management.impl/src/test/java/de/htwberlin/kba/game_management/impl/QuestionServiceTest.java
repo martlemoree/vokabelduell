@@ -36,7 +36,12 @@ public class QuestionServiceTest {
     private Round round;
     private VocabList vocabList;
     private Translation translation;
+    private Translation translation2;
+    private Translation translation3;
+    private Translation translation4;
     private Vocab vocab;
+    private List<Question> questions;
+    private Question question;
     private List<Translation> translations = new ArrayList<>();
     private List<VocabList> vocabLists = new ArrayList<>();
     private String translationString;
@@ -48,11 +53,24 @@ public class QuestionServiceTest {
         User receiver = new User("AuchPeter", "Test123");
         game = new Game(requester, receiver);
         round = new Round(game);
-        List<String> vocabStrings = Arrays.asList("Vocab");
+        List<String> vocabStrings = new ArrayList<>();
+        vocabStrings.add("Vocab");
+        vocabStrings.add("Vocab2");
         translationString = "Translation";
         List<String> translationStrings = Arrays.asList(translationString);
         translation = new Translation(translationStrings);
         translations.add(translation);
+
+        List<String> translationStrings2 = Arrays.asList("Translation2");
+        translation2 = new Translation(translationStrings2);
+        List<String> translationStrings3 = Arrays.asList("Translation3");
+        translation3 = new Translation(translationStrings3);
+        List<String> translationStrings4 = Arrays.asList("Translation4");
+        translation4 = new Translation(translationStrings4);
+
+        translations.add(translation2);
+        translations.add(translation3);
+        translations.add(translation4);
 
         vocab = new Vocab(vocabStrings, translations);
         List<Vocab> vocabs = new ArrayList<>();
@@ -66,6 +84,10 @@ public class QuestionServiceTest {
         List<Round> rounds = new ArrayList<>();
         rounds.add(round);
         game.setRounds(rounds);
+
+        question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        questions = new ArrayList<>();
+        questions.add(question);
 
     }
 
@@ -126,13 +148,13 @@ public class QuestionServiceTest {
 
         // 2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        //   Mockito.when(questionService.setAnswerOptions()).thenReturn(translation);
 
-        Question question = questionService.createQuestion(round, vocabList);
+        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        Translation correctTranslation = question.getRightAnswer();
 
         // 3. Assert
         Assert.assertEquals(round, question.getRound());
-        Assert.assertEquals(translation, question.getRightAnswer());
+        Assert.assertEquals(translation4, correctTranslation);
         Assert.assertEquals(vocab, question.getVocab());
     }
 
@@ -143,24 +165,16 @@ public class QuestionServiceTest {
         // 1. Arrange
         // s. setup
 
-        List<String> translationStrings2 = Arrays.asList("Translation2");
-        Translation translation2 = new Translation(translationStrings2);
-        List<String> translationStrings3 = Arrays.asList("Translation3");
-        Translation translation3 = new Translation(translationStrings3);
-        List<String> translationStrings4 = Arrays.asList("Translation4");
-        Translation translation4 = new Translation(translationStrings4);
-
-        translations.add(translation2);
-        translations.add(translation3);
-        translations.add(translation4);
-
         // 2. Act
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(round, vocabList);
 
-        Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
 
-        List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
+        Mockito.when(questionService.getAllAnswers(questions, 0)).thenReturn(translations);
+
+        List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions, 0);
 
         // 3. Assert
         Assert.assertNotNull(answerOptions);
@@ -174,20 +188,12 @@ public class QuestionServiceTest {
         Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
         Question question = questionService.createQuestion(round, vocabList);
 
-        List<String> translationStrings2 = Arrays.asList("Translation2");
-        Translation translation2 = new Translation(translationStrings2);
-        List<String> translationStrings3 = Arrays.asList("Translation3");
-        Translation translation3 = new Translation(translationStrings3);
-        List<String> translationStrings4 = Arrays.asList("Translation4");
-        Translation translation4 = new Translation(translationStrings4);
-
-        translations.add(translation2);
-        translations.add(translation3);
-        translations.add(translation4);
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
 
         // 2. Act
-        Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
-        List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
+        Mockito.when(questionService.getAllAnswers(questions, 0)).thenReturn(translations);
+        List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions, 0);
 
         // 3. Assert
         Assert.assertTrue(answerOptions.contains("Translation"));
@@ -205,7 +211,7 @@ public class QuestionServiceTest {
         String wrongAnswer = "Falsche Antwort";
 
         // 2. Act
-        boolean givenAnswer = questionService.answeredQuestion(wrongAnswer, translation);
+        boolean givenAnswer = questionService.answeredQuestion(wrongAnswer, questions, 0);
 
         // 3. Assert
         Assert.assertFalse(givenAnswer);
@@ -213,13 +219,13 @@ public class QuestionServiceTest {
     }
 
     @Test
-    @DisplayName("question was answered correct")
+    @DisplayName("question was answered correctly")
     public void testAnsweredQuestionCorrect() {
         // 1. Arrange
         // s. setup
 
         // 2. Act
-        boolean givenAnswer = questionService.answeredQuestion(translationString, translation);
+        boolean givenAnswer = questionService.answeredQuestion("Translation4", questions, 0);
 
         // 3. Assert
         Assert.assertTrue(givenAnswer);
@@ -235,7 +241,7 @@ public class QuestionServiceTest {
         Question question = questionService.createQuestion(round, vocabList);
 
         //2. Act
-        List<Translation> answerOptions = questionService.getAllAnswers(question);
+        List<Translation> answerOptions = questionService.getAllAnswers(questions, 0);
 
         //3. Assert
         Assert.assertNotNull(answerOptions);
@@ -250,7 +256,7 @@ public class QuestionServiceTest {
         boolean translationInAnswerOption = false;
 
         // 2. Act
-        List<Translation> answerOptions = questionService.getAllAnswers(question);
+        List<Translation> answerOptions = questionService.getAllAnswers(questions, 0);
 
         for (Translation answerOption : answerOptions) {
             for (String translationString1 : answerOption.getTranslations()) {
@@ -265,6 +271,42 @@ public class QuestionServiceTest {
         Assert.assertEquals(4, answerOptions.size());
         Assert.assertTrue(translationInAnswerOption);
     }
+
+    @Test
+    @DisplayName("the method should return a string that is not empty")
+    public void testGiveVocabStringRandomNotNull(){
+        //1. Arrange
+
+        /*
+        Candidates for new Question() are:   Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab)
+         */
+        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
+        String randomString = questionService.giveVocabStringRandom(questions, 0);
+
+        //2. Act & 3. Assert
+        Assert.assertNotNull(randomString);
+    }
+
+    @Test
+    @DisplayName("the method should return a reasonable string")
+    public void testGiveVocabStringRandom(){
+        //1. Arrange
+
+        /*
+        Candidates for new Question() are:   Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab)
+         */
+        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
+        String randomString = questionService.giveVocabStringRandom(questions, 0);
+
+        //2. Act & 3. Assert
+        Assert.assertTrue(randomString.equals(vocab.getVocabs().get(0)) || randomString.equals(vocab.getVocabs().get(1)));
+    }
+
+
 
 }
 

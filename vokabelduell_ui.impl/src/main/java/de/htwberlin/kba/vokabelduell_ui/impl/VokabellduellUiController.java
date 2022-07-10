@@ -108,7 +108,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                 view.printMessage("Suche dir aus der Liste von Mitspielern einen Gegner aus!");
 
-                List<User> users = userService.getUserListWOcurrentUser(currentUser.getUserName());
+                List<User> users = userService.getUserListWOcurrentUser(currentUser);
                 for (User user : users) {
                     view.printMessage(user.getUserName() + "\n");
                 }
@@ -202,7 +202,8 @@ public class VokabellduellUiController implements VokabellduellUi {
                                         askQuestions(game, currentUser, questions, j);
                                     }
 
-                                    game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(currentUser.getUserName());
+                                    roundService.changeLastPlayer(game, currentUser);
+
                                 } else {
                                     view.printMessage("Hier ist dein Mitspieler dran. Versuche es noch einmal");
                                     bol = true;
@@ -351,8 +352,8 @@ public class VokabellduellUiController implements VokabellduellUi {
 
     public void askQuestions(Game game, User currentUser, List<Question> questions, int i) {
 
-        List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions.get(i));
-        String vocabString = vocabService.giveVocabStringRandom(questions.get(i).getVocab());
+        List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions, i);
+        String vocabString = questionService.giveVocabStringRandom(questions, i);
 
         view.printMessage("Wie kann" + vocabString + " richtig übersetzt werden? Gib die richtige Antwort ein.\n " +
                 "1 - " + answerOptions.get(0) + ",\n " +
@@ -362,8 +363,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         // user answers question
         String answer = view.userInputString();
         // is answer correct?
-        // TODO answeredQuestion(question.get(i), answer)
-        boolean rightOrWrong = questionService.answeredQuestion(answer, questions.get(i).getRightAnswer());
+        boolean rightOrWrong = questionService.answeredQuestion(answer, questions, i);
 
         int points;
         if (rightOrWrong) {
@@ -371,7 +371,7 @@ public class VokabellduellUiController implements VokabellduellUi {
             view.printMessage("Super, das ist richtig!");
         } else {
             points = -200;
-            view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questions.get(i).getRightAnswer());
+            view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questionService.getAllAnswers(questions, i).get(0));
         }
 
         gameService.calculatePoints(game, currentUser, points);
@@ -386,7 +386,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
             // new game is created and starts immediately
-            Game game = gameService.createGame(request.getRequester(), request.getReceiver());
+            Game game = gameService.createGame(request);
             for (int i = 0; i<2; i++) {
                 VocabList vocabList = null;
                 if (i==1) {
@@ -562,4 +562,6 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         return randomVocabList;
     }
+
+
 }

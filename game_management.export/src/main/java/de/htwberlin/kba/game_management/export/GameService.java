@@ -10,11 +10,10 @@ public interface GameService {
 
     /**
      * creates a new Game.
-     * @param requester is the user who sent the request for the game.
-     * @param receiver is the user who received and accepted the game request.
+     * @param request where to get the receiver and requester from
      * @return a new game
      */
-    Game createGame(User requester, User receiver);
+    Game createGame(Request request);
 
     /**
      * method calculates points for given user and changes value accordingly
@@ -47,4 +46,6 @@ public interface GameService {
      * @param game that should be created
      */
     void createGame(Game game);
+
+
 }

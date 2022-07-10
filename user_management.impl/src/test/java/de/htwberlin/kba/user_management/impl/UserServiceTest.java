@@ -43,12 +43,10 @@ public class UserServiceTest {
     @DisplayName("getUserList gives back return parameter")
     public void testGetUserListWOcurrentUserNotEmpty(){
         // 1. Arrange
-        String name = "AntjeWinner";
 
         // 2. Act
         Mockito.when(userDao.getAllUsers()).thenReturn(this.users);
-        Mockito.when(userDao.getUserByName(name)).thenReturn(this.u1);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(name);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
@@ -59,16 +57,15 @@ public class UserServiceTest {
     @DisplayName("get all users without current user")
     public void testGetUserListWOcurrentUser(){
         // 1. Arrange
-        String example_name = "AntjeWinner";
+
         boolean bol = true;
 
         // 2. Act
-        Mockito.when(userDao.getUserByName(example_name)).thenReturn(u1);
         Mockito.when(userDao.getAllUsers()).thenReturn(users);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(example_name);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
-            if (example_name.equals(usersWithoutCurrentUser.get(i).getUserName())) {
+            if (u1.getUserName().equals(usersWithoutCurrentUser.get(i).getUserName())) {
                 bol = false;
                 break;
             }

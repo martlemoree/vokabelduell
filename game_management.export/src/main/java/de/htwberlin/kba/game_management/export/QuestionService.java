@@ -28,7 +28,7 @@ public interface QuestionService {
      * where the entry at index 0 is the correct answer
      * @return list of answer options
      */
-    List<Translation> getAllAnswers(Question question);
+    List<Translation> getAllAnswers(List<Question> question, int i);
 
 
     /**
@@ -46,19 +46,29 @@ public interface QuestionService {
      * @param question the question which should be asked
      * @return a string list with the answer options
      */
-    List<String> giveAnswerOptionsRandom(Question question);
+    List<String> giveAnswerOptionsRandom(List<Question> question, int i);
 
     /**
      * checks if the given answer from the user is consistent with one of the translations of the right answer
      * @param answer given answer from the user
-     * @param rightAnswer translation object of the right answer
+     * @param questions to get the right answer from
+     * @param i list entry of right question
      * @return true if given answer is consistent with rightAnswer, false if not
      */
-    boolean answeredQuestion(String answer, Translation rightAnswer);
+    boolean answeredQuestion(String answer, List<Question> questions, int i);
 
     /**
      * necessary for RestController
      * @param question
      */
     void createQuestion(Question question);
+
+    // TODO Antje; neue Methode
+    /**
+     * holds logic to give a random entry from the list of strings of the given vocab
+     * @param questions list of used questions
+     * @param i list entry to be addressed
+     * @return random string entry from list of strings of vocab
+     */
+    String giveVocabStringRandom(List<Question> questions, int i);
 }
