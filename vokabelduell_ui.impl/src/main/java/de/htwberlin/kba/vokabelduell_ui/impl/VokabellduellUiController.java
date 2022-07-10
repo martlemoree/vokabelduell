@@ -2,15 +2,18 @@ package de.htwberlin.kba.vokabelduell_ui.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.user_management.export.UserAlreadyExistAuthenticationException;
+import de.htwberlin.kba.user_management.export.UserAlreadyExistsException;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.*;
 import de.htwberlin.kba.vokabelduell_ui.export.VokabellduellUi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.naming.InvalidNameException;
+import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 @Controller
@@ -67,9 +70,13 @@ public class VokabellduellUiController implements VokabellduellUi {
         this.translationService = translationService;
     }
     @Override
-    public void run() throws FileNotFoundException, UserAlreadyExistAuthenticationException {
+    public void run() {
 
         // TODO DAS HIER GEHÖRT NICHT ZUR SPIELELOGIK; BITTE ENTFERNEN
+
+
+
+        /*
         List<User> users1 = userService.getUserList();
         for (User user : users1) {
             view.printMessage("Das sind se Username:" + user.getUserName() + "Passwort: " + user.getPassword() + "\n") ;
@@ -79,6 +86,8 @@ public class VokabellduellUiController implements VokabellduellUi {
         User user1 = userService.getUserByUserName(userName1);
 
         view.printMessage("Das ist dein Passwort:" + user1.getPassword());
+         */
+
         //-----------------------------------------------------------------------------------------------------------------
 
         try {
@@ -119,9 +128,10 @@ public class VokabellduellUiController implements VokabellduellUi {
                     String userName = view.userInputString();
                     User receiver = null;
 
+                    // FIXME
                     try {
                         receiver = userService.getUserByUserName(userName);
-                    } catch (IllegalArgumentException e) {
+                    } catch (EntityNotFoundException e) {
                         view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch mal.");
                     }
 
@@ -167,7 +177,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         try {
                             games = gameService.getGamesFromCurrentUser(currentUser);
                             bol = false;
-                        } catch (NullPointerException e) {
+                        } catch (EntityNotFoundException e) {
                             view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
                             break;
                         }
@@ -272,7 +282,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         }
     }
 
-    public User logIn() throws IllegalArgumentException, UserAlreadyExistAuthenticationException {
+    public User logIn() {
         view.printMessage("Herzlich Willkommen! Was möchtest du tun? \n " +
                 "1 - Einloggen \n " +
                 "2 - Registrieren");
@@ -304,7 +314,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         } else {
                             view.printMessage("Die Kombination aus Benutzername und Passwort konnte leider nicht gefunden werden. Versuche es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                         }
-                    } catch (IllegalArgumentException e) {
+                    } catch (EntityNotFoundException e) {
                         view.printMessage("Den Benutzernamen gibt es leider nicht. Probiere es noch einmal.");
                         if (userName.isEmpty() & password.isEmpty()) {
                             break;
@@ -326,17 +336,22 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                         for (User alreadyExistingUser : userService.getUserList()) {
                             if (alreadyExistingUser.getUserName().equals(userName)) {
-                                throw new UserAlreadyExistAuthenticationException("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
+                                throw new UserAlreadyExistsException("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                             }
                         }
 
                         view.printMessage("Gib dein Passwort ein.");
                         String password = view.userInputString();
 
-                        user = userService.createUser(userName, password);
+                        try {
+                            user = userService.createUser(userName, password);
+                            user = userService.createUser(userName, password);
+                        } catch (SQLException | InvalidNameException e) {
+
+                        }
 
                         view.printMessage("Das ist deine UserId: " + user.getUserId());
-                    } catch (UserAlreadyExistAuthenticationException e) {
+                    } catch (UserAlreadyExistsException e) {
                         bol=true;
                         if (userName.isEmpty()) {
                             break;
@@ -406,7 +421,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         }
     }
 
-    public void vocabListManagement() throws FileNotFoundException {
+    public void vocabListManagement() {
         int inputVocabListManagementMenu;
         do {
             view.printMessage("Was möchtest du tun? \n " +
@@ -437,7 +452,12 @@ public class VokabellduellUiController implements VokabellduellUi {
                     }
                 } while (bol);
 
-                vocabListService.createVocabList(text);
+                try {
+                    vocabListService.createVocabList(text);
+                } catch (FileNotFoundException e) {
+                    view.printMessage("Der File konnte leider nicht gefunden werden.");
+                }
+
             } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
                 view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
                 boolean bol=true;
@@ -448,7 +468,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         vocabListName = view.userInputString();
                         vocabList = vocabListService.getVocabListByName(vocabListName);
                         bol=false;
-                    } catch (IllegalArgumentException e) {
+                    } catch (EntityNotFoundException e) {
                         view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
                         if (vocabListName.isEmpty()) {
                             inputVocabListManagementMenu = 4;
@@ -503,7 +523,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                             } else if (inputEditVocab == 2) { // Rückkehr ins Hauptmenü
                                 break;
                             }
-                        } catch (IllegalArgumentException e) {
+                        } catch (EntityNotFoundException e) {
                             view.printMessage("Die Vokabel wurde nicht gefunden. Probier es noch einmal.");
                         }
                     } while (bol);
@@ -521,7 +541,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                     VocabList vocabList = vocabListService.getVocabListByName(vocabListName);
                     vocabListService.removeVocabList(vocabList);
-                } catch (IllegalArgumentException e) {
+                } catch (EntityNotFoundException e) {
                     view.printMessage("Diese Vokabelliste gibt es nicht. Probiere es noch einmal. Oder drücke enter, um die Auswahl abzubrechen");
                     if (vocabListName.isEmpty()) {
                         break;

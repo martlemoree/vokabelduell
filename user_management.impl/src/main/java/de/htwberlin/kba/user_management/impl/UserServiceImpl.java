@@ -1,11 +1,15 @@
 package de.htwberlin.kba.user_management.impl;
 
+import de.htwberlin.kba.user_management.export.UserAlreadyExistsException;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.InvalidNameException;
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -41,13 +45,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User getUserByUserName(String userName){
+    public User getUserByUserName(String userName) throws EntityNotFoundException {
         // method not tested because it is not part of the game logic
         return userDao.getUserByName(userName);
     }
 
     @Transactional
-    public User createUser(String name, String password){
+    public User createUser(String name, String password) throws InvalidNameException, SQLException, UserAlreadyExistsException {
         // method not tested because it would only be a database test
         User u = new User(name, password);
         userDao.createUser(u);

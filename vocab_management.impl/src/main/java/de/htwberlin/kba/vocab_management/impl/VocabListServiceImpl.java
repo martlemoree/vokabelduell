@@ -7,6 +7,7 @@ import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -212,7 +213,7 @@ public class VocabListServiceImpl implements VocabListService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public VocabList getVocabListByName(String vocabListName) {
+    public VocabList getVocabListByName(String vocabListName) throws EntityNotFoundException {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }

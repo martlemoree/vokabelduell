@@ -2,11 +2,12 @@ package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDao {
 
-    void createUser(User user);
+    void createUser(User user) throws SQLException;
 
     User getUserById(Long userId);
 

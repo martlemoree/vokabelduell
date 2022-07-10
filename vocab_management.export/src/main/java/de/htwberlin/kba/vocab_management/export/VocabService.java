@@ -1,5 +1,6 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public interface VocabService {
@@ -33,5 +34,5 @@ public interface VocabService {
      * @param vocabString given String
      * @return vocab with given name
      */
-    Vocab getVocabByVocabString(String vocabString);
+    Vocab getVocabByVocabString(String vocabString) throws EntityNotFoundException;
 }

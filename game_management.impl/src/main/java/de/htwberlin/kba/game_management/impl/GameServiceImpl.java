@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Transactional
-    public List<Game> getGamesFromCurrentUser(User user) {
+    public List<Game> getGamesFromCurrentUser(User user) throws EntityNotFoundException {
         List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user.getUserId());
 
         for (Game g:gamesFromUser ) {

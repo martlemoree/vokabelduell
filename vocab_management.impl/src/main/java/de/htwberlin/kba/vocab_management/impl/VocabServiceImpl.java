@@ -6,6 +6,7 @@ import de.htwberlin.kba.vocab_management.export.VocabService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -44,7 +45,7 @@ public class VocabServiceImpl implements VocabService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public Vocab getVocabByVocabString(String vocabString) {
+    public Vocab getVocabByVocabString(String vocabString) throws EntityNotFoundException {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }

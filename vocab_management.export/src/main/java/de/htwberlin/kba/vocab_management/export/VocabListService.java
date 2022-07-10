@@ -1,5 +1,6 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public interface VocabListService {
      * @param vocabListName name of the vocablist
      * @return vocablist with given name
      */
-    VocabList getVocabListByName( String vocabListName);
+    VocabList getVocabListByName( String vocabListName) throws EntityNotFoundException;
 
     /**
      * holds logic to get a vocablist by given id

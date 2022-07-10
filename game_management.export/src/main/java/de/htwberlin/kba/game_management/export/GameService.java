@@ -4,6 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public interface GameService {
@@ -28,7 +29,7 @@ public interface GameService {
      * @param user current user
      * @return list of all existing games of current user
      */
-    List<Game> getGamesFromCurrentUser(User user);
+    List<Game> getGamesFromCurrentUser(User user) throws EntityNotFoundException;
 
     /**
      * returns questions for current game for two cases:

@@ -4,6 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -13,7 +14,7 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public void createUser(User user) {
+    public void createUser(User user) throws SQLException {
         entityManager.persist(user);
     }
 

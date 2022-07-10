@@ -1,5 +1,8 @@
 package de.htwberlin.kba.user_management.export;
 
+import javax.naming.InvalidNameException;
+import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
@@ -29,14 +32,14 @@ public interface UserService {
      * @param password password chosen by current user
      * @return new user created
      */
-    User createUser(String name, String password);
+    User createUser(String name, String password) throws InvalidNameException, SQLException, UserAlreadyExistsException;
 
     /**
      * holds logic to get user by userName
      * @param userName to identify the user
      * @return the user that belongs to the given userName
      */
-    User getUserByUserName(String userName);
+    User getUserByUserName(String userName) throws EntityNotFoundException;
 
     /**
      * holds logic to remove given user
