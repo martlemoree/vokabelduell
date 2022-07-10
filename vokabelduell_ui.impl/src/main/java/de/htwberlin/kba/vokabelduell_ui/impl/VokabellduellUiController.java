@@ -69,6 +69,7 @@ public class VokabellduellUiController implements VokabellduellUi {
     @Override
     public void run() throws FileNotFoundException, UserAlreadyExistAuthenticationException {
 
+        // TODO DAS HIER GEHÖRT NICHT ZUR SPIELELOGIK; BITTE ENTFERNEN
         List<User> users1 = userService.getUserList();
         for (User user : users1) {
             view.printMessage("Das sind se Username:" + user.getUserName() + "Passwort: " + user.getPassword() + "\n") ;
@@ -78,113 +79,115 @@ public class VokabellduellUiController implements VokabellduellUi {
         User user1 = userService.getUserByUserName(userName1);
 
         view.printMessage("Das ist dein Passwort:" + user1.getPassword());
+        //-----------------------------------------------------------------------------------------------------------------
 
-        // Login
-        User currentUser = logIn();
+        try {
+            // Login
+            User currentUser = logIn();
 
-        int input = 0;
-        do {
-            boolean rightInput = true;
+            int input = 0;
+            do {
+                boolean rightInput = true;
 
-            view.printMessage("Was möchtest du tun? \n " +
-                    "1 - Neue Anfrage verschicken \n " +
-                    "2 - Anfragen verwalten \n " +
-                    "3 - Spiel weiterspielen \n " +
-                    "4 - Vokabeln verwalten \n " +
-                    "5 - Konto verwalten \n " +
-                    "6 - Anwendung beenden");
+                view.printMessage("Was möchtest du tun? \n " +
+                        "1 - Neue Anfrage verschicken \n " +
+                        "2 - Anfragen verwalten \n " +
+                        "3 - Spiel weiterspielen \n " +
+                        "4 - Vokabeln verwalten \n " +
+                        "5 - Konto verwalten \n " +
+                        "6 - Anwendung beenden");
 
-            while (rightInput) {
-                input = view.userInputInt();
-                if (input < 7 & input > 0) {
-                    rightInput = false;
-                } else {
-                    view.printMessage("Bitte gib eine Zahl zwischen 1 und 6 ein.");
-                }
-            }
-
-            // Neue Anfrage verschicken
-            if (input == 1) {
-
-                view.printMessage("Suche dir aus der Liste von Mitspielern einen Gegner aus!");
-
-                List<User> users = userService.getUserListWOcurrentUser(currentUser);
-                for (User user : users) {
-                    view.printMessage(user.getUserName() + "\n");
+                while (rightInput) {
+                    input = view.userInputInt();
+                    if (input < 7 & input > 0) {
+                        rightInput = false;
+                    } else {
+                        view.printMessage("Bitte gib eine Zahl zwischen 1 und 6 ein.");
+                    }
                 }
 
-                String userName = view.userInputString();
-                User receiver = null;
+                // Neue Anfrage verschicken
+                if (input == 1) {
 
-                try {
-                    receiver = userService.getUserByUserName(userName);
-                } catch (IllegalArgumentException e) {
-                    view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch mal.");
+                    view.printMessage("Suche dir aus der Liste von Mitspielern einen Gegner aus!");
+
+                    List<User> users = userService.getUserListWOcurrentUser(currentUser);
+                    for (User user : users) {
+                        view.printMessage(user.getUserName() + "\n");
+                    }
+
+                    String userName = view.userInputString();
+                    User receiver = null;
+
+                    try {
+                        receiver = userService.getUserByUserName(userName);
+                    } catch (IllegalArgumentException e) {
+                        view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch mal.");
+                    }
+
+                    requestService.createRequest(currentUser, receiver);
+                    view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
                 }
 
-                requestService.createRequest(currentUser, receiver);
-                view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
-            }
+                // Anfragen verwalten
+                if (input == 2) {
 
-            // Anfragen verwalten
-            if (input == 2) {
+                    view.printMessage("Gib den Benutzernamen des:r Nutzers:in ein, dessen Anfrage du annehmen oder ablehnen möchtest oder '6' zur Rückkehr ins Hauptmenü!");
 
-                view.printMessage("Gib den Benutzernamen des:r Nutzers:in ein, dessen Anfrage du annehmen oder ablehnen möchtest oder '6' zur Rückkehr ins Hauptmenü!");
+                    // Alle Anfragen ausgeben, wo der currentUser involviert ist, die noch nicht bearbeitet wurden
+                    List<Request> requests = requestService.getPendingRequestsForCurrentUser(currentUser);
 
-                // Alle Anfragen ausgeben, wo der currentUser involviert ist, die noch nicht bearbeitet wurden
-                List<Request> requests = requestService.getPendingRequestsForCurrentUser(currentUser);
+                    for (Request request : requests) {
+                        view.printMessage(request.getRequester().getUserName() + "\n");
+                    }
 
-                for (Request request : requests) {
-                    view.printMessage(request.getRequester().getUserName() + "\n");
-                }
+                    String userOrMenu = view.userInputString();
 
-                String userOrMenu = view.userInputString();
-
-                for (Request request : requests) {
-                    if (userOrMenu.equals(request.getRequester().getUserName())) {
-                        // Status der Anfrage ändern
-                        view.printMessage("Möchtest du (1) die Anfrage annehmen oder sie (2) ablehnen? Oder wähle 6 zur Rückkehr ins Hauptmenü!");
-                        int requestAnswer = view.userInputInt();
-                        if (requestAnswer == 1) {
-                            changeRequestStatus(request, Status.ACCEPTED);
-                        } else if (requestAnswer == 2) {
-                            changeRequestStatus(request, Status.REJECTED);
+                    for (Request request : requests) {
+                        if (userOrMenu.equals(request.getRequester().getUserName())) {
+                            // Status der Anfrage ändern
+                            view.printMessage("Möchtest du (1) die Anfrage annehmen oder sie (2) ablehnen? Oder wähle 6 zur Rückkehr ins Hauptmenü!");
+                            int requestAnswer = view.userInputInt();
+                            if (requestAnswer == 1) {
+                                changeRequestStatus(request, Status.ACCEPTED);
+                            } else if (requestAnswer == 2) {
+                                changeRequestStatus(request, Status.REJECTED);
+                            }
                         }
                     }
                 }
-            }
 
-            // Spiel weiterspielen
-            if (input == 3) {
-                // show all existing games from current user
-                List<Game> games;
-                boolean bol = true;
+                // Spiel weiterspielen
+                if (input == 3) {
+                    // show all existing games from current user
+                    List<Game> games;
+                    boolean bol = true;
 
-                do {
-                    try {
-                        games = gameService.getGamesFromCurrentUser(currentUser);
-                        bol = false;
-                    } catch (NullPointerException e) {
-                        view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
-                        break;
-                    }
-
-                    view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
-
-                    for (Game game : games) {
-                        if (game.getRounds().size() < 6) {
-                            if (!game.getRounds().get(game.getRounds().size()-1).getLastUserPlayedName().equals(currentUser.getUserName())) {
-                                view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
-                            } else {
-                                view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
-                            }
-                        } else {
-                            view.printMessage("Das Spiel wurde beendet!");
+                    do {
+                        try {
+                            games = gameService.getGamesFromCurrentUser(currentUser);
+                            bol = false;
+                        } catch (NullPointerException e) {
+                            view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
                             break;
                         }
-                    }
 
-                    // TODO HIER EXCEPTION?
+                        view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
+
+                        for (Game game : games) {
+                            if (game.getRounds().size() < 6) {
+                                if (!game.getRounds().get(game.getRounds().size()-1).getLastUserPlayedName().equals(currentUser.getUserName())) {
+                                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                                } else {
+                                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
+                                }
+                            } else {
+                                view.printMessage("Das Spiel wurde beendet!");
+                                break;
+                            }
+                        }
+
+                        // TODO HIER EXCEPTION?
                         String chosenUser = view.userInputString();
                         for (Game game : games) {
                             if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
@@ -215,59 +218,58 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     bol=false;
                                 }
                             }
-
                         }
-                } while (bol);
+                    } while (bol);
+                }
 
+                // Vokabeln verwalten
+                if (input == 4) {
+                    vocabListManagement();
+                }
+                // Konto verwalten
+                if (input == 5) {
+                    view.printMessage("Was möchtest du tun? \n " +
+                            "1 - Konto löschen \n " +
+                            "2 - Passwort ändern \n " +
+                            "3 - Rückkehr ins Hauptmenü");
 
-            }
+                    boolean bol = true;
+                    do {
+                        int userManagementInput = view.userInputInt();
 
-            // Vokabeln verwalten
-            if (input == 4) {
-                vocabListManagement();
-            }
-            // Konto verwalten
-            if (input == 5) {
-                view.printMessage("Was möchtest du tun? \n " +
-                        "1 - Konto löschen \n " +
-                        "2 - Passwort ändern \n " +
-                        "3 - Rückkehr ins Hauptmenü");
-
-                boolean bol = true;
-                do {
-                    int userManagementInput = view.userInputInt();
-
-                    if (userManagementInput == 1) {
-                        view.printMessage("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
-                                "1 - Ja \n " +
-                                "2 - Nein");
-                        int deleteUserInput = view.userInputInt();
-                        if (deleteUserInput == 1) {
-                            userService.removeUser(currentUser);
-                            view.printMessage("Dein Konto wurde gelöscht.");
-                            view.printMessage("Bis zum nächsten Mal! :)");
-                            System.exit(0);
-                        } else if (deleteUserInput == 2) {
-                            break;
+                        if (userManagementInput == 1) {
+                            view.printMessage("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
+                                    "1 - Ja \n " +
+                                    "2 - Nein");
+                            int deleteUserInput = view.userInputInt();
+                            if (deleteUserInput == 1) {
+                                userService.removeUser(currentUser);
+                                view.printMessage("Dein Konto wurde gelöscht.");
+                                view.printMessage("Bis zum nächsten Mal! :)");
+                                System.exit(0);
+                            } else if (deleteUserInput == 2) {
+                                break;
+                            }
+                        } else if (userManagementInput == 2) {
+                            view.printMessage("Gib Dein neues Password ein.");
+                            String newPassword = view.userInputString();
+                            userService.changePassword(newPassword, currentUser);
+                        } else if (userManagementInput == 3) {
+                            bol = false;
+                        } else {
+                            view.printMessage("Gib eine der Auswahlmöglichkeiten aus dem Menü ein.");
                         }
-                    } else if (userManagementInput == 2) {
-                        view.printMessage("Gib Dein neues Password ein.");
-                        String newPassword = view.userInputString();
-                        userService.changePassword(newPassword, currentUser);
-                    } else if (userManagementInput == 3) {
-                        bol = false;
-                    } else {
-                        view.printMessage("Gib eine der Auswahlmöglichkeiten aus dem Menü ein.");
-                    }
 
-                }  while (bol) ;
+                    }  while (bol) ;
 
-            }
-        } while (input != 6);
-
-        view.printMessage("Bis zum nächsten Mal! :)");
-        System.exit(0);
-
+                }
+            } while (input != 6);
+        } catch (RuntimeException e) {
+            view.printMessage("Es ist leider ein Fehler aufgetreten. Bitte kontaktiere den Systemadministrator.");
+        } finally {
+            view.printMessage("Die Anwendung wird beendet. Bis zum nächsten Mal! :)");
+            System.exit(0);
+        }
     }
 
     public User logIn() throws IllegalArgumentException, UserAlreadyExistAuthenticationException {

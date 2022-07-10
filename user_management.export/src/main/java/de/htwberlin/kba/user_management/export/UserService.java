@@ -5,7 +5,7 @@ import java.util.List;
 public interface UserService {
     /**
      * Shows the user a list of users without showing the user himself in the list.
-     * @param current user
+     * @param user current user
      * @return userList of all users except the current user
      */
     List<User> getUserListWOcurrentUser(User user);
