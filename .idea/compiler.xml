@@ -38,6 +38,7 @@
       <module name="Configuration" target="1.7" />
       <module name="game_management.rest_client" target="1.7" />
       <module name="GameManagementTest" target="1.7" />
+      <module name="template_module" target="1.7" />
       <module name="test" target="1.7" />
       <module name="user_management.rest_client" target="1.7" />
       <module name="vokabelduell_ui.export" target="17" />
