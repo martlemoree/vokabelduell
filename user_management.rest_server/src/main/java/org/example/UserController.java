@@ -21,11 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /*
     @GetMapping(value = "/all/{userName}")
     public List<User> getUserListWOcurrentUser(@PathVariable("userName") String userName) { //throws UserNotFoundException
         List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(userName);
         return userListWOcurrentUser;
-    }
+    }*/
 
     @GetMapping(value = "/all")
     public List<User> getUserList() {
@@ -38,13 +39,13 @@ public class UserController {
         User user = userService.getUserByUserName(userName);
         return user;
     }
-
+/*
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createUser(@RequestBody User user) throws URISyntaxException {
         User newUser = userService.createUser(user.getUserName(), user.getPassword());
         URI uri = new URI("/user/" + newUser.getUserName());
         return ResponseEntity.created(uri).build();
-    }
+    }*/
 
     @PutMapping(value = "edit/{userName}")
     public ResponseEntity<?> changePassword(@PathVariable("userName") String userName, @RequestBody String password) {

@@ -15,6 +15,7 @@
     <module>user_management.export</module>
     <module>user_management.impl</module>
     <module>user_management.rest_server</module>
+    <module>user_management.rest_client</module>
     <module>vocab_management.export</module>
     <module>vocab_management.impl</module>
     <module>vocab_management.rest_server</module>

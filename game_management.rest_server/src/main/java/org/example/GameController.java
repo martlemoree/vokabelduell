@@ -9,8 +9,11 @@ import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -30,10 +33,11 @@ public class GameController
         this.vocabListService = vocabListService;
     }
 
-    @PostMapping(value ="/addGame")
-    public String createGame(@RequestBody Game game) {
-        service.createGame(game);
-        return "Game created successfully";
+    @PostMapping(value = "/create")
+    public ResponseEntity<Void> createUser(@RequestBody Game game) throws URISyntaxException, URISyntaxException {
+        Game newGame = service.createGame(game);
+        URI uri = new URI("/game/" + newGame.getGameId());
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value ="/calculatePoints/{gameId}/{userName}/{points}")

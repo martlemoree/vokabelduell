@@ -19,6 +19,7 @@
     <file url="file://$PROJECT_DIR$/user_management.impl/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user_management.impl/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user_management.rest_client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user_management.rest_client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user_management.rest_server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user_management.rest_server/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/vocab_management.export/src/main/java" charset="UTF-8" />

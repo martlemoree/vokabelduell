@@ -1,5 +1,7 @@
 package de.htwberlin.kba.user_management.export;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @NamedQuery(name="getAllUsers", query="FROM User AS users")

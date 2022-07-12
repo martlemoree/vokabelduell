@@ -4,12 +4,10 @@ import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -87,8 +85,9 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void createGame(Game game) {
+    public Game createGame(Game game) {
         this.gameDao.createGame(game);
+        return game;
     }
 
 
