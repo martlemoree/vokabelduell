@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,24 +36,6 @@ public class UserRestAdapter {
         return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
     }
 
-    public List<User> getUserList2() {
-        ResponseEntity<User[]> response =
-                restTemplate.getForEntity(
-                        localhostUser + "all",
-                        User[].class);
-        User[] users = response.getBody();
-        return Arrays.asList(users);
-    }
-
-    public List<User> getUserList3() {
-        ResponseEntity<List<User>> rateResponse =
-                restTemplate.exchange(localhostUser + "all",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<User>>() {
-                        });
-        List<User> users = rateResponse.getBody();
-        return users;
-    }
-
     public User getUserByUserName(String userName) {
         final String URL = localhostUser + userName;
         HttpEntity<String> httpEntity = new HttpEntity<>(userName);
@@ -74,9 +55,8 @@ public class UserRestAdapter {
         return restTemplate.exchange(URL, HttpMethod.PUT, httpEntity, String.class).getBody();
     }
 
-    public Void removeUser(String userName) {
+    public void removeUser(String userName) {
         final String URL = localhostUser + "delete/" + userName;
-        HttpEntity<String> httpEntity = new HttpEntity<>(userName);
-        return restTemplate.exchange(URL, HttpMethod.DELETE, httpEntity, Void.class).getBody();
+        restTemplate.delete(URL);
     }
 }
