@@ -33,6 +33,8 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
+
+        //Entity Manager Mocken
         GameDao gameDao = new GameDaoImpl();
         RoundService roundService = new RoundServiceImpl(new RoundDaoImpl());
         QuestionService questionService = new QuestionServiceImpl(new QuestionDaoImpl(), new VocabListDaoImpl(), new VocabListServiceImpl(new VocabListDaoImpl(), new TranslationDaoImpl(), new VocabDaoImpl()));

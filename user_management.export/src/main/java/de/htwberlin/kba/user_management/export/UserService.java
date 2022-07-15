@@ -47,4 +47,6 @@ public interface UserService {
      */
     boolean removeUser(User user);
 
+     User testAPI(String Name);
+
 }

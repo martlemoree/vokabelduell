@@ -66,4 +66,8 @@ public class UserServiceImpl implements UserService {
         userDao.deleteUser(user);
         return true;
     }
+
+    public User testAPI(String Name){
+        return new User(Name, "ES GEHT");
+    }
 }

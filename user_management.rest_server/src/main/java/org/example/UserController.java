@@ -3,6 +3,7 @@ package org.example;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,26 @@ public class UserController {
         return userList;
     }
 
-    @GetMapping(value = "/{userName}")
+    //@GetMapping(value = "/{userName}")
+    @RequestMapping (value = "/{userName}")
     public User getUserByUserName(@PathVariable("userName") String userName) { //throws UserNotFoundException
         User user = userService.getUserByUserName(userName);
+        return user;
+    }
+
+    @GetMapping("users/{name}")
+    public ResponseEntity<User> getUserByUserName2(@PathVariable String name) {
+        User user = userService.getUserByUserName(name);
+       // if (user.isPresent()) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+       // } else {
+        //    throw new RecordNotFoundException();
+       // }
+    }
+
+    @RequestMapping(value = "/users2/{id}", method = RequestMethod.GET)
+    public User getUserByUserName3(@PathVariable("id") String id) {
+        User user = userService.testAPI(id);
         return user;
     }
 /*
