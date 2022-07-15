@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
-@NamedQuery(name="getAllUsers", query="FROM User AS users")
+@NamedQueries({
+        @NamedQuery(name="getAllUsers", query="FROM User AS users"),
+        @NamedQuery(name="getUserByUserName", query="FROM User AS users WHERE users.userName = :userName")
+})
 @Entity
 @Table(name = "users")
 public class User {
