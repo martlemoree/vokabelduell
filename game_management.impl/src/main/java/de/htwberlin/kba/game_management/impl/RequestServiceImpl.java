@@ -36,14 +36,28 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public void createRequest(User requester, User receiver) {
+    public Request createRequest(User requester, User receiver) {
         Request request = new Request(PENDING, requester, receiver);
         requestDao.createRequest(request);
+        return request;
     }
 
     @Override
     @Transactional
     public List<Request> getPendingRequestsForCurrentUser(User user) {
+
+        return requestDao.getAllPendingRequests();
+    }
+
+    @Override
+    @Transactional
+    public Request getRequestById(Long Id) {
+        return requestDao.getRequestById(Id);
+    }
+
+    @Override
+    @Transactional
+    public List<Request> getAllRequests() {
         return requestDao.getAllRequests();
     }
 }

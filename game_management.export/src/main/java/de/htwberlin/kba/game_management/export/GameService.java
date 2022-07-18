@@ -4,6 +4,7 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface GameService {
@@ -42,12 +43,13 @@ public interface GameService {
     List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList);
 
     /**
-     * for post request in game controller
-     *
-     * @param game that should be created
-     * @return
+     * get a game object by the given gameId
+     * @param gameId given Id that should be searched for
+     * @return the game with the given gameId
      */
-    Game createGame(Game game);
+    Game getGamebyId(Long gameId);
 
 
+    @Transactional
+    List<Game> getALlGames();
 }

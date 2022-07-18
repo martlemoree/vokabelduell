@@ -24,11 +24,11 @@ public class Game {
     @Column(name = "points_receiver")
     private int pointsReceiver;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "requester_id", referencedColumnName = "user_id")
     private User requester;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "receiver_id", referencedColumnName = "user_id")
     private User receiver;
 

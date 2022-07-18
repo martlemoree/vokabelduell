@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RequestService {
@@ -17,10 +18,12 @@ public interface RequestService {
 
     /**
      * adds a new game request.
-     * @param requester     is the user who created the request
-     * @param receiver      is the user who receives the request
+     *
+     * @param requester is the user who created the request
+     * @param receiver  is the user who receives the request
+     * @return
      */
-    void createRequest(User requester, User receiver);
+    Request createRequest(User requester, User receiver);
 
     /**
      * gives back all requests with status pending, where given user is the receiver
@@ -29,4 +32,9 @@ public interface RequestService {
      */
     List<Request> getPendingRequestsForCurrentUser(User user);
 
+    @Transactional
+    Request getRequestById(Long Id);
+
+    @Transactional
+    List<Request> getAllRequests();
 }

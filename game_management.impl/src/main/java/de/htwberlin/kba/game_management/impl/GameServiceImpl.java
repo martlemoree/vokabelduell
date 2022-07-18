@@ -3,6 +3,7 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,12 +84,22 @@ public class GameServiceImpl implements GameService {
         return questionService.createQuestions(game, vocabList, round);
     }
 
-    @Transactional
     @Override
-    public Game createGame(Game game) {
-        this.gameDao.createGame(game);
-        return game;
+    @Transactional
+    public Game getGamebyId(Long gameId) {
+        return gameDao.getGameById(gameId);
     }
+
+    @Override
+    @Transactional
+    public List<Game> getALlGames() {
+        List<Game> games = gameDao.getAllGames();
+        for (Game g: games) {
+            Hibernate.initialize(g.getRounds());
+        }
+        return games;
+    }
+
 
 
 }

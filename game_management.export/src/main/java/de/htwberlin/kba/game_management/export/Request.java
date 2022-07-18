@@ -20,11 +20,11 @@ public class Request {
     @Column(name = "request_status")
     private Status requestStatus;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE) // because https://stackoverflow.com/questions/2302802/how-to-fix-the-hibernate-object-references-an-unsaved-transient-instance-save
     @JoinColumn(name = "user_requester", referencedColumnName = "user_id")
     private User requester;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE) // because https://stackoverflow.com/questions/2302802/how-to-fix-the-hibernate-object-references-an-unsaved-transient-instance-save
     @JoinColumn(name = "user_receiver", referencedColumnName = "user_id")
     private User receiver;
 

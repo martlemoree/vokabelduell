@@ -3,6 +3,7 @@ package org.example;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.game_management.impl.GameServiceImpl;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
@@ -22,58 +23,57 @@ import java.util.List;
 public class GameController
 {
 
-    private final GameService service;
+    private final GameService gameService;
     private final UserService userService;
     private final VocabListService vocabListService;
 
     @Autowired
     public GameController(GameService service, UserService userService, VocabListService vocabListService) {
-        this.service = service;
+        this.gameService = service;
         this.userService = userService;
         this.vocabListService = vocabListService;
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createUser(@RequestBody Game game) throws URISyntaxException, URISyntaxException {
-        Game newGame = service.createGame(game);
+    public ResponseEntity<Void> createGame(@RequestBody Request request) throws URISyntaxException, URISyntaxException {
+        Game newGame = gameService.createGame(request);
         URI uri = new URI("/game/" + newGame.getGameId());
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping(value ="/calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("userName") String userName,
-                                @PathVariable("points") int points, @RequestBody Game game) {
+    @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
+    public ResponseEntity<?> calculatePoints(@PathVariable("gameId") String gameId, @PathVariable("userName") String userName, @PathVariable("points") String points) {
+        User user = userService.getUserByUserName(userName);
+        Game game = gameService.getGamebyId(Long.valueOf(gameId));
 
-        service.calculatePoints(game, userService.getUserByUserName(userName), points);
+        gameService.calculatePoints(game, user, Integer.parseInt(points));
+        return game != null? ResponseEntity.ok(game) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/gamesOfUser/{name}")
     public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name){
         User user = userService.getUserByUserName(name);
-        return service.getGamesFromCurrentUser(user);
+        return gameService.getGamesFromCurrentUser(user);
     }
 
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @RequestBody Game game){
+                                        @PathVariable String gameId){
+        Game game = gameService.getGamebyId(Long.valueOf(gameId));
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);
 
-        return service.giveQuestions(game, user, vlist);
+        return gameService.giveQuestions(game, user, vlist);
     }
-/*
-    //@GetMapping("/getUsers")
-    @RequestMapping("/hello")
-    public String hello(){
-       // String users = userService.apiTest();
 
-        return "hallo es klappt";
+    @GetMapping(value = "/all")
+    public List<Game> getUserList() {
+        List<Game> requests = gameService.getALlGames();
+        return requests;
     }
-*/
 
-    @RequestMapping("/{id}")
-    public String getExample(@PathVariable("id") String id){
-        return "lol " + id;
-    }
+
+
+
 
 }
