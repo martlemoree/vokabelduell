@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/game")
 public class GameController
 {
-
+//kleine änderung
     private final GameService gameService;
     private final UserService userService;
     private final VocabListService vocabListService;
