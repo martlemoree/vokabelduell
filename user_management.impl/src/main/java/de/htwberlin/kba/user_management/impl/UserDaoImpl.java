@@ -4,7 +4,6 @@ import de.htwberlin.kba.user_management.export.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -55,6 +54,17 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void deleteUser(User user) {
+        entityManager.remove(user);
+    }
+
+    @Override
+    public void deleteUserId(Long userId) {
+
+        User user = entityManager.find(User.class, userId);
+        if (user == null) {
+            throw new EntityNotFoundException("Can't find User with userId" + userId);
+        } else {
+        }
         entityManager.remove(user);
     }
 

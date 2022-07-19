@@ -28,7 +28,7 @@ public class Round {
     private String lastUserPlayedName;
 
     // Sorry Martin, das musste ich hier schon mal einfügen weil sonst Fehlermeldung
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "questions")
     private List<Question> questions;
 

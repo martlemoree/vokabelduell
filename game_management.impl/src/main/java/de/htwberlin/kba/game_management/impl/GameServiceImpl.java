@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,16 @@ public class GameServiceImpl implements GameService {
     private RoundService roundService;
     private QuestionService questionService;
 
+    private UserService userService;
+
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao, RoundService roundService, QuestionService questionService) {
+    public GameServiceImpl(GameDao gameDao, RoundService roundService, QuestionService questionService, UserService userService) {
         super();
         this.gameDao = gameDao;
         this.roundService = roundService;
         this.questionService = questionService;
+        this.userService = userService;
     }
 
     @Override
@@ -35,7 +39,16 @@ public class GameServiceImpl implements GameService {
         return game;
     }
 
+    @Override
     @Transactional
+    public Game createGame2(User requester, User receiver) {
+        Game game =  new Game (requester, receiver);
+        this.gameDao.createGame(game);
+        return game;
+    }
+
+    @Transactional
+    @Override
     public void calculatePoints(Game game, User user, int points) {
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;
@@ -49,8 +62,26 @@ public class GameServiceImpl implements GameService {
     }
 
     @Transactional
-    public List<Game> getGamesFromCurrentUser(User user) throws EntityNotFoundException {
-        List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user.getUserId());
+    @Override
+    public void calculatePoints(Long gameId, String userName, int points) {
+        User user = userService.getUserByUserName(userName);
+        Game game = this.getGamebyId(Long.valueOf(gameId));
+        if (user.equals(game.getReceiver ())) {
+            int sum = game.getPointsReceiver()+points;
+            game.setPointsReceiver(sum);
+        }
+        if (user.equals(game.getRequester ())) {
+            int sum = game.getPointsRequester()+points;
+            game.setPointsRequester(sum);
+        }
+        gameDao.updateGame(game);
+    }
+
+    @Transactional
+    @Override
+    public List<Game> getGamesFromCurrentUser(String userName) throws EntityNotFoundException {
+        User user = userService.getUserByUserName(userName);
+        List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user);
 
         for (Game g:gamesFromUser ) {
             if (g.getRounds().size() >= 6){
@@ -87,7 +118,9 @@ public class GameServiceImpl implements GameService {
     @Override
     @Transactional
     public Game getGamebyId(Long gameId) {
-        return gameDao.getGameById(gameId);
+        Game game = gameDao.getGameById(gameId);
+        Hibernate.initialize(game.getRounds());
+        return game;
     }
 
     @Override

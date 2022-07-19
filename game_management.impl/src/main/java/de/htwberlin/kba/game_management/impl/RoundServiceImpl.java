@@ -4,6 +4,7 @@ import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Round;
 import de.htwberlin.kba.game_management.export.RoundService;
 import de.htwberlin.kba.user_management.export.User;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,18 @@ public class RoundServiceImpl implements RoundService {
 
     // TODO DAO???
     public void changeLastPlayer(Game game, User user) {
-
         game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(user.getUserName());
     }
+
+    @Override
+    public List<Round> getAllRounds(){
+        List<Round> rounds = roundDao.getAllRounds();
+        for (Round r: rounds){
+            Hibernate.initialize(r.getGame().getRounds());
+            Hibernate.initialize(r.getQuestions());
+        }
+        return rounds;
+    }
+
+
 }

@@ -16,6 +16,11 @@ public interface GameService {
      */
     Game createGame(Request request);
 
+
+    @Transactional
+    Game createGame2(User requester, User receiver);
+
+
     /**
      * method calculates points for given user and changes value accordingly
      * @param game game which is to be changed
@@ -24,12 +29,11 @@ public interface GameService {
      */
     void calculatePoints(Game game, User user, int points);
 
-    /**
-     * To continue existing game, it is nessecary to get all games of the current user
-     * @param user current user
-     * @return list of all existing games of current user
-     */
-    List<Game> getGamesFromCurrentUser(User user) throws EntityNotFoundException;
+
+    void calculatePoints(Long gameId, String userName, int points);
+
+    @Transactional
+    List<Game> getGamesFromCurrentUser(String userName) throws EntityNotFoundException;
 
     /**
      * returns questions for current game for two cases:

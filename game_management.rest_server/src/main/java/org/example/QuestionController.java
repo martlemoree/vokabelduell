@@ -1,5 +1,6 @@
 package org.example;
 
+import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Question;
 import de.htwberlin.kba.game_management.export.QuestionService;
 import de.htwberlin.kba.user_management.export.User;
@@ -29,6 +30,7 @@ public class QuestionController {
     public List<Translation> getAllAnswers(@RequestBody Question question){
         return service.getAllAnswers(question);
     }*/
+
 
     @PostMapping(value ="/add")
     public ResponseEntity<Void> createQuestion(@RequestBody Question question) throws URISyntaxException {

@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         return listOfUsers;
     }
 
+    @Transactional
     public void changePassword(String password, User user) {
         // method not implemented and tested because it is not part of the game logic
         user.setPassword(password);
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
         return u;
     }
 
+    @Transactional
     public boolean removeUser(User user){
         if (!userDao.getAllUsers().contains(userDao.getUserById(user.getUserId()))){
             return false;
@@ -67,7 +69,19 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public User testAPI(String Name){
-        return new User(Name, "ES GEHT");
+    @Transactional
+    public User getUserById(Long id){
+        return userDao.getUserById(id);
+    }
+
+    @Override
+    @Transactional
+    public boolean removeUserId(Long id ){
+        if (!userDao.getAllUsers().contains(userDao.getUserById(id))){
+            return false;
+        }
+
+        userDao.deleteUserId(id);
+        return true;
     }
 }

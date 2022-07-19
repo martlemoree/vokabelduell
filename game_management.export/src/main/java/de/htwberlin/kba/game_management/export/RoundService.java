@@ -21,4 +21,6 @@ public interface RoundService {
      * @param user current user
      */
     void changeLastPlayer(Game game, User user);
+
+    List<Round> getAllRounds();
 }

@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.Game;
+import de.htwberlin.kba.user_management.export.User;
 
 import java.util.List;
 
@@ -16,5 +17,6 @@ public interface GameDao {
 
     void deleteGame(Game game);
 
-    List<Game> getAllGamesFromUser(Long userId);
+
+    List<Game> getAllGamesFromUser(User user);
 }

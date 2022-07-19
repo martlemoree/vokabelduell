@@ -33,18 +33,6 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-
-        //Entity Manager Mocken
-        GameDao gameDao = new GameDaoImpl();
-        RoundService roundService = new RoundServiceImpl(new RoundDaoImpl());
-        QuestionService questionService = new QuestionServiceImpl(new QuestionDaoImpl(), new VocabListDaoImpl(), new VocabListServiceImpl(new VocabListDaoImpl(), new TranslationDaoImpl(), new VocabDaoImpl()));
-        GameServiceImpl service = new GameServiceImpl(gameDao, roundService, questionService);
-        UserService userService = new UserServiceImpl(new UserDaoImpl());
-
-        User user = userService.getUserByUserName("AntjeWinner");
-
-        System.out.println(service.getGamesFromCurrentUser(user));
-
         assertTrue( true );
     }
 

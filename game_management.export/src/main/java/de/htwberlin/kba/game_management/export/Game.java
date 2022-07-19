@@ -6,7 +6,7 @@ import java.util.List;
 
 @NamedQueries({
         @NamedQuery(name="getAllGames", query="FROM Game AS games"),
-        @NamedQuery(name="getAllGamesFromUser", query="FROM Game AS games WHERE games.requester = :userId OR games.receiver = :userId")
+        @NamedQuery(name="getAllGamesFromUser", query="FROM Game AS games WHERE games.requester.id = :userId OR games.receiver.id = :userId")
 })
 
 @Entity
@@ -24,15 +24,15 @@ public class Game {
     @Column(name = "points_receiver")
     private int pointsReceiver;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "requester_id", referencedColumnName = "user_id")
     private User requester;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "receiver_id", referencedColumnName = "user_id")
     private User receiver;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "game_rounds")
     private List<Round> rounds;
 

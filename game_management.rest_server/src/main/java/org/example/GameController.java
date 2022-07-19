@@ -22,7 +22,6 @@ import java.util.List;
 @RequestMapping("/game")
 public class GameController
 {
-//kleine änderung
     private final GameService gameService;
     private final UserService userService;
     private final VocabListService vocabListService;
@@ -34,28 +33,34 @@ public class GameController
         this.vocabListService = vocabListService;
     }
 
+    /* MIT DIESER METHODE WERDEN DIE USER DOPPELT ANGELEGT
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createGame(@RequestBody Request request) throws URISyntaxException, URISyntaxException {
         Game newGame = gameService.createGame(request);
         URI uri = new URI("/game/" + newGame.getGameId());
         return ResponseEntity.created(uri).build();
+    } */
+
+    @PostMapping(value = "/create/{reqName}/{recName}")
+    public ResponseEntity<Void> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws URISyntaxException, URISyntaxException {
+        User requester = userService.getUserByUserName(reqName);
+        User receiver = userService.getUserByUserName(recName);
+        Game newGame = gameService.createGame2(requester, receiver);
+        URI uri = new URI("/game/" + newGame.getGameId());
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
-    public ResponseEntity<?> calculatePoints(@PathVariable("gameId") String gameId, @PathVariable("userName") String userName, @PathVariable("points") String points) {
-        User user = userService.getUserByUserName(userName);
-        Game game = gameService.getGamebyId(Long.valueOf(gameId));
-
-        gameService.calculatePoints(game, user, Integer.parseInt(points));
-        return game != null? ResponseEntity.ok(game) : ResponseEntity.notFound().build();
+    public void calculatePoints(@PathVariable("gameId") String gameId, @PathVariable("userName") String userName, @PathVariable("points") String points) {
+        gameService.calculatePoints(Long.valueOf(gameId), userName, Integer.parseInt(points));
     }
 
     @GetMapping("/gamesOfUser/{name}")
     public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name){
-        User user = userService.getUserByUserName(name);
-        return gameService.getGamesFromCurrentUser(user);
+        return gameService.getGamesFromCurrentUser(name);
     }
 
+    //TODO testen
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
                                         @PathVariable String gameId){
@@ -67,7 +72,7 @@ public class GameController
     }
 
     @GetMapping(value = "/all")
-    public List<Game> getUserList() {
+    public List<Game> getGameList() {
         List<Game> requests = gameService.getALlGames();
         return requests;
     }
