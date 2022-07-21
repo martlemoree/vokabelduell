@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public Game createGame(Request request) {
+    public Game createGame(Request request) throws SQLException {
         Game game =  new Game (request.getRequester(), request.getReceiver());
         this.gameDao.createGame(game);
         return game;
@@ -64,7 +65,7 @@ public class GameServiceImpl implements GameService {
     @Transactional
     @Override
     public void calculatePoints(Long gameId, String userName, int points) {
-        User user=null;// = userService.getUserByUserName(userName);
+        User user = userService.getUserByUserName(userName);
         Game game = this.getGamebyId(Long.valueOf(gameId));
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;
@@ -97,7 +98,7 @@ public class GameServiceImpl implements GameService {
 
         // if game has not just been created and the last round was not played by both players
         // the last existing round of the game is played
-        if (!(rounds==null) || !rounds.isEmpty()) {
+        if (!(rounds==null)) {
             if (!rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
                 Round round = rounds.get(game.getRounds().size()-1);
 

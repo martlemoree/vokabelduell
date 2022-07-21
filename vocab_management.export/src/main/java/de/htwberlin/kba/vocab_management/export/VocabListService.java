@@ -2,6 +2,7 @@ package de.htwberlin.kba.vocab_management.export;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface VocabListService {
@@ -10,7 +11,7 @@ public interface VocabListService {
      * @param text holds Vocabulary List.
      * @return a new Vocabulary List
      */
-    VocabList createVocabList(String text) throws FileNotFoundException;
+    VocabList createVocabList(String text) throws FileNotFoundException, SQLException;
 
     /**
      * changes the Name of the VocabList.
@@ -78,7 +79,7 @@ public interface VocabListService {
     /**
      * holds logic to get a vocablist by given id
      * @param id of the requested vocablist
-     * @return
+     * @return the requested vocabList
      */
     VocabList getVocabListById(Long id);
 

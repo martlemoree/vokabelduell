@@ -34,7 +34,7 @@ public interface UserService {
      * @param password password chosen by current user
      * @return new user created
      */
-    User createUser(String name, String password) throws InvalidNameException, SQLException, UserAlreadyExistsException;
+    User createUser(String name, String password) throws SQLException, UserAlreadyExistsException;
 
     /**
      * holds logic to get user by userName

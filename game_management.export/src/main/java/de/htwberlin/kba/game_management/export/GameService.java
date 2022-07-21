@@ -5,6 +5,7 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface GameService {
@@ -14,7 +15,7 @@ public interface GameService {
      * @param request where to get the receiver and requester from
      * @return a new game
      */
-    Game createGame(Request request);
+    Game createGame(Request request) throws SQLException;
 
 
     @Transactional

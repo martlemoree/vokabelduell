@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class RequestController {
     }
 
     @PostMapping(value = "/create/{reqName}/{recName}")
-    public ResponseEntity<Void> createRequest(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws URISyntaxException, URISyntaxException {
+    public ResponseEntity<Void> createRequest(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws URISyntaxException, URISyntaxException, SQLException {
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
 

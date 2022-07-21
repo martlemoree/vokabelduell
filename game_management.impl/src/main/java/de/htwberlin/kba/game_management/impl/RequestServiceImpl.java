@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
@@ -36,7 +37,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public Request createRequest(User requester, User receiver) {
+    public Request createRequest(User requester, User receiver) throws SQLException {
         Request request = new Request(PENDING, requester, receiver);
         requestDao.createRequest(request);
         return request;

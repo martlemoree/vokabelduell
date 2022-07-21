@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -60,7 +61,7 @@ public class VocabListServiceImpl implements VocabListService {
 
     @Override
     @Transactional
-    public VocabList createVocabList(String text) {
+    public VocabList createVocabList(String text) throws FileNotFoundException, SQLException {
 
         //split text into chars and convert to list of chars
         char[] chars = text.toCharArray();

@@ -7,6 +7,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name="getAllUsers", query="FROM User AS users"),
         @NamedQuery(name="getUserByUserName", query="FROM User AS users WHERE users.userName = :userName")
+
 })
 @Entity
 @Table(name = "users")

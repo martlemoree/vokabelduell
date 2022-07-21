@@ -79,12 +79,10 @@ public class VokabellduellUiController implements VokabellduellUi {
         this.translationService = translationService;
     }
 
-    public void run() throws UserAlreadyExistsException {
+    public void run() {
 
         // TODO löschen, nur zum Test
-
-
-//    }} /*
+//        }} /*
 
         //-----------------------------------------------------------------------------------------------------------------
 
@@ -99,13 +97,14 @@ public class VokabellduellUiController implements VokabellduellUi {
             do {
                 boolean rightInput = true;
 
-                view.printMessage("Was möchtest du tun? \n " +
-                        "1 - Neue Anfrage verschicken \n " +
-                        "2 - Anfragen verwalten \n " +
-                        "3 - Spiel weiterspielen \n " +
-                        "4 - Vokabeln verwalten \n " +
-                        "5 - Konto verwalten \n " +
-                        "6 - Anwendung beenden");
+                view.printMessage("""
+                        Was möchtest du tun?\s
+                         1 - Neue Anfrage verschicken\s
+                         2 - Anfragen verwalten\s
+                         3 - Spiel weiterspielen\s
+                         4 - Vokabeln verwalten\s
+                         5 - Konto verwalten\s
+                         6 - Anwendung beenden""");
 
                 while (rightInput) {
                     input = view.userInputInt();
@@ -143,7 +142,15 @@ public class VokabellduellUiController implements VokabellduellUi {
                         }
                     } while (userFound);
 
-                    requestService.createRequest(currentUser, receiver);
+
+                    try {
+                        requestService.createRequest(currentUser, receiver);
+                    } catch (SQLException ex) {
+                        view.printMessage("Das hat leider nicht geklappt. Ein SQL Server Fehler ist aufgetreten.");
+                        view.printMessage("\n Error Code: " + ex.getErrorCode());
+                        System.exit(0);
+                    }
+
                     view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
                 }
 
@@ -233,10 +240,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                 }
                             } else {
                                 view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal oder drücke enter, um die Auswahl abzubrechen.");
-                                bol = true;
-                                if (chosenUser.isEmpty()) {
-                                    bol = false;
-                                }
+                                bol = !chosenUser.isEmpty();
                             }
                         }
                     } while (bol);
@@ -248,19 +252,21 @@ public class VokabellduellUiController implements VokabellduellUi {
                 }
                 // Konto verwalten
                 if (input == 5) {
-                    view.printMessage("Was möchtest du tun? \n " +
-                            "1 - Konto löschen \n " +
-                            "2 - Passwort ändern \n " +
-                            "3 - Rückkehr ins Hauptmenü");
+                    view.printMessage("""
+                            Was möchtest du tun?\s
+                             1 - Konto löschen\s
+                             2 - Passwort ändern\s
+                             3 - Rückkehr ins Hauptmenü""");
 
                     boolean bol = true;
                     do {
                         int userManagementInput = view.userInputInt();
 
                         if (userManagementInput == 1) {
-                            view.printMessage("Bist du dir sicher? Deine Spielstände werden gelöscht. \n " +
-                                    "1 - Ja \n " +
-                                    "2 - Nein");
+                            view.printMessage("""
+                                    Bist du dir sicher? Deine Spielstände werden gelöscht.\s
+                                     1 - Ja\s
+                                     2 - Nein""");
                             int deleteUserInput = view.userInputInt();
                             if (deleteUserInput == 1) {
                                 userService.removeUser(currentUser);
@@ -293,9 +299,10 @@ public class VokabellduellUiController implements VokabellduellUi {
     }
 
     public User logIn() {
-        view.printMessage("Herzlich Willkommen! Was möchtest du tun? \n " +
-                "1 - Einloggen \n " +
-                "2 - Registrieren");
+        view.printMessage("""
+                Herzlich Willkommen! Was möchtest du tun?\s
+                 1 - Einloggen\s
+                 2 - Registrieren""");
 
 
         boolean rightNumber = true;
@@ -324,7 +331,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                             view.printMessage("Die Kombination aus Benutzername und Passwort konnte leider nicht gefunden werden. Versuche es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                         }
                     } catch (NoResultException e) {
-                        if (userName.isEmpty() & password.isEmpty()) {
+                        if (userName==null & password==null) {
                             break;
                         }
                         view.printMessage("Den Benutzernamen gibt es leider nicht. Probiere es noch einmal.");
@@ -349,12 +356,16 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                     try {
                         user = userService.createUser(userName, password);
-                    } catch (UserAlreadyExistsException | SQLException | InvalidNameException e) {
+                    } catch (UserAlreadyExistsException e) {
                         if (userName.isEmpty() & password.isEmpty()) {
                             break;
                         }
                         view.printMessage("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                         invalidName = true;
+                    } catch (SQLException ex) {
+                        view.printMessage("Das hat leider nicht geklappt. Ein SQL Server Fehler ist aufgetreten.");
+                        view.printMessage("\n Error Code: " + ex.getErrorCode());
+                        System.exit(0);
                     }
                 } while (invalidName);
 
@@ -399,8 +410,17 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
-            // new game is created and starts immediately
-            Game game = gameService.createGame(request);
+            // new game is  throws FileNotFoundException, SQLExceptiond and starts immediately
+            Game game=null;
+            try {
+                game = gameService.createGame(request);
+            } catch (SQLException ex) {
+                view.printMessage("Das hat leider nicht geklappt. Ein SQL Server Fehler ist aufgetreten.");
+                view.printMessage("\n Error Code: " + ex.getErrorCode());
+                System.exit(0);
+            }
+
+
             for (int i = 0; i < 2; i++) {
                 VocabList vocabList = null;
                 if (i == 1) {
@@ -424,11 +444,12 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void vocabListManagement() {
         int inputVocabListManagementMenu;
         do {
-            view.printMessage("Was möchtest du tun? \n " +
-                    "1 - Neue Vokabelliste hinzufügen \n " +
-                    "2 - Vokabelliste bearbeiten \n " +
-                    "3 - Vokabelliste löschen \n " +
-                    "4 - Rückkehr ins Hauptmenü");
+            view.printMessage("""
+                    Was möchtest du tun?\s
+                     1 - Neue Vokabelliste hinzufügen\s
+                     2 - Vokabelliste bearbeiten\s
+                     3 - Vokabelliste löschen\s
+                     4 - Rückkehr ins Hauptmenü""");
 
             inputVocabListManagementMenu = view.userInputInt();
 
@@ -456,6 +477,10 @@ public class VokabellduellUiController implements VokabellduellUi {
                     vocabListService.createVocabList(text);
                 } catch (FileNotFoundException e) {
                     view.printMessage("Der File konnte leider nicht gefunden werden.");
+                } catch (SQLException ex) {
+                    view.printMessage("Das hat leider nicht geklappt. Ein SQL Server Fehler ist aufgetreten.");
+                    view.printMessage("\n Error Code: " + ex.getErrorCode());
+                    System.exit(0);
                 }
 
             } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
@@ -473,7 +498,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         bol = false;
                     } catch (NoResultException e) {
                         view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
-                        if (vocabListName.isEmpty()) {
+                        if (vocabListName==null) {
                             inputVocabListManagementMenu = 4;
                             break;
                         }
@@ -481,12 +506,13 @@ public class VokabellduellUiController implements VokabellduellUi {
                 } while (bol);
 
 
-                view.printMessage("Was möchtest du bearbeiten? \n " +
-                        "1 - Namen der Vokabelliste \n " +
-                        "2 - Sprache der Vokabelliste \n " +
-                        "3 - Kategorie der Vokabelliste \n " +
-                        "4 - Vokabeln der Vokabelliste \n " +
-                        "5 - Rückkehr ins Hauptmenü");
+                view.printMessage("""
+                        Was möchtest du bearbeiten?\s
+                         1 - Namen der Vokabelliste\s
+                         2 - Sprache der Vokabelliste\s
+                         3 - Kategorie der Vokabelliste\s
+                         4 - Vokabeln der Vokabelliste\s
+                         5 - Rückkehr ins Hauptmenü""");
 
                 int inputEditVocabList = view.userInputInt();
 
@@ -505,9 +531,10 @@ public class VokabellduellUiController implements VokabellduellUi {
                     String newCat = view.userInputString();
                     vocabListService.editCategory(vocabList, newCat);
                 } else if (inputEditVocabList == 4) { // Vokabeln der Liste bearbeiten
-                    view.printMessage("Was möchtest du tun? \n " +
-                            "1 - Vokabel aus der Vokabelliste entfernen \n " +
-                            "2 - Rückkehr ins Hauptmenü");
+                    view.printMessage("""
+                            Was möchtest du tun?\s
+                             1 - Vokabel aus der Vokabelliste entfernen\s
+                             2 - Rückkehr ins Hauptmenü""");
 
                     bol = true;
                     do {
@@ -546,7 +573,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                     vocabListService.removeVocabList(vocabList);
                 } catch (NoResultException e) {
                     view.printMessage("Diese Vokabelliste gibt es nicht. Probiere es noch einmal. Oder drücke enter, um die Auswahl abzubrechen");
-                    if (vocabListName.isEmpty()) {
+                    if (vocabListName==null) {
                         break;
                     }
                 }

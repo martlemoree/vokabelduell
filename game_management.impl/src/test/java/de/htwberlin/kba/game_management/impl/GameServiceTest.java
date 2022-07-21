@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +70,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether a Game is created correctly.")
     @Test
-    public void testCreateGame() {
+    public void testCreateGame() throws SQLException {
         //1. Arrange
         //s. Set Up
 
@@ -162,7 +163,7 @@ public class GameServiceTest {
 
         // 3. Assert
         Assert.assertNotNull(gamesOfUser);
-        Assert.assertEquals(true, bol);
+        Assert.assertTrue(bol);
     }
 
     @DisplayName("checks whether questions are returned when game has no rounds yet")
@@ -179,7 +180,7 @@ public class GameServiceTest {
 
         // 3. Assert
         Assert.assertNotNull(givenQuestions);
-        Assert.assertEquals(round.getisPlayedByTwo(), false);
+        Assert.assertFalse(round.getisPlayedByTwo());
     }
 
     @DisplayName("checks whether questions are returned when game already has rounds and game has not been played by both players")
@@ -195,7 +196,7 @@ public class GameServiceTest {
         List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
 
         // 3. Assert
-        Assert.assertEquals(true, round.getisPlayedByTwo());
+        Assert.assertTrue(round.getisPlayedByTwo());
         Assert.assertNotNull(givenQuestions);
     }
 
@@ -212,7 +213,7 @@ public class GameServiceTest {
         List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
 
         // 3. Assert
-        Assert.assertEquals(false, round.getisPlayedByTwo());
+        Assert.assertFalse(round.getisPlayedByTwo());
         Assert.assertNotNull(givenQuestions);
     }
 }

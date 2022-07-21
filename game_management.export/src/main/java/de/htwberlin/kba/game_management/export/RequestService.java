@@ -3,6 +3,7 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.user_management.export.User;
 
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface RequestService {
@@ -21,9 +22,9 @@ public interface RequestService {
      *
      * @param requester is the user who created the request
      * @param receiver  is the user who receives the request
-     * @return
+     * @return new request
      */
-    Request createRequest(User requester, User receiver);
+    Request createRequest(User requester, User receiver) throws SQLException;
 
     /**
      * gives back all requests with status pending, where given user is the receiver

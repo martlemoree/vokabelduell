@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -109,7 +110,7 @@ public class VocabListServiceTest {
 
     @DisplayName("Method returns a vocablist")
     @Test
-    public void testCreateVocabList() {
+    public void testCreateVocabList() throws SQLException, FileNotFoundException {
 
         // To successfully test this method, put file under given file_path
         //1. Arrange
