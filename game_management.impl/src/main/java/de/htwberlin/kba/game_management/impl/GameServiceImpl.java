@@ -79,12 +79,12 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public List<Game> getGamesFromCurrentUser(String userName) throws EntityNotFoundException {
-        User user =null;//= userService.getUserByUserName(userName);
+    public List<Game> getGamesFromCurrentUser(String userName) {
+        User user = userService.getUserByUserName(userName);
         List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user);
 
         for (Game g:gamesFromUser ) {
-            if (g.getRounds().size() >= 6){
+            if (g.getRounds().size() >= 6) {
                 gamesFromUser.remove(g);
             }
         }
@@ -97,7 +97,7 @@ public class GameServiceImpl implements GameService {
 
         // if game has not just been created and the last round was not played by both players
         // the last existing round of the game is played
-        if (!(rounds==null)) {
+        if (!(rounds==null) || !rounds.isEmpty()) {
             if (!rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
                 Round round = rounds.get(game.getRounds().size()-1);
 
@@ -106,7 +106,7 @@ public class GameServiceImpl implements GameService {
             }
         }
 
-        // if game has just been started OR the last round of the game was played by both players
+        // if game has just been started (and contains no rounds) OR the last round of the game was played by both players
         // (happens in the if clause above)
         // new Round must be started
         Round round = roundService.startNewRound(game);

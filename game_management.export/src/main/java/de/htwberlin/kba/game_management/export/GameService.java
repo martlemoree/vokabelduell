@@ -33,7 +33,7 @@ public interface GameService {
     void calculatePoints(Long gameId, String userName, int points);
 
     @Transactional
-    List<Game> getGamesFromCurrentUser(String userName) throws EntityNotFoundException;
+    List<Game> getGamesFromCurrentUser(String userName);
 
     /**
      * returns questions for current game for two cases:

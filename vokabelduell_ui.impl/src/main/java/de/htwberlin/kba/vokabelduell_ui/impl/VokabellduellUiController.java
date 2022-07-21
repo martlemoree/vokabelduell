@@ -29,6 +29,7 @@ public class VokabellduellUiController implements VokabellduellUi {
     private RequestService requestService;
     private VocabService vocabService;
     private TranslationService translationService;
+    private String userName;
 
     @Autowired
     public VokabellduellUiController(VokabelduellView view, VocabListService vocabListService, RoundService roundService, QuestionService questionService, GameService gameService, UserService userService, VocabService vocabService, TranslationService translationService) {
@@ -46,55 +47,67 @@ public class VokabellduellUiController implements VokabellduellUi {
     public VokabellduellUiController() {
         super();
     }
+
     public void setView(VokabelduellView view) {
         this.view = view;
     }
+
     public void setGameService(GameService gameService) {
         this.gameService = gameService;
     }
+
     public void setVocabListService(VocabListService vocabListService) {
         this.vocabListService = vocabListService;
     }
+
     public void setVocabService(VocabService vocabService) {
         this.vocabService = vocabService;
     }
+
     public void setRoundService(RoundService roundService) {
         this.roundService = roundService;
     }
+
     public void setQuestionService(QuestionService questionService) {
         this.questionService = questionService;
     }
+
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
     public void setTranslationService(TranslationService translationService) {
         this.translationService = translationService;
     }
 
     public void run() throws UserAlreadyExistsException {
 
-        // TODO DAS HIER GEHÖRT NICHT ZUR SPIELELOGIK; BITTE ENTFERNEN
-
-        boolean userFound2;
-
-        //FIXME: EntityNotFoundException/NullPointerException = RunTimeException = technische Exception = Behandlung an einer Stelle
-        // hier könnte der User aber eingreifen und einen anderen namen eingeben (+loop)
-        User receiver2 = null;
+        // TODO löschen, nur zum Test
+        vocabListService.getRandomVocabLists();
+        view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
+        boolean bol = true;
+        VocabList vocabList = null;
+        String vocabListName = null;
         do {
-            String userName2 = view.userInputString();
             try {
-                userFound2 = false;
-                receiver2 = userService.getUserByUserName(userName2);
-            } catch (NoResultException e) {
-                userFound2 = true;
-                view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch einmal.");
+                vocabListName = view.userInputString();
+                vocabList = vocabListService.getVocabListByName(vocabListName);
+                bol = false;
+            } catch (EntityNotFoundException e) {
+                view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
+                if (vocabListName.isEmpty()) {
+                    break;
+                }
             }
-        } while (userFound2);
+        } while (bol);
 
 
-
+    }} /*
 
         //-----------------------------------------------------------------------------------------------------------------
+
+        // hier geht es los mit der Spielelogik
+
 
         try {
             // Login
@@ -135,18 +148,18 @@ public class VokabellduellUiController implements VokabellduellUi {
                     User receiver = null;
                     boolean userFound;
 
-                    //FIXME: EntityNotFoundException/NullPointerException/NoResultException = RunTimeException = technische Exception = Behandlung an einer Stelle
+                    //FIXME: NoResultException = RunTimeException = technische Exception = Behandlung an einer Stelle
                     // hier könnte der User aber eingreifen und einen anderen namen eingeben (+loop)
                     do {
-                        String userName = view.userInputString();
+                        userName = view.userInputString();
                         try {
                             userFound = false;
                             receiver = userService.getUserByUserName(userName);
                         } catch (NoResultException e) {
                             userFound = true;
+                            view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch einmal.");
                         }
                     } while (userFound);
-
 
                     requestService.createRequest(currentUser, receiver);
                     view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
@@ -184,38 +197,37 @@ public class VokabellduellUiController implements VokabellduellUi {
                 if (input == 3) {
                     // show all existing games from current user
                     List<Game> games;
-                    boolean bol = true;
 
-                    do {
-                        try {
-                            //FIXME @Antje: eigentlich war Ansage von Kempa, dass get.i nicht in die Controller-Logik gehören,
-                            // dementsprechend müsste hier eigentlich das Objekt übergeben werden und nicht der User
-                            games = gameService.getGamesFromCurrentUser(currentUser.getUserName());
-                            bol = false;
-                        } catch (EntityNotFoundException e) {
-                            view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
+                    games = gameService.getGamesFromCurrentUser(userName);
+                    if (games.isEmpty()) {
+                        view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
+                    }
+
+                    view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
+
+                    for (Game game : games) {
+                        view.printMessage("" + game.getRounds());
+                        // due to game logic, rounds cannot be empty if game has been started correctly
+                        if (game.getRounds().size() < 6) {
+                            if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+                                view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                            } else {
+                                view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
+                            }
+                        } else {
+                            view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Das Spiel wurde beendet!");
                             break;
                         }
+                    }
 
-                        view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
-
-                        for (Game game : games) {
-                            if (game.getRounds().size() < 6) {
-                                if (!game.getRounds().get(game.getRounds().size()-1).getLastUserPlayedName().equals(currentUser.getUserName())) {
-                                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
-                                } else {
-                                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
-                                }
-                            } else {
-                                view.printMessage("Das Spiel wurde beendet!");
-                                break;
-                            }
-                        }
+                    boolean bol = true;
+                    do {
 
                         // TODO HIER EXCEPTION?
                         String chosenUser = view.userInputString();
                         for (Game game : games) {
                             if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
+                                // due to game logic rounds cannot be empty
                                 if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(currentUser.getUserName())) {
 
                                     // vocabList just needs to be chosen if old round has been finished by the other player
@@ -231,6 +243,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     }
 
                                     roundService.changeLastPlayer(game, currentUser);
+                                    break;
 
                                 } else {
                                     view.printMessage("Hier ist dein Mitspieler dran. Versuche es noch einmal");
@@ -240,7 +253,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                 view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal oder drücke enter, um die Auswahl abzubrechen.");
                                 bol = true;
                                 if (chosenUser.isEmpty()) {
-                                    bol=false;
+                                    bol = false;
                                 }
                             }
                         }
@@ -285,7 +298,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                             view.printMessage("Gib eine der Auswahlmöglichkeiten aus dem Menü ein.");
                         }
 
-                    }  while (bol) ;
+                    } while (bol);
 
                 }
             } while (input != 6);
@@ -312,7 +325,6 @@ public class VokabellduellUiController implements VokabellduellUi {
             if (firstInput == 1) {
                 rightNumber = false;
                 boolean bol = true;
-                String userName = null;
                 String password = null;
 
                 do {
@@ -322,49 +334,47 @@ public class VokabellduellUiController implements VokabellduellUi {
                         view.printMessage("Gib dein Passwort ein.");
                         password = view.userInputString();
 
-//                        user = userService.getUserByUserName(userName);
+                        user = userService.getUserByUserName(userName);
                         if (user.getPassword().equals(password)) {
                             bol = false;
                             view.printMessage("Du bist eingeloggt.");
                         } else {
                             view.printMessage("Die Kombination aus Benutzername und Passwort konnte leider nicht gefunden werden. Versuche es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                         }
-                    } catch (EntityNotFoundException e) {
-                        view.printMessage("Den Benutzernamen gibt es leider nicht. Probiere es noch einmal.");
+                    } catch (NoResultException e) {
                         if (userName.isEmpty() & password.isEmpty()) {
                             break;
                         }
+                        view.printMessage("Den Benutzernamen gibt es leider nicht. Probiere es noch einmal.");
+
                     }
                 } while (bol);
             }
             // Registrieren
             else if (firstInput == 2) {
+                rightNumber = false;
+                userName = null;
+                boolean invalidName;
 
-                String userName = null;
-                        boolean invalidName;
-                        do {
-                            try {
-                                invalidName = false;
-                                view.printMessage("Wie soll dein Benutzername lauten");
-                                userName = view.userInputString();
+                do {
 
-                                view.printMessage("Gib dein Passwort ein.");
-                                String password = view.userInputString();
+                    invalidName = false;
+                    view.printMessage("Wie soll dein Benutzername lauten");
+                    userName = view.userInputString();
 
-                                try {
-                                    user = userService.createUser(userName, password);
-                                    user = userService.createUser(userName, password);
-                                } catch (SQLException | InvalidNameException e) {
+                    view.printMessage("Gib dein Passwort ein.");
+                    String password = view.userInputString();
 
-                                }
-                            } catch (UserAlreadyExistsException e) {
-                                invalidName = true;
-                            }
-                        } while (invalidName);
-
-
-
-                        view.printMessage("Das ist deine UserId: " + user.getUserId());
+                    try {
+                        user = userService.createUser(userName, password);
+                    } catch (UserAlreadyExistsException | SQLException | InvalidNameException e) {
+                        if (userName.isEmpty() & password.isEmpty()) {
+                            break;
+                        }
+                        view.printMessage("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
+                        invalidName = true;
+                    }
+                } while (invalidName);
 
             } else {
                 view.printMessage("Bitte gib eine Zahl entsprechend des Menüs ein");
@@ -405,20 +415,18 @@ public class VokabellduellUiController implements VokabellduellUi {
 
     public void changeRequestStatus(Request request, Status status) {
 
-        request.setRequestStatus(status);
-
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
             // new game is created and starts immediately
             Game game = gameService.createGame(request);
-            for (int i = 0; i<2; i++) {
+            for (int i = 0; i < 2; i++) {
                 VocabList vocabList = null;
-                if (i==1) {
+                if (i == 1) {
                     vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
                 }
                 // vocablist wurde ausgewählt und wird hier übergeben:
                 List<Question> questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
-                for (int j = 0; j<4; j++) {
+                for (int j = 0; j < 4; j++) {
                     // View Aufruf hier:
                     askQuestions(game, request.getReceiver(), questions, j);
                 }
@@ -426,6 +434,9 @@ public class VokabellduellUiController implements VokabellduellUi {
         } else if (status == Status.REJECTED) {
             view.printMessage("Die Anfrage wurde abgelehnt.");
         }
+
+        // change status only if everything went through correctly
+        request.setRequestStatus(status);
     }
 
     public void vocabListManagement() {
@@ -466,15 +477,18 @@ public class VokabellduellUiController implements VokabellduellUi {
                 }
 
             } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
+
+
+                // TEST TEST TEST
                 view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
-                boolean bol=true;
-                VocabList vocabList =null;
-                String vocabListName =null;
+                boolean bol = true;
+                VocabList vocabList = null;
+                String vocabListName = null;
                 do {
                     try {
                         vocabListName = view.userInputString();
                         vocabList = vocabListService.getVocabListByName(vocabListName);
-                        bol=false;
+                        bol = false;
                     } catch (EntityNotFoundException e) {
                         view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
                         if (vocabListName.isEmpty()) {
@@ -524,7 +538,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                                 Vocab vocab = vocabService.getVocabByVocabString(vocabName);
                                 vocabListService.removeVocab(vocabList, vocab);
-                                bol=false;
+                                bol = false;
                                 view.printMessage("Die Vokabel wurde entfernt.");
 
                             } else if (inputEditVocab == 2) { // Rückkehr ins Hauptmenü
@@ -541,7 +555,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 }
 
             } else if (inputVocabListManagementMenu == 3) { // Vokabelliste löschen
-                String vocabListName=null;
+                String vocabListName = null;
                 try {
                     view.printMessage("Gib den Namen der zu löschenden Vokabelliste ein.");
                     vocabListName = view.userInputString();
@@ -561,7 +575,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
     public VocabList chooseVocablist(List<VocabList> randomVocabLists) {
 
-        boolean bol=false;
+        boolean bol = false;
         VocabList randomVocabList = null;
 
         do {
@@ -584,7 +598,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 randomVocabList = randomVocabLists.get(2);
             } else {
                 view.printMessage("Gib eine Zahl aus dem Menü ein.");
-                bol=true;
+                bol = true;
             }
 
         } while (bol);
@@ -594,3 +608,4 @@ public class VokabellduellUiController implements VokabellduellUi {
 
 
 }
+*/

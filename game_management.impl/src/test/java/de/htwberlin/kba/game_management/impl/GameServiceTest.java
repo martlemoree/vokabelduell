@@ -145,12 +145,13 @@ public class GameServiceTest {
         result_games.add(game2);
 
         User user = new User();
+        String userName = "test1";
 
         boolean bol = true;
 
         // 2. Act
        // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
-        List<Game> gamesOfUser = gameService.getGamesFromCurrentUser(user);
+        List<Game> gamesOfUser = gameService.getGamesFromCurrentUser(userName);
 
         for (Game g:gamesOfUser) {
             if (g.getRounds().size() >= 6){
