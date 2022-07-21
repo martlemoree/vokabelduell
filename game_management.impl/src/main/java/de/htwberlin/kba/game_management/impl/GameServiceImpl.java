@@ -149,5 +149,4 @@ public class GameServiceImpl implements GameService {
         game.setRounds(rounds);
         gameDao.updateGame(game);
     }
-
 }
