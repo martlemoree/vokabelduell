@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.naming.InvalidNameException;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -83,26 +82,9 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void run() throws UserAlreadyExistsException {
 
         // TODO löschen, nur zum Test
-        vocabListService.getRandomVocabLists();
-        view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
-        boolean bol = true;
-        VocabList vocabList = null;
-        String vocabListName = null;
-        do {
-            try {
-                vocabListName = view.userInputString();
-                vocabList = vocabListService.getVocabListByName(vocabListName);
-                bol = false;
-            } catch (EntityNotFoundException e) {
-                view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
-                if (vocabListName.isEmpty()) {
-                    break;
-                }
-            }
-        } while (bol);
 
 
-    }} /*
+//    }} /*
 
         //-----------------------------------------------------------------------------------------------------------------
 
@@ -489,7 +471,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         vocabListName = view.userInputString();
                         vocabList = vocabListService.getVocabListByName(vocabListName);
                         bol = false;
-                    } catch (EntityNotFoundException e) {
+                    } catch (NoResultException e) {
                         view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
                         if (vocabListName.isEmpty()) {
                             inputVocabListManagementMenu = 4;
@@ -544,7 +526,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                             } else if (inputEditVocab == 2) { // Rückkehr ins Hauptmenü
                                 break;
                             }
-                        } catch (EntityNotFoundException e) {
+                        } catch (NoResultException e) {
                             view.printMessage("Die Vokabel wurde nicht gefunden. Probier es noch einmal.");
                         }
                     } while (bol);
@@ -562,13 +544,12 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                     VocabList vocabList = vocabListService.getVocabListByName(vocabListName);
                     vocabListService.removeVocabList(vocabList);
-                } catch (EntityNotFoundException e) {
+                } catch (NoResultException e) {
                     view.printMessage("Diese Vokabelliste gibt es nicht. Probiere es noch einmal. Oder drücke enter, um die Auswahl abzubrechen");
                     if (vocabListName.isEmpty()) {
                         break;
                     }
                 }
-
             }
         } while (inputVocabListManagementMenu != 4);
     }
@@ -608,4 +589,3 @@ public class VokabellduellUiController implements VokabellduellUi {
 
 
 }
-*/

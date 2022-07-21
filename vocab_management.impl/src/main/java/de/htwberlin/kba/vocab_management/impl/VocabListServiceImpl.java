@@ -213,7 +213,7 @@ public class VocabListServiceImpl implements VocabListService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public VocabList getVocabListByName(String vocabListName) throws EntityNotFoundException {
+    public VocabList getVocabListByName(String vocabListName) {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }

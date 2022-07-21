@@ -73,7 +73,7 @@ public interface VocabListService {
      * @param vocabListName name of the vocablist
      * @return vocablist with given name
      */
-    VocabList getVocabListByName( String vocabListName) throws EntityNotFoundException;
+    VocabList getVocabListByName( String vocabListName);
 
     /**
      * holds logic to get a vocablist by given id
