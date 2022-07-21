@@ -2,6 +2,7 @@ package de.htwberlin.kba.user_management.export;
 
 import javax.naming.InvalidNameException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
@@ -40,7 +41,7 @@ public interface UserService {
      * @param userName to identify the user
      * @return the user that belongs to the given userName
      */
-    User getUserByUserName(String userName) throws EntityNotFoundException;
+    User getUserByUserName(String userName) throws NoResultException;
 
     /**
      * holds logic to remove given user

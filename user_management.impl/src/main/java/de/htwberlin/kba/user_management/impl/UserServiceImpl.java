@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.naming.InvalidNameException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
@@ -46,14 +47,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User getUserByUserName(String userName) throws EntityNotFoundException {
+    public User getUserByUserName(String userName) throws NoResultException {
         // method not tested because it is not part of the game logic
+//        if (userDao.getUserByName(userName) == null) {
+//            throw  new UserNotFoundException("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch mal.");
+//        }
+
         return userDao.getUserByName(userName);
     }
 
     @Transactional
     public User createUser(String name, String password) throws InvalidNameException, SQLException, UserAlreadyExistsException {
-        // method not tested because it would only be a database test
+        for (User alreadyExistingUser : getUserList()) {
+            if (alreadyExistingUser.getUserName().equals(name)) {
+                throw new UserAlreadyExistsException("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
+            }
+        }
+
         User u = new User(name, password);
         userDao.createUser(u);
         return u;
@@ -84,4 +94,5 @@ public class UserServiceImpl implements UserService {
         userDao.deleteUserId(id);
         return true;
     }
+
 }

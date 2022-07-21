@@ -28,14 +28,14 @@
         <module name="user_management.rest_client" />
         <module name="UserManagement" />
         <module name="game_ui.impl" />
-        <module name="vokabelduell_ui.impl" />
         <module name="configuration_server" />
+        <module name="vokabelduell_ui.impl" />
         <module name="GameManagement" />
         <module name="game_management.export" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="game_management.rest_client" target="1.7" />
+      <module name="Configuration" target="1.7" />
       <module name="GameManagementTest" target="1.7" />
       <module name="template_module" target="1.7" />
       <module name="test" target="1.7" />

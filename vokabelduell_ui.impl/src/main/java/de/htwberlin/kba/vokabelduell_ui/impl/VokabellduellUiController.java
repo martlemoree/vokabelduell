@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.naming.InvalidNameException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -69,24 +70,29 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void setTranslationService(TranslationService translationService) {
         this.translationService = translationService;
     }
-    @Override
-    public void run() {
+
+    public void run() throws UserAlreadyExistsException {
 
         // TODO DAS HIER GEHÖRT NICHT ZUR SPIELELOGIK; BITTE ENTFERNEN
 
+        boolean userFound2;
+
+        //FIXME: EntityNotFoundException/NullPointerException = RunTimeException = technische Exception = Behandlung an einer Stelle
+        // hier könnte der User aber eingreifen und einen anderen namen eingeben (+loop)
+        User receiver2 = null;
+        do {
+            String userName2 = view.userInputString();
+            try {
+                userFound2 = false;
+                receiver2 = userService.getUserByUserName(userName2);
+            } catch (NoResultException e) {
+                userFound2 = true;
+                view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch einmal.");
+            }
+        } while (userFound2);
 
 
-        /*
-        List<User> users1 = userService.getUserList();
-        for (User user : users1) {
-            view.printMessage("Das sind se Username:" + user.getUserName() + "Passwort: " + user.getPassword() + "\n") ;
-        }
-        view.printMessage("Gib den Benutzernamen ein");
-        String userName1 = view.userInputString();
-        User user1 = userService.getUserByUserName(userName1);
 
-        view.printMessage("Das ist dein Passwort:" + user1.getPassword());
-         */
 
         //-----------------------------------------------------------------------------------------------------------------
 
@@ -125,15 +131,22 @@ public class VokabellduellUiController implements VokabellduellUi {
                         view.printMessage(user.getUserName() + "\n");
                     }
 
-                    String userName = view.userInputString();
-                    User receiver = null;
 
-                    // FIXME
-                    try {
-                        receiver = userService.getUserByUserName(userName);
-                    } catch (EntityNotFoundException e) {
-                        view.printMessage("Dieser Mitspieler konnte leider nicht gefunden werden. Probiere es noch mal.");
-                    }
+                    User receiver = null;
+                    boolean userFound;
+
+                    //FIXME: EntityNotFoundException/NullPointerException/NoResultException = RunTimeException = technische Exception = Behandlung an einer Stelle
+                    // hier könnte der User aber eingreifen und einen anderen namen eingeben (+loop)
+                    do {
+                        String userName = view.userInputString();
+                        try {
+                            userFound = false;
+                            receiver = userService.getUserByUserName(userName);
+                        } catch (NoResultException e) {
+                            userFound = true;
+                        }
+                    } while (userFound);
+
 
                     requestService.createRequest(currentUser, receiver);
                     view.printMessage("Wenn dein:e Gegner:in die Anfrage angenommen hat, kann das Spiel losgehen!");
@@ -175,7 +188,9 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                     do {
                         try {
-                            games = gameService.getGamesFromCurrentUser(currentUser);
+                            //FIXME @Antje: eigentlich war Ansage von Kempa, dass get.i nicht in die Controller-Logik gehören,
+                            // dementsprechend müsste hier eigentlich das Objekt übergeben werden und nicht der User
+                            games = gameService.getGamesFromCurrentUser(currentUser.getUserName());
                             bol = false;
                         } catch (EntityNotFoundException e) {
                             view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
@@ -307,7 +322,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         view.printMessage("Gib dein Passwort ein.");
                         password = view.userInputString();
 
-                        user = userService.getUserByUserName(userName);
+//                        user = userService.getUserByUserName(userName);
                         if (user.getPassword().equals(password)) {
                             bol = false;
                             view.printMessage("Du bist eingeloggt.");
@@ -325,39 +340,31 @@ public class VokabellduellUiController implements VokabellduellUi {
             // Registrieren
             else if (firstInput == 2) {
 
-                boolean bol = true;
-
                 String userName = null;
-                do {
-                    try {
-                        rightNumber = false;
-                        view.printMessage("Wie soll dein Benutzername lauten");
-                        userName = view.userInputString();
+                        boolean invalidName;
+                        do {
+                            try {
+                                invalidName = false;
+                                view.printMessage("Wie soll dein Benutzername lauten");
+                                userName = view.userInputString();
 
-                        for (User alreadyExistingUser : userService.getUserList()) {
-                            if (alreadyExistingUser.getUserName().equals(userName)) {
-                                throw new UserAlreadyExistsException("Diesen Benutzernamen gibt es leider schon. Probiere es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
+                                view.printMessage("Gib dein Passwort ein.");
+                                String password = view.userInputString();
+
+                                try {
+                                    user = userService.createUser(userName, password);
+                                    user = userService.createUser(userName, password);
+                                } catch (SQLException | InvalidNameException e) {
+
+                                }
+                            } catch (UserAlreadyExistsException e) {
+                                invalidName = true;
                             }
-                        }
+                        } while (invalidName);
 
-                        view.printMessage("Gib dein Passwort ein.");
-                        String password = view.userInputString();
 
-                        try {
-                            user = userService.createUser(userName, password);
-                            user = userService.createUser(userName, password);
-                        } catch (SQLException | InvalidNameException e) {
-
-                        }
 
                         view.printMessage("Das ist deine UserId: " + user.getUserId());
-                    } catch (UserAlreadyExistsException e) {
-                        bol=true;
-                        if (userName.isEmpty()) {
-                            break;
-                        }
-                    }
-                } while (bol);
 
             } else {
                 view.printMessage("Bitte gib eine Zahl entsprechend des Menüs ein");
@@ -445,7 +452,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         text = vocabListService.readFile(path);
                         bol = false;
                     } catch (FileNotFoundException e) {
-                        view.printMessage("Das hat leider nicht funktioniert. Probiere es noch mal oder drücke enter zum Verlassen des Menüpunkts.");
+                        view.printMessage("Das hat leider nicht funktioniert. Probiere es noch einmal oder drücke enter zum Verlassen des Menüpunkts.");
                         if (path == null) {
                             break;
                         }

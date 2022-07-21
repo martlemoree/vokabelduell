@@ -64,7 +64,7 @@ public class GameServiceImpl implements GameService {
     @Transactional
     @Override
     public void calculatePoints(Long gameId, String userName, int points) {
-        User user = userService.getUserByUserName(userName);
+        User user=null;// = userService.getUserByUserName(userName);
         Game game = this.getGamebyId(Long.valueOf(gameId));
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;
@@ -80,7 +80,7 @@ public class GameServiceImpl implements GameService {
     @Transactional
     @Override
     public List<Game> getGamesFromCurrentUser(String userName) throws EntityNotFoundException {
-        User user = userService.getUserByUserName(userName);
+        User user =null;//= userService.getUserByUserName(userName);
         List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user);
 
         for (Game g:gamesFromUser ) {
