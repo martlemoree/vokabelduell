@@ -32,7 +32,7 @@ public class RoundController {
     @PostMapping(value = "/create/{gameId}")
     public ResponseEntity<Void> startNewRound(@PathVariable("gameId") String gameId) throws URISyntaxException {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
-        Round round = roundService.startNewRound(game);
+        Round round = roundService.createRound(game);
         URI uri = new URI("/game/" + round.getRoundId());
         return ResponseEntity.created(uri).build();
     }
