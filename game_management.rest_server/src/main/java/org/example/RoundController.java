@@ -5,6 +5,7 @@ import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Round;
 import de.htwberlin.kba.game_management.export.RoundService;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,13 @@ public class RoundController {
 
     private final RoundService roundService;
     private final GameService gameService;
+    private final UserService userService;
 
     @Autowired
-    public RoundController(RoundService roundService, GameService gameService) {
+    public RoundController(RoundService roundService, GameService gameService, UserService userService) {
         this.roundService = roundService;
         this.gameService = gameService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/create/{gameId}")
@@ -32,6 +35,14 @@ public class RoundController {
         Round round = roundService.startNewRound(game);
         URI uri = new URI("/game/" + round.getRoundId());
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "changeLastPlayer/{gameId}/{userName}")
+    public void changeLastPlayer(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName) {
+        Game game = gameService.getGamebyId(gameId);
+        User user = userService.getUserByUserName(userName);
+
+        roundService.changeLastPlayer(game, user);
     }
 
     @GetMapping(value = "/all")

@@ -3,9 +3,13 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RoundService {
+
+    @Transactional
+    Round createRound(Game game);
 
     /**
      * new round is created and directly added to the list of rounds of the current game
@@ -23,4 +27,6 @@ public interface RoundService {
     void changeLastPlayer(Game game, User user);
 
     List<Round> getAllRounds();
+
+    Round getRoundById(Long id);
 }

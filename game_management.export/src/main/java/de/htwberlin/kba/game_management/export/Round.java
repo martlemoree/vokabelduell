@@ -1,5 +1,6 @@
 package de.htwberlin.kba.game_management.export;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Round {
 
     @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+    @JsonBackReference
     private Game game;
 
     @ManyToOne

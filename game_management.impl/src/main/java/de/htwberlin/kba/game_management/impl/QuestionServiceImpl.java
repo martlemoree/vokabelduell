@@ -144,18 +144,18 @@ public class QuestionServiceImpl implements QuestionService {
         return false;
     }
 
-    @Transactional
-    @Override
-    public void createQuestion(Question question) {
-        this.questionDao.createQuestion(question);
-    }
-
     public String giveVocabStringRandom(List<Question> questions, int i) {
         Vocab vocab = questions.get(i).getVocab();
         Random rand = new Random();
 
         int index = rand.nextInt(vocab.getVocabs().size()-1);
         return vocab.getVocabs().get(index);
+    }
+
+    @Transactional
+    @Override
+    public List<Question> getAllQuestions(){
+        return questionDao.getAllQuestions();
     }
 
 

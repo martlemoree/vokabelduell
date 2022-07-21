@@ -57,13 +57,7 @@ public interface QuestionService {
      */
     boolean answeredQuestion(String answer, List<Question> questions, int i);
 
-    /**
-     * necessary for RestController
-     * @param question
-     */
-    void createQuestion(Question question);
 
-    // TODO Antje; neue Methode
     /**
      * holds logic to give a random entry from the list of strings of the given vocab
      * @param questions list of used questions
@@ -71,4 +65,7 @@ public interface QuestionService {
      * @return random string entry from list of strings of vocab
      */
     String giveVocabStringRandom(List<Question> questions, int i);
+
+    //TODO später löschen, nur zum testen
+    List<Question> getAllQuestions();
 }

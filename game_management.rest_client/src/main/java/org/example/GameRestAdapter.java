@@ -3,60 +3,67 @@ package org.example;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class GameRestAdapter // implements GameService
+public class GameRestAdapter
 {
-    //Todo was müssen hier für methoden rein?
 
     private RestTemplate restTemplate;
+    final String localhost = "http://localhost:8080/game/";
 
     @Autowired
     public GameRestAdapter(RestTemplate restTemplate){
         this.restTemplate =  restTemplate;
     }
 
+   /*
+    @GetMapping(value = "/all")
+    public List<Game> getGameList() {*/
 
-   /* public String createGame(Game game){
+    public Game createGame2(User requester, User receiver){
+        String reqName = requester.getUserName();
+        String recName = receiver.getUserName();
+        final String URL = localhost + "create/" + reqName + "/" + recName;
+        return restTemplate.exchange(URL, HttpMethod.POST, null, Game.class).getBody();
+    }
 
-        final String URL = "http://localhost:8080/game/addGame/";
+    public void calculatePoints(Game game, User user, int points){
+       String gameId = String.valueOf(game.getGameId());
+       String userName = user.getUserName();
 
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        final String URL = localhost + "calculatePoints/" + gameId + "/" + userName + "/" + points;
+        String result = restTemplate.exchange(URL, HttpMethod.PUT, null, String.class).getBody();
+    }
 
-        HttpEntity<Game> entity = new HttpEntity<>(game);
+    public List<Game> getGamesFromCurrentUser(String userName){
+        final String URL = localhost + "gamesOfUser" + "/" + userName;
+        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
+    }
 
-       return restTemplate.exchange(URL, HttpMethod.POST, entity, String.class).getBody();
-    }*/
-    /*
-    public void calculatePoints(String userName, int points){
-        RestTemplate restTemplate = new RestTemplate();
-
-        final String URL = "http://localhost:8080/game/calculatePoints/" + userName + "/"
-                + points;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-        ResponseEntity<String> result = restTemplate.exchange(URL, HttpMethod.GET, entity, String.class);
-
-    }        */
-
-   // @GetMapping("/gamesOfUser/{name}")
-    //public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name)
-    public List<Game> getGamesFromCurrentUser(String name){
-        final String URL = "http://localhost:8080/game/gamesOfUser/" + name;
-        HttpEntity<String> entity = new HttpEntity<>(name); 
-        return restTemplate.exchange(URL, HttpMethod.GET, entity, List.class).getBody();
+    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList){
+        String userName = currentUser.getUserName();
+        String gameId = String.valueOf(game.getGameId());
+        String vocablistId = String.valueOf(vocabList.getVocabListId());
+        final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
+        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
     }
 
 }
