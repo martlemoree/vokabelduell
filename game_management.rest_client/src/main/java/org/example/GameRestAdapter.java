@@ -41,29 +41,47 @@ public class GameRestAdapter
     public Game createGame2(User requester, User receiver){
         String reqName = requester.getUserName();
         String recName = receiver.getUserName();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "create/" + reqName + "/" + recName;
-        return restTemplate.exchange(URL, HttpMethod.POST, null, Game.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Game.class).getBody();
     }
 
     public void calculatePoints(Game game, User user, int points){
        String gameId = String.valueOf(game.getGameId());
        String userName = user.getUserName();
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "calculatePoints/" + gameId + "/" + userName + "/" + points;
-        String result = restTemplate.exchange(URL, HttpMethod.PUT, null, String.class).getBody();
+        String result = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, String.class).getBody();
     }
 
     public List<Game> getGamesFromCurrentUser(String userName){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "gamesOfUser" + "/" + userName;
-        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
     public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList){
         String userName = currentUser.getUserName();
         String gameId = String.valueOf(game.getGameId());
         String vocablistId = String.valueOf(vocabList.getVocabListId());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
-        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
 }

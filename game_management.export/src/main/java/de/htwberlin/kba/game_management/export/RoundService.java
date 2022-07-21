@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface RoundService {
 
-    @Transactional
     Round createRound(Game game);
 
     /**

@@ -57,7 +57,7 @@ public class QuestionController {
     }
 
     //TODO testen
-    @GetMapping(value = "/setAnswerOption")
+    @GetMapping(value = "/setAnswerOptions")
     public Translation setAnswerOptions() {
         return questionService.setAnswerOptions();
     }

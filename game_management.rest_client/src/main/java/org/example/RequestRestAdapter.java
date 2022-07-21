@@ -3,7 +3,10 @@ package org.example;
 import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,8 +27,13 @@ public class RequestRestAdapter {
     public Request createRequest(User requester, User receiver){
         String reqName = requester.getUserName();
         String recName = receiver.getUserName();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "create/" + reqName + "/" + recName;
-        return restTemplate.exchange(URL, HttpMethod.POST, null, Request.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Request.class).getBody();
     }
 
     public void changeStatus(Boolean accept, Request request) {
@@ -38,19 +46,31 @@ public class RequestRestAdapter {
             accept_str = "0";
         }
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "changeStatus/" + reqId + "/" + accept_str;
-        String result = restTemplate.exchange(URL, HttpMethod.PUT, null, String.class).getBody();
+        String result = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, String.class).getBody();
     }
 
     public List<Request> getPendingRequestsForCurrentUser(User user) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         String userName = user.getUserName();
         final String URL = localhost + "pendingRequests" + "/" + userName;
-        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
     public List<Request> getAllRequests() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
         final String URL = localhost + "all";
-        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
 
