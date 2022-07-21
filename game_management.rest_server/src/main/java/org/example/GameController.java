@@ -1,9 +1,6 @@
 package org.example;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.GameService;
-import de.htwberlin.kba.game_management.export.Question;
-import de.htwberlin.kba.game_management.export.Request;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.game_management.impl.GameServiceImpl;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
@@ -25,12 +22,14 @@ public class GameController
     private final GameService gameService;
     private final UserService userService;
     private final VocabListService vocabListService;
+    private final RoundService roundService;
 
     @Autowired
-    public GameController(GameService service, UserService userService, VocabListService vocabListService) {
+    public GameController(GameService service, UserService userService, VocabListService vocabListService, RoundService roundService) {
         this.gameService = service;
         this.userService = userService;
         this.vocabListService = vocabListService;
+        this.roundService = roundService;
     }
 
     /* MIT DIESER METHODE WERDEN DIE USER DOPPELT ANGELEGT
@@ -51,8 +50,16 @@ public class GameController
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("gameId") String gameId, @PathVariable("userName") String userName, @PathVariable("points") String points) {
-        gameService.calculatePoints(Long.valueOf(gameId), userName, Integer.parseInt(points));
+    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) {
+        gameService.calculatePoints(gameId, userName, points);
+    }
+
+    @PutMapping(value = "setRoundsOfGame/{gameId}/{roundId}")
+    public void setRoundsOfGame(@PathVariable("gameId") Long gameId, @PathVariable("roundId") Long roundId) {
+        Game game = gameService.getGamebyId(gameId);
+        Round round = roundService.getRoundById(roundId);
+
+        gameService.setRoundsOfGame(game, round);
     }
 
     @GetMapping("/gamesOfUser/{name}")
@@ -73,8 +80,8 @@ public class GameController
 
     @GetMapping(value = "/all")
     public List<Game> getGameList() {
-        List<Game> requests = gameService.getALlGames();
-        return requests;
+        List<Game> games = gameService.getALlGames();
+        return games;
     }
 
 

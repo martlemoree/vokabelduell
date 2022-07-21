@@ -26,8 +26,20 @@ public class RoundServiceImpl implements RoundService {
     public RoundServiceImpl() {}
 
     @Transactional
+    @Override
+    public Round createRound(Game game){
+        Round round = new Round(game);
+        roundDao.createRound(round);
+        return round;
+    }
+
+
+    //TODO das funktioniert so nicht, weil das sind 2 HTTP aufrufe in einem --> das muss ich zwei methoden getrennt werden
+    // 2. methode ist im game service da ein game geupdatet wird
+
+    @Transactional
     public Round startNewRound(Game game) {
-        List<Round> rounds = new ArrayList<>();
+        List<Round> rounds = new ArrayList<>(); //das war schon richtig so
 
         if (game.getRounds() != null){
             rounds = game.getRounds();
@@ -54,6 +66,11 @@ public class RoundServiceImpl implements RoundService {
             Hibernate.initialize(r.getQuestions());
         }
         return rounds;
+    }
+
+    @Override
+    public Round getRoundById(Long id) {
+        return roundDao.getRoundById(id);
     }
 
 

@@ -58,7 +58,7 @@ public class RequestController {
     }
 
     @GetMapping(value = "/all")
-    public List<Request> getUserList() {
+    public List<Request> getAllRequests() {
         List<Request> requests = requestService.getAllRequests();
         return requests;
     }

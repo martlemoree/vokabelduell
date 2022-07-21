@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -135,5 +136,18 @@ public class GameServiceImpl implements GameService {
     }
 
 
+    @Transactional
+    @Override
+    public void setRoundsOfGame (Game game, Round newRound){
 
+        List<Round> rounds = new ArrayList<>();
+
+        if (game.getRounds() != null){
+            rounds = game.getRounds();
+        }
+
+        rounds.add(newRound);
+        game.setRounds(rounds);
+        gameDao.updateGame(game);
+    }
 }

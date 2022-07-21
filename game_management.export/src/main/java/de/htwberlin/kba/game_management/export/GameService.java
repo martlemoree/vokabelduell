@@ -17,8 +17,6 @@ public interface GameService {
      */
     Game createGame(Request request) throws SQLException;
 
-
-    @Transactional
     Game createGame2(User requester, User receiver);
 
 
@@ -31,9 +29,15 @@ public interface GameService {
     void calculatePoints(Game game, User user, int points);
 
 
+    /**
+     * method for restController
+     * @param gameId
+     * @param userName
+     * @param points
+     */
     void calculatePoints(Long gameId, String userName, int points);
 
-    @Transactional
+
     List<Game> getGamesFromCurrentUser(String userName);
 
     /**
@@ -55,6 +59,8 @@ public interface GameService {
     Game getGamebyId(Long gameId);
 
 
-    @Transactional
     List<Game> getALlGames();
+
+    @Transactional
+    void setRoundsOfGame(Game game, Round newRound);
 }

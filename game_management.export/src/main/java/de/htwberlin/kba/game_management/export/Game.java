@@ -1,5 +1,8 @@
 package de.htwberlin.kba.game_management.export;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import de.htwberlin.kba.user_management.export.User;
 import javax.persistence.*;
 import java.util.List;
@@ -34,6 +37,7 @@ public class Game {
 
     @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "game_rounds")
+    @JsonManagedReference
     private List<Round> rounds;
 
     @Version
