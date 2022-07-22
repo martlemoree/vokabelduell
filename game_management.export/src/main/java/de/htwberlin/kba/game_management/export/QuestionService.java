@@ -19,11 +19,6 @@ public interface QuestionService {
     Question createQuestion(Round round, VocabList vocabList);
 
     /**
-     * A translation is randomly generated for a wrong answer option to the question.
-     */
-    Translation setAnswerOptions();
-
-    /**
      * should show all answer options for the question
      * where the entry at index 0 is the correct answer
      * @return list of answer options

@@ -1,5 +1,6 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class VocabList {
     private String language;
 
     @OneToMany(mappedBy = "vocablist", fetch = FetchType.LAZY)
+    //@JsonManagedReference
     private List<Vocab> vocabs = new ArrayList<>();
 
     @Version

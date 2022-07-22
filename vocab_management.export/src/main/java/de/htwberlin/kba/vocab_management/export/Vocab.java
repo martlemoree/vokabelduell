@@ -1,5 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -19,11 +21,13 @@ public class Vocab {
     @ElementCollection
     private List<String> vocabs=new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JsonManagedReference
     private List<Translation> translations = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
+   // @JsonBackReference
     private VocabList vocablist;
 
     @Version

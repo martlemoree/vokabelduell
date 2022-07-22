@@ -9,6 +9,7 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import de.htwberlin.kba.vocab_management.impl.VocabListDao;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,24 +36,24 @@ public class QuestionServiceImpl implements QuestionService {
     public Question createQuestion(Round round, VocabList vocabList) {
 
         Random rand = new Random();
-        int size = vocabList.getVocabs().size();
+        /*int size = vocabList.getVocabs().size();
         int i = rand.nextInt(size);
 
         Vocab vocab =  vocabList.getVocabs()
-                .get(i);
+                .get(i);*/
 
-        /*Vocab vocab =  vocabList.getVocabs()
+        Vocab vocab =  vocabList.getVocabs()
                 .get(rand.nextInt(vocabList.getVocabs()
                         .size()));
 
         Translation rightAnswer = vocab.getTranslations()
                 .get(rand.nextInt(vocab.getTranslations()
-                        .size()));*/
+                        .size()));
 
-        int size1 = vocab.getTranslations().size();
+        /*int size1 = vocab.getTranslations().size();
         int j = rand.nextInt(size1);
 
-        Translation rightAnswer = vocab.getTranslations().get(j);
+        Translation rightAnswer = vocab.getTranslations().get(j);*/
 
 
         Translation wrongA = setAnswerOptions();
@@ -70,8 +71,58 @@ public class QuestionServiceImpl implements QuestionService {
         Random rand = new Random();
         List<VocabList> vocablists = vocabListService.getVocabLists();
 
+       /* for (VocabList v: vocablists) {
+            List<Vocab> vocabs = v.getVocabs();
+
+            for (Vocab vocab: vocabs) {
+                Hibernate.initialize(vocab.getVocabs());
+                Hibernate.initialize(vocab.getTranslations());
+
+                List<Translation>translations = vocab.getTranslations();
+
+                for (Translation t:translations) {
+                    Hibernate.initialize(t.getVocabs());
+                    Hibernate.initialize(t.getTranslations());
+
+                    List<Vocab> vocabs2 = t.getVocabs();
+
+                    for (Vocab vocab2: vocabs2) {
+                        Hibernate.initialize(vocab2.getVocabs());
+                        Hibernate.initialize(vocab2.getTranslations());
+                    }
+            }}}
+
+
+
+            for (Vocab vocab: vocabs) {
+                Hibernate.initialize(vocab.getVocabs());
+                List<Translation>translations = vocab.getTranslations();
+                for (Translation t:translations) {
+                    Hibernate.initialize(t.getVocabs());
+                    List<Vocab> vocabs2 = t.getVocabs();
+                    for (Vocab vocab2: vocabs2) {
+                        Hibernate.initialize(t.getVocabs());
+                        Hibernate.initialize(t.getTranslations());
+                    }
+                    Hibernate.initialize(t.getTranslations());
+                }
+            }*/
+
         VocabList randomVocabList = vocablists.get(rand.nextInt(vocablists.size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
+
+        /*for (Translation tr: randomTranslationList) {
+            Hibernate.initialize(tr.getTranslations());
+            Hibernate.initialize(tr.getVocabs());
+
+            List<Vocab> vocabs3 = tr.getVocabs();
+
+            for (Vocab vocab3: vocabs3) {
+                Hibernate.initialize(vocab3.getVocabs());
+                Hibernate.initialize(vocab3.getTranslations());
+            }
+
+        }*/
 
         return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
     }
@@ -171,7 +222,19 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Override
     public List<Question> getAllQuestions(){
-        return questionDao.getAllQuestions();
+        List<Question> questions = questionDao.getAllQuestions();
+
+        for (Question q: questions) {
+            Hibernate.initialize(q.getVocab().getVocabs());
+            Hibernate.initialize(q.getVocab().getTranslations());
+
+            List<Translation> translations = q.getVocab().getTranslations();
+            for (Translation t: translations) {
+                Hibernate.initialize(t.getTranslations());
+                Hibernate.initialize(t.getVocabs());
+            }
+        }
+        return questions;
     }
 
 

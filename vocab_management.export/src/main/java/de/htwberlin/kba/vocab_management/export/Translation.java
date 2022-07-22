@@ -1,5 +1,8 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,7 +23,8 @@ public class Translation {
     @Column(name = "translations")
     private List<String> translations;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonBackReference
     private  List<Vocab> vocabs;
 
     @Version

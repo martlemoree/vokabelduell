@@ -31,15 +31,6 @@ public class QuestionController {
     }
 
 
-
-
-    /*
-    @GetMapping("/getAllAnswers/{questionId}/{}")
-    public List<Translation> getAllAnswers(@RequestBody Question question){
-        return service.getAllAnswers(question);
-    }*/
-
-
     @PostMapping(value = "/create/{roundId}/{vocablistId}")
     public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException {
         Round round = roundService.getRoundById(roundId);
@@ -56,19 +47,19 @@ public class QuestionController {
         return questions;
     }
 
-    //TODO testen
-    @GetMapping(value = "/setAnswerOptions")
+    /*
+    @PutMapping(value = "/setAnswerOptions")
     public Translation setAnswerOptions() {
         return questionService.setAnswerOptions();
-    }
+    }*/
 
-    //TODO testen
+    //TODO geht nicht
     @GetMapping(value = "/getAllAnswers/{i}")
     public List<Translation> getAllAnswers(@RequestBody List<Question> questions, @PathVariable("i") int i) {
         return questionService.getAllAnswers(questions, i);
     }
 
-    //TODO testen
+    //TODO geht nicht
     @PostMapping(value = "/createQuestions/{gameId}/{vocablistId}/{roundId}")
     public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException {
         Round round = roundService.getRoundById(roundId);
@@ -84,19 +75,19 @@ public class QuestionController {
         }
     }
 
-    //TODO testen
+    //TODO geht nicht
     @GetMapping(value = "/giveAnswerOptionsRandom/{i}")
     public List<String> giveAnswerOptionsRandom(@RequestBody List<Question> questions, @PathVariable("i") int i) {
         return questionService.giveAnswerOptionsRandom(questions, i);
     }
 
-    //TODO testen
+    //TODO geht nicht
     @GetMapping(value = "/answeredQuestion/answer/{i}")
     public boolean answeredQuestion(@RequestBody List<Question> questions, @PathVariable("i") int i, @PathVariable("answer") String answer) {
         return questionService.answeredQuestion(answer, questions, i);
     }
 
-    //TODO testen
+    //TODO geht nicht
     @GetMapping(value = "/giveVocabStringRandom/{i}")
     public String giveVocabStringRandom(@RequestBody List<Question> questions, @PathVariable("i") int i) {
         return questionService.giveVocabStringRandom(questions, i);
