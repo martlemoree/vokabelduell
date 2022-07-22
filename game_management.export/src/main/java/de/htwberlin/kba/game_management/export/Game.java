@@ -35,7 +35,7 @@ public class Game {
     @JoinColumn(name = "receiver_id", referencedColumnName = "user_id")
     private User receiver;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER) // hier DELTE
     @Column(name = "game_rounds")
     @JsonManagedReference
     private List<Round> rounds;

@@ -30,7 +30,7 @@ public class Round {
     private String lastUserPlayedName;
 
     // Sorry Martin, das musste ich hier schon mal einfügen weil sonst Fehlermeldung
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER) //hier auch DELETE einfügen
     @Column(name = "questions")
     private List<Question> questions;
 

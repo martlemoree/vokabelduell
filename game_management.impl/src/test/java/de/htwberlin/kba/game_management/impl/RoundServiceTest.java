@@ -69,7 +69,7 @@ public class RoundServiceTest {
         game.setRounds(rounds);
 
         // 2. Act
-        service.changeLastPlayer(game, requester);
+        service.changeLastPlayer(game.getGameId(), requester.getUserName());
 
         // 3. Assert
         Assert.assertEquals(round.getLastUserPlayedName(), requester.getUserName());

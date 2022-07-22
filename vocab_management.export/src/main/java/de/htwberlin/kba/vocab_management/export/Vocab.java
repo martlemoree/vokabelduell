@@ -1,5 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ public class Vocab {
     @ElementCollection
     private List<String> vocabs=new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Translation> translations = new ArrayList<>();
 
     @ManyToOne
@@ -45,6 +47,7 @@ public class Vocab {
     }
 
     public List<String> getVocabs() {
+        Hibernate.initialize(this.vocabs);
         return vocabs;
     }
 
@@ -54,6 +57,7 @@ public class Vocab {
 
 
     public List<Translation> getTranslations() {
+        Hibernate.initialize(this.translations);
         return translations;
     }
 

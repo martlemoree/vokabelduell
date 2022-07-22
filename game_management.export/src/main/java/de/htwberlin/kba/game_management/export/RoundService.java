@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface RoundService {
 
-    Round createRound(Game game);
-
     /**
      * new round is created and directly added to the list of rounds of the current game
      *
@@ -23,7 +21,7 @@ public interface RoundService {
      * @param game current game
      * @param user current user
      */
-    void changeLastPlayer(Game game, User user);
+    void changeLastPlayer(Long gameId, String userName);
 
     List<Round> getAllRounds();
 

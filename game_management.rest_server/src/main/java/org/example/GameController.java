@@ -44,7 +44,7 @@ public class GameController
     public ResponseEntity<Void> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws URISyntaxException, URISyntaxException {
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
-        Game newGame = gameService.createGame2(requester, receiver);
+        Game newGame = gameService.createGame(requester, receiver);
         URI uri = new URI("/game/" + newGame.getGameId());
         return ResponseEntity.created(uri).build();
     }
@@ -52,14 +52,6 @@ public class GameController
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
     public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) {
         gameService.calculatePoints(gameId, userName, points);
-    }
-
-    @PutMapping(value = "setRoundsOfGame/{gameId}/{roundId}")
-    public void setRoundsOfGame(@PathVariable("gameId") Long gameId, @PathVariable("roundId") Long roundId) {
-        Game game = gameService.getGamebyId(gameId);
-        Round round = roundService.getRoundById(roundId);
-
-        gameService.setRoundsOfGame(game, round);
     }
 
     @GetMapping("/gamesOfUser/{name}")

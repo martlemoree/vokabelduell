@@ -1,6 +1,7 @@
 package org.example;
 
 import de.htwberlin.kba.game_management.export.Request;
+import de.htwberlin.kba.game_management.export.RequestService;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 
 
 @Service
-public class RequestRestAdapter {
+public class RequestRestAdapter implements RequestService {
     private RestTemplate restTemplate;
 
     @Autowired
@@ -62,6 +63,11 @@ public class RequestRestAdapter {
         String userName = user.getUserName();
         final String URL = localhost + "pendingRequests" + "/" + userName;
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
+    }
+
+    @Override
+    public Request getRequestById(Long Id) {
+        return null;
     }
 
     public List<Request> getAllRequests() {

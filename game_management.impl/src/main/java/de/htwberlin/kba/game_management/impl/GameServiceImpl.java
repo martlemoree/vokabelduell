@@ -33,17 +33,10 @@ public class GameServiceImpl implements GameService {
         this.userService = userService;
     }
 
-    @Override
-    @Transactional
-    public Game createGame(Request request) throws SQLException {
-        Game game =  new Game (request.getRequester(), request.getReceiver());
-        this.gameDao.createGame(game);
-        return game;
-    }
 
     @Override
     @Transactional
-    public Game createGame2(User requester, User receiver) {
+    public Game createGame(User requester, User receiver) {
         Game game =  new Game (requester, receiver);
         this.gameDao.createGame(game);
         return game;
@@ -133,21 +126,5 @@ public class GameServiceImpl implements GameService {
             Hibernate.initialize(g.getRounds());
         }
         return games;
-    }
-
-
-    @Transactional
-    @Override
-    public void setRoundsOfGame (Game game, Round newRound){
-
-        List<Round> rounds = new ArrayList<>();
-
-        if (game.getRounds() != null){
-            rounds = game.getRounds();
-        }
-
-        rounds.add(newRound);
-        game.setRounds(rounds);
-        gameDao.updateGame(game);
     }
 }

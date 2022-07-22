@@ -2,6 +2,8 @@ package de.htwberlin.kba.vocab_management.impl;
 
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.TranslationService;
+import de.htwberlin.kba.vocab_management.export.Vocab;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,12 @@ public class TranslationServiceImpl implements TranslationService {
     // constructor without parameters is needed for mockito tests
     public TranslationServiceImpl() {}
 
+    @Transactional
     public Translation createTranslation(Long translationId, List<String> translations) {
-        // method not implemented and tested because it is not part of the game logic
-        return new Translation(translations);
+        Translation translation = new Translation(translations);
+        translationDao.createTranslation(translation);
+        Hibernate.initialize(translation.getTranslations());
+        return translation;
     }
 
     @Transactional

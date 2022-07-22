@@ -2,6 +2,7 @@ package org.example;
 
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.game_management.export.QuestionService;
 import de.htwberlin.kba.game_management.export.Round;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.VocabList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 
 @Service
-public class QuestionRestAdapter {
+public class QuestionRestAdapter implements QuestionService {
 
     private RestTemplate restTemplate;
     final String localhost = "http://localhost:8080/round/";
@@ -95,6 +96,11 @@ public class QuestionRestAdapter {
 
         final String URL = localhost + "giveVocabStringRandom" + "/" + i;
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,String.class).getBody();
+    }
+
+    @Override
+    public List<Question> getAllQuestions() {
+        return null;
     }
 
 }

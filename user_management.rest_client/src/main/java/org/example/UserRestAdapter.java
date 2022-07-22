@@ -1,6 +1,7 @@
 package org.example;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UserRestAdapter {
+public class UserRestAdapter implements UserService {
 
     private RestTemplate restTemplate;
 

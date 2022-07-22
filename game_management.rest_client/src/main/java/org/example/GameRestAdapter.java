@@ -19,11 +19,12 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class GameRestAdapter
+public class GameRestAdapter implements GameService
 {
 
     private RestTemplate restTemplate;
@@ -38,7 +39,8 @@ public class GameRestAdapter
     @GetMapping(value = "/all")
     public List<Game> getGameList() {*/
 
-    public Game createGame2(User requester, User receiver){
+
+    public Game createGame(User requester, User receiver){
         String reqName = requester.getUserName();
         String recName = receiver.getUserName();
 
@@ -62,6 +64,11 @@ public class GameRestAdapter
         String result = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, String.class).getBody();
     }
 
+    @Override
+    public void calculatePoints(Long gameId, String userName, int points) {
+
+    }
+
     public List<Game> getGamesFromCurrentUser(String userName){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -82,6 +89,16 @@ public class GameRestAdapter
 
         final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
+    }
+
+    @Override
+    public Game getGamebyId(Long gameId) {
+        return null;
+    }
+
+    @Override
+    public List<Game> getALlGames() {
+        return null;
     }
 
 }

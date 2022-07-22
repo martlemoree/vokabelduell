@@ -60,6 +60,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteUserId(Long userId) {
 
+        //hier named query bei der alle games / requests löschen
+
         User user = entityManager.find(User.class, userId);
         if (user == null) {
             throw new EntityNotFoundException("Can't find User with userId" + userId);

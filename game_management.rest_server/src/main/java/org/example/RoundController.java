@@ -29,20 +29,17 @@ public class RoundController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/create/{gameId}")
+    @PostMapping(value = "/startNewRound/{gameId}")
     public ResponseEntity<Void> startNewRound(@PathVariable("gameId") String gameId) throws URISyntaxException {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
-        Round round = roundService.createRound(game);
+        Round round = roundService.startNewRound(game);
         URI uri = new URI("/game/" + round.getRoundId());
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "changeLastPlayer/{gameId}/{userName}")
     public void changeLastPlayer(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName) {
-        Game game = gameService.getGamebyId(gameId);
-        User user = userService.getUserByUserName(userName);
-
-        roundService.changeLastPlayer(game, user);
+        roundService.changeLastPlayer(gameId, userName);
     }
 
     @GetMapping(value = "/all")

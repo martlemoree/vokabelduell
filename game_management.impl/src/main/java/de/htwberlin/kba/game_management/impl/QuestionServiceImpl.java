@@ -35,9 +35,25 @@ public class QuestionServiceImpl implements QuestionService {
     public Question createQuestion(Round round, VocabList vocabList) {
 
         Random rand = new Random();
+        int size = vocabList.getVocabs().size();
+        int i = rand.nextInt(size);
 
-        Vocab vocab =  vocabList.getVocabs().get(rand.nextInt(vocabList.getVocabs().size()));
-        Translation rightAnswer = vocab.getTranslations().get(rand.nextInt(vocab.getTranslations().size()));
+        Vocab vocab =  vocabList.getVocabs()
+                .get(i);
+
+        /*Vocab vocab =  vocabList.getVocabs()
+                .get(rand.nextInt(vocabList.getVocabs()
+                        .size()));
+
+        Translation rightAnswer = vocab.getTranslations()
+                .get(rand.nextInt(vocab.getTranslations()
+                        .size()));*/
+
+        int size1 = vocab.getTranslations().size();
+        int j = rand.nextInt(size1);
+
+        Translation rightAnswer = vocab.getTranslations().get(j);
+
 
         Translation wrongA = setAnswerOptions();
         Translation wrongB = setAnswerOptions();

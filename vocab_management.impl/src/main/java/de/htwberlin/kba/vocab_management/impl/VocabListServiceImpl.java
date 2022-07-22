@@ -4,6 +4,7 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -194,7 +195,11 @@ public class VocabListServiceImpl implements VocabListService {
     @Override
     @Transactional
     public List<VocabList> getVocabLists() {
-        return vocabListDao.getAllVocabLists();
+        List<VocabList> vlists = vocabListDao.getAllVocabLists();
+        for (VocabList vlist: vlists) {
+            Hibernate.initialize(vlist.getVocabs());
+        }
+        return vlists;
     }
 
     @Override
@@ -222,8 +227,10 @@ public class VocabListServiceImpl implements VocabListService {
     @Override
     @Transactional
     public VocabList getVocabListById(Long id) {
-        vocabListDao.getVocabListById(id);
-        return null;
+        VocabList vocabList = vocabListDao.getVocabListById(id);
+        Hibernate.initialize(vocabList.getVocabs());
+        Hibernate.initialize(vocabList.getVocabs());
+        return vocabList;
     }
 
     @Override

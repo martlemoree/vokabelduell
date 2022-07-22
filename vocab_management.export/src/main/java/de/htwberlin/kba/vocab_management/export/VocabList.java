@@ -1,5 +1,7 @@
 package de.htwberlin.kba.vocab_management.export;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class VocabList {
     @Column
     private String language;
 
-    @OneToMany(mappedBy = "vocablist", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "vocablist", fetch = FetchType.LAZY)
     private List<Vocab> vocabs = new ArrayList<>();
 
     @Version
@@ -73,6 +75,10 @@ public class VocabList {
     }
 
     public List<Vocab> getVocabs() {
+        for (Vocab v: vocabs) {
+            Hibernate.initialize(v.getTranslations());
+            Hibernate.initialize(v.getVocabs());
+        }
         return vocabs;
     }
 

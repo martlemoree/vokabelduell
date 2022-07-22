@@ -16,26 +16,17 @@ import java.util.List;
 public class RoundServiceImpl implements RoundService {
 
     private RoundDao roundDao;
+    private GameDao gameDao;
 
     @Autowired
-    public RoundServiceImpl(RoundDao roundDao) {
+    public RoundServiceImpl(RoundDao roundDao, GameDao gameDao) {
         this.roundDao = roundDao;
+        this.gameDao = gameDao;
     }
 
     // constructor without parameters needed for mockito testing
     public RoundServiceImpl() {}
 
-    @Transactional
-    @Override
-    public Round createRound(Game game){
-        Round round = new Round(game);
-        roundDao.createRound(round);
-        return round;
-    }
-
-
-    //TODO das funktioniert so nicht, weil das sind 2 HTTP aufrufe in einem --> das muss ich zwei methoden getrennt werden
-    // 2. methode ist im game service da ein game geupdatet wird
 
     @Transactional
     public Round startNewRound(Game game) {
@@ -49,16 +40,22 @@ public class RoundServiceImpl implements RoundService {
 
         rounds.add(round);
         game.setRounds(rounds);
+        gameDao.updateGame(game);
+
 
         return round;
     }
 
-    // TODO DAO???
-    public void changeLastPlayer(Game game, User user) {
-        game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(user.getUserName());
+    @Transactional
+    @Override
+    public void changeLastPlayer(Long gameId, String userName) {
+        Game game = gameDao.getGameById(gameId);
+        game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(userName);
+        gameDao.updateGame(game);
     }
 
     @Override
+    @Transactional
     public List<Round> getAllRounds(){
         List<Round> rounds = roundDao.getAllRounds();
         for (Round r: rounds){
@@ -69,6 +66,7 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
+    @Transactional
     public Round getRoundById(Long id) {
         return roundDao.getRoundById(id);
     }

@@ -10,14 +10,8 @@ import java.util.List;
 
 public interface GameService {
 
-    /**
-     * creates a new Game.
-     * @param request where to get the receiver and requester from
-     * @return a new game
-     */
-    Game createGame(Request request) throws SQLException;
 
-    Game createGame2(User requester, User receiver);
+    Game createGame(User requester, User receiver);
 
 
     /**
@@ -61,6 +55,4 @@ public interface GameService {
 
     List<Game> getALlGames();
 
-    @Transactional
-    void setRoundsOfGame(Game game, Round newRound);
 }

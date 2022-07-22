@@ -2,6 +2,7 @@ package org.example;
 
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Round;
+import de.htwberlin.kba.game_management.export.RoundService;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 
 
 @Service
-public class RoundRestAdapter {
+public class RoundRestAdapter implements RoundService {
     private RestTemplate restTemplate;
 
     @Autowired
@@ -26,7 +27,7 @@ public class RoundRestAdapter {
     final String localhost = "http://localhost:8080/round/";
     //test
 
-    public Round createRound(Game game){
+    public Round startNewRound(Game game){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
@@ -45,6 +46,16 @@ public class RoundRestAdapter {
         String userName = user.getUserName();
         final String URL = localhost + "changeLastPlayer/" + gameId + "/" + userName;
         String result = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, String.class).getBody();
+    }
+
+    @Override
+    public List<Round> getAllRounds() {
+        return null;
+    }
+
+    @Override
+    public Round getRoundById(Long id) {
+        return null;
     }
 
 
