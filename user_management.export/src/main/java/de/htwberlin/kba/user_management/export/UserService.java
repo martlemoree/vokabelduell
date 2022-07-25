@@ -47,6 +47,7 @@ public interface UserService {
      * holds logic to remove given user
      * @param user which should be removed
      */
+    // TODO kann gelöscht werden?
     boolean removeUser(User user);
 
     /**
@@ -54,6 +55,7 @@ public interface UserService {
      * @param id given id of the user
      * @return the user with the given id
      */
+    // TODO kann gelöscht werden?
     User getUserById(Long id);
 
     @Transactional

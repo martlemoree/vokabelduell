@@ -231,7 +231,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                         askQuestions(game, currentUser, questions, j);
                                     }
 
-                                    roundService.changeLastPlayer(game, currentUser);
+                                    roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
                                     break;
 
                                 } else {
@@ -379,8 +379,8 @@ public class VokabellduellUiController implements VokabellduellUi {
 
     public void askQuestions(Game game, User currentUser, List<Question> questions, int i) {
 
-        List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions, i);
-        String vocabString = questionService.giveVocabStringRandom(questions, i);
+        List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions.get(i));
+        String vocabString = questionService.giveVocabStringRandom(questions.get(i));
 
         view.printMessage("Wie kann" + vocabString + " richtig übersetzt werden? Gib die richtige Antwort ein.\n " +
                 "1 - " + answerOptions.get(0) + ",\n " +
@@ -390,7 +390,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         // user answers question
         String answer = view.userInputString();
         // is answer correct?
-        boolean rightOrWrong = questionService.answeredQuestion(answer, questions, i);
+        boolean rightOrWrong = questionService.answeredQuestion(answer, questions.get(i));
 
         int points;
         if (rightOrWrong) {
@@ -398,7 +398,7 @@ public class VokabellduellUiController implements VokabellduellUi {
             view.printMessage("Super, das ist richtig!");
         } else {
             points = -200;
-            view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questionService.getAllAnswers(questions, i).get(0));
+            view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questionService.getAllAnswers(questions.get(i)).get(0));
         }
 
         gameService.calculatePoints(game, currentUser, points);
@@ -414,6 +414,8 @@ public class VokabellduellUiController implements VokabellduellUi {
             Game game=null;
             try {
                 game = gameService.createGame(request);
+               // game = gameService.createGame(request.getRequester(), game.getReceiver());
+                // TODO auskommentierte Zeile ist die richtige methode --> dann wird die exception falsch
             } catch (SQLException ex) {
                 view.printMessage("Das hat leider nicht geklappt. Ein SQL Server Fehler ist aufgetreten.");
                 view.printMessage("\n Error Code: " + ex.getErrorCode());

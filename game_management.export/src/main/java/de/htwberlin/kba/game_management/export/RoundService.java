@@ -18,12 +18,18 @@ public interface RoundService {
 
     /**
      * change the player who last played a round in the game
-     * @param game current game
-     * @param user current user
+     * @param gameId - id of the current game
+     * @param userName - name of the current user
      */
     void changeLastPlayer(Long gameId, String userName);
 
+    // TODO löschen nur für tests
     List<Round> getAllRounds();
 
+    /**
+     * find the round with the given id
+     * @param id that should be searched
+     * @return the round with given id
+     */
     Round getRoundById(Long id);
 }

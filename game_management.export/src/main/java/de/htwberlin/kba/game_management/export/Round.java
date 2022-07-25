@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import javax.persistence.*;
 import java.util.List;
@@ -30,7 +31,8 @@ public class Round {
     private String lastUserPlayedName;
 
     // Sorry Martin, das musste ich hier schon mal einfügen weil sonst Fehlermeldung
-    @OneToMany(fetch = FetchType.EAGER) //hier auch DELETE einfügen
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     @Column(name = "questions")
     private List<Question> questions;
 

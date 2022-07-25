@@ -33,9 +33,13 @@ public interface RequestService {
      */
     List<Request> getPendingRequestsForCurrentUser(User user);
 
-    @Transactional
+    /**
+     * search a request with the given id
+     * @param Id that should be searched
+     * @return the request with the given id
+     */
     Request getRequestById(Long Id);
 
-    @Transactional
+    // TODO llöschen nur für testzwecke
     List<Request> getAllRequests();
 }

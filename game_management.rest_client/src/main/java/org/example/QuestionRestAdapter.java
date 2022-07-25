@@ -38,21 +38,12 @@ public class QuestionRestAdapter implements QuestionService {
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Question.class).getBody();
     }
 
-    public Translation setAnswerOptions(){
+    public List<Translation> getAllAnswers(Question question){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "setAnswerOptions";
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, Translation.class).getBody();
-    }
-
-    public List<Translation> getAllAnswers(List<Question> questions, int i){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(questions,headers);
-
-        final String URL = localhost + "getAllAnswers" + "/" + i;
+        final String URL = localhost + "getAllAnswers" + "/" + question.getQuestionId();
         return  restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
@@ -69,37 +60,43 @@ public class QuestionRestAdapter implements QuestionService {
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, List.class).getBody();
     }
 
-    public List<String> giveAnswerOptionsRandom(List<Question> questions, int i){
+    public List<String> giveAnswerOptionsRandom(Question question){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(questions,headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "giveAnswerOptionsRandom" + "/" + i;
+        final String URL = localhost + "giveAnswerOptionsRandom" + "/" + question.getQuestionId();
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<String>>() {}).getBody();
 
 
     }
 
-    public boolean answeredQuestion(String answer, List<Question> questions, int i){
+    public boolean answeredQuestion(String answer, Question question){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(questions,headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "answeredQuestion" + "/" + i;
+        final String URL = localhost + "answeredQuestion" + "/" + answer +  "/"  + question.getQuestionId();
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,boolean.class).getBody();
     }
 
-    public String giveVocabStringRandom(List<Question> questions, int i){
+    public String giveVocabStringRandom(Question question){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(questions,headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "giveVocabStringRandom" + "/" + i;
+        final String URL = localhost + "giveVocabStringRandom" + "/" + question.getQuestionId();
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,String.class).getBody();
     }
 
+
     @Override
     public List<Question> getAllQuestions() {
+        return null;
+    }
+
+    @Override
+    public Question getQuestionById(Long Id) {
         return null;
     }
 

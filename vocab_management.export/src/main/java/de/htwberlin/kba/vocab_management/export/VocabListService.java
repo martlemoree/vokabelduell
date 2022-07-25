@@ -74,6 +74,7 @@ public interface VocabListService {
      * @param vocabListName name of the vocablist
      * @return vocablist with given name
      */
+    //TODO brauchen wir beides? --> reicht nicht eins von beidem?
     VocabList getVocabListByName( String vocabListName);
 
     /**
@@ -81,6 +82,7 @@ public interface VocabListService {
      * @param id of the requested vocablist
      * @return the requested vocabList
      */
+    //TODO brauchen wir beides?
     VocabList getVocabListById(Long id);
 
 }

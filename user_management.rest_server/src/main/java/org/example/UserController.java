@@ -65,11 +65,7 @@ public class UserController {
         return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    // find und delete muss in einer transaction sein
-    //TODO ein User kann nciht gelöscht werden, da er in Game enthalten ist
-    //Die DELETE-Anweisung steht in Konflikt mit der REFERENCE-Einschränkung "FKhot652pcufq0w44rt7r9qit1m". Der Konflikt trat in der u554789-Datenbank, Tabelle "dbo.games", column 'requester_id' auf
-    // https://stackoverflow.com/questions/24623483/delete-an-object-that-has-manytomany-relationship-to-another-object
-    // lösung über beziehung zu game und orphanRemovel = true?
+    // TODO Martin: in UserDAO einfügen, dass bevor der user gelöscht wird, alle seine spiele gelöscht werden über named query
     @DeleteMapping(value = "/deleteId/{id}")
     public ResponseEntity<?> removeUserID(@PathVariable("id") String id) {
         boolean successful = userService.removeUserId(Long.valueOf(id));

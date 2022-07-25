@@ -10,10 +10,15 @@ import java.util.List;
 
 public interface GameService {
 
-
+    /**
+     * create an object of this class
+     * @param requester the user who sent the request
+     * @param receiver the user who accepted the request
+     * @return
+     */
     Game createGame(User requester, User receiver);
 
-
+    //TODO löschen und die andere Methode benutzen
     /**
      * method calculates points for given user and changes value accordingly
      * @param game game which is to be changed
@@ -52,7 +57,7 @@ public interface GameService {
      */
     Game getGamebyId(Long gameId);
 
-
+//TODO löschen, nur für testzwecke
     List<Game> getALlGames();
 
 }

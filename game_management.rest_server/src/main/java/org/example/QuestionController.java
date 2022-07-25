@@ -1,16 +1,12 @@
 package org.example;
 
 import de.htwberlin.kba.game_management.export.*;
-import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,19 +43,11 @@ public class QuestionController {
         return questions;
     }
 
-    /*
-    @PutMapping(value = "/setAnswerOptions")
-    public Translation setAnswerOptions() {
-        return questionService.setAnswerOptions();
-    }*/
-
-    //TODO geht nicht
-    @GetMapping(value = "/getAllAnswers/{i}")
-    public List<Translation> getAllAnswers(@RequestBody List<Question> questions, @PathVariable("i") int i) {
-        return questionService.getAllAnswers(questions, i);
+    @GetMapping(value = "/getAllAnswers/{questionId}")
+    public List<Translation> getAllAnswers(@PathVariable("questionId") Long questionId) {
+        return questionService.getAllAnswers(questionService.getQuestionById(questionId));
     }
 
-    //TODO geht nicht
     @PostMapping(value = "/createQuestions/{gameId}/{vocablistId}/{roundId}")
     public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException {
         Round round = roundService.getRoundById(roundId);
@@ -75,22 +63,22 @@ public class QuestionController {
         }
     }
 
-    //TODO geht nicht
-    @GetMapping(value = "/giveAnswerOptionsRandom/{i}")
-    public List<String> giveAnswerOptionsRandom(@RequestBody List<Question> questions, @PathVariable("i") int i) {
-        return questionService.giveAnswerOptionsRandom(questions, i);
+    // TODO hier gibt es probleme wenn die answer options leer sind
+    @GetMapping(value = "/giveAnswerOptionsRandom/{questionId}")
+    public List<String> giveAnswerOptionsRandom(@PathVariable("questionId") Long questionId) {
+        return questionService.giveAnswerOptionsRandom(questionService.getQuestionById(questionId));
     }
 
-    //TODO geht nicht
-    @GetMapping(value = "/answeredQuestion/answer/{i}")
-    public boolean answeredQuestion(@RequestBody List<Question> questions, @PathVariable("i") int i, @PathVariable("answer") String answer) {
-        return questionService.answeredQuestion(answer, questions, i);
+    // TODO hier gibt es probleme wenn die answer options leer sind
+    @GetMapping(value = "/giveVocabStringRandom/{questionId}")
+    public String giveVocabStringRandom(@PathVariable("questionId") Long questionId) {
+        return questionService.giveVocabStringRandom(questionService.getQuestionById(questionId));
     }
 
-    //TODO geht nicht
-    @GetMapping(value = "/giveVocabStringRandom/{i}")
-    public String giveVocabStringRandom(@RequestBody List<Question> questions, @PathVariable("i") int i) {
-        return questionService.giveVocabStringRandom(questions, i);
+
+    @GetMapping(value = "/answeredQuestion/{answer}/{questionId}")
+    public boolean answeredQuestion(@PathVariable("questionId") Long questionId, @PathVariable("answer") String answer) {
+        return questionService.answeredQuestion(answer, questionService.getQuestionById(questionId));
     }
 }
 

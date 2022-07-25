@@ -6,6 +6,7 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface QuestionService {
@@ -21,10 +22,10 @@ public interface QuestionService {
     /**
      * should show all answer options for the question
      * where the entry at index 0 is the correct answer
+     * @param question given question
      * @return list of answer options
      */
-    List<Translation> getAllAnswers(List<Question> question, int i);
-
+    List<Translation> getAllAnswers(Question question);
 
     /**
      * creates List of questions for a specific round of the game. One round has three questions
@@ -41,26 +42,26 @@ public interface QuestionService {
      * @param question the question which should be asked
      * @return a string list with the answer options
      */
-    List<String> giveAnswerOptionsRandom(List<Question> question, int i);
+    List<String> giveAnswerOptionsRandom(Question question);
 
     /**
      * checks if the given answer from the user is consistent with one of the translations of the right answer
      * @param answer given answer from the user
-     * @param questions to get the right answer from
-     * @param i list entry of right question
+     * @param question object that should be addressed
      * @return true if given answer is consistent with rightAnswer, false if not
      */
-    boolean answeredQuestion(String answer, List<Question> questions, int i);
-
+    boolean answeredQuestion(String answer, Question question);
 
     /**
      * holds logic to give a random entry from the list of strings of the given vocab
-     * @param questions list of used questions
-     * @param i list entry to be addressed
+     * @param question object that should be addressed
      * @return random string entry from list of strings of vocab
      */
-    String giveVocabStringRandom(List<Question> questions, int i);
 
-    //TODO später löschen, nur zum testen
+    String giveVocabStringRandom(Question question);
+
+    // TODO später löschen, nur zum testen
     List<Question> getAllQuestions();
+
+    Question getQuestionById(Long Id);
 }

@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 
@@ -17,6 +18,7 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "round_id", referencedColumnName = "round_id")
+    @JsonBackReference
     private Round round;
 
     @ManyToOne

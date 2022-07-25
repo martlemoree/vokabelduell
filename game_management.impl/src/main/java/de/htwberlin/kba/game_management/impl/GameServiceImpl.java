@@ -124,6 +124,16 @@ public class GameServiceImpl implements GameService {
         List<Game> games = gameDao.getAllGames();
         for (Game g: games) {
             Hibernate.initialize(g.getRounds());
+            List<Round> rounds = g.getRounds();
+            for (Round r:rounds) {
+                Hibernate.initialize(r.getQuestions());
+                List<Question> questions = r.getQuestions();
+                for (Question q: questions) {
+                    Hibernate.initialize(q.getVocab().getVocabs());
+                    Hibernate.initialize(q.getVocab().getTranslations());
+
+                }
+            }
         }
         return games;
     }

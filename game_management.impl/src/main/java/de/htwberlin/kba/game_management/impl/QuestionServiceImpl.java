@@ -8,7 +8,6 @@ import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
-import de.htwberlin.kba.vocab_management.impl.VocabListDao;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,26 +20,22 @@ import java.util.Random;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    private QuestionDao questionDao;
-    private VocabListDao vocabListDao;
-    private VocabListService vocabListService;
+    private final QuestionDao questionDao;
+    private final VocabListService vocabListService;
+    private final RoundDao roundDao;
+
 
     @Autowired
-    public QuestionServiceImpl(QuestionDao questionDao, VocabListDao vocabListDao, VocabListService vocabListService) {
+    public QuestionServiceImpl(QuestionDao questionDao,  VocabListService vocabListService, RoundDao roundDao) {
         this.questionDao = questionDao;
-        this.vocabListDao = vocabListDao;
         this.vocabListService = vocabListService;
+        this.roundDao = roundDao;
     }
 
     @Transactional
     public Question createQuestion(Round round, VocabList vocabList) {
 
         Random rand = new Random();
-        /*int size = vocabList.getVocabs().size();
-        int i = rand.nextInt(size);
-
-        Vocab vocab =  vocabList.getVocabs()
-                .get(i);*/
 
         Vocab vocab =  vocabList.getVocabs()
                 .get(rand.nextInt(vocabList.getVocabs()
@@ -50,15 +45,10 @@ public class QuestionServiceImpl implements QuestionService {
                 .get(rand.nextInt(vocab.getTranslations()
                         .size()));
 
-        /*int size1 = vocab.getTranslations().size();
-        int j = rand.nextInt(size1);
 
-        Translation rightAnswer = vocab.getTranslations().get(j);*/
-
-
-        Translation wrongA = setAnswerOptions();
-        Translation wrongB = setAnswerOptions();
-        Translation wrongC = setAnswerOptions();
+        Translation wrongA = setAnswerOptions(rightAnswer.getTranslationId());
+        Translation wrongB = setAnswerOptions(rightAnswer.getTranslationId());
+        Translation wrongC = setAnswerOptions(rightAnswer.getTranslationId());
 
         Question question = new Question(round, wrongA,wrongB,wrongC,rightAnswer, vocab);
         questionDao.createQuestion(question);
@@ -66,70 +56,29 @@ public class QuestionServiceImpl implements QuestionService {
         return question;
     }
 
-    public Translation setAnswerOptions() {
+    public Translation setAnswerOptions(Long rightId) {
 
         Random rand = new Random();
         List<VocabList> vocablists = vocabListService.getVocabLists();
 
-       /* for (VocabList v: vocablists) {
-            List<Vocab> vocabs = v.getVocabs();
-
-            for (Vocab vocab: vocabs) {
-                Hibernate.initialize(vocab.getVocabs());
-                Hibernate.initialize(vocab.getTranslations());
-
-                List<Translation>translations = vocab.getTranslations();
-
-                for (Translation t:translations) {
-                    Hibernate.initialize(t.getVocabs());
-                    Hibernate.initialize(t.getTranslations());
-
-                    List<Vocab> vocabs2 = t.getVocabs();
-
-                    for (Vocab vocab2: vocabs2) {
-                        Hibernate.initialize(vocab2.getVocabs());
-                        Hibernate.initialize(vocab2.getTranslations());
-                    }
-            }}}
-
-
-
-            for (Vocab vocab: vocabs) {
-                Hibernate.initialize(vocab.getVocabs());
-                List<Translation>translations = vocab.getTranslations();
-                for (Translation t:translations) {
-                    Hibernate.initialize(t.getVocabs());
-                    List<Vocab> vocabs2 = t.getVocabs();
-                    for (Vocab vocab2: vocabs2) {
-                        Hibernate.initialize(t.getVocabs());
-                        Hibernate.initialize(t.getTranslations());
-                    }
-                    Hibernate.initialize(t.getTranslations());
-                }
-            }*/
 
         VocabList randomVocabList = vocablists.get(rand.nextInt(vocablists.size()));
         List<Translation> randomTranslationList = randomVocabList.getVocabs().get(rand.nextInt(randomVocabList.getVocabs().size())).getTranslations();
 
-        /*for (Translation tr: randomTranslationList) {
-            Hibernate.initialize(tr.getTranslations());
-            Hibernate.initialize(tr.getVocabs());
+        Translation translation = randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
 
-            List<Vocab> vocabs3 = tr.getVocabs();
-
-            for (Vocab vocab3: vocabs3) {
-                Hibernate.initialize(vocab3.getVocabs());
-                Hibernate.initialize(vocab3.getTranslations());
-            }
-
+        // TODO hiermit sicherstellen, dass nicht die richtige Antwort als falsche antwort genommen wird
+        // TODO eigtl müssten wir noch einen check einbauen dass sich bei wrongA/B/C nichts doppelt
+        /*while (translation.getTranslationId() != rightId){
+            translation = randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
         }*/
 
-        return randomTranslationList.get(rand.nextInt(randomTranslationList.size()));
+        return translation;
     }
 
-    public List<Translation> getAllAnswers(List<Question> questions, int i) {
-        Question question = questions.get(i);
-
+    // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
+    @Override
+    public List<Translation> getAllAnswers(Question question) {
         List<Translation> translations = new ArrayList<> ();
         translations.add(question.getRightAnswer());
         translations.add(question.getWrongA ());
@@ -139,6 +88,7 @@ public class QuestionServiceImpl implements QuestionService {
         return translations;
     }
 
+    @Transactional
     public List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) {
         List<Question> questions = new ArrayList<>();
         Question question1 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
@@ -150,18 +100,19 @@ public class QuestionServiceImpl implements QuestionService {
 
         // der Round hinzufügen
         round.setQuestions(questions);
+        roundDao.updateRound(round);
 
         return questions;
     }
 
-    public List<String> giveAnswerOptionsRandom(List<Question> questions, int i) {
-
-        Question question = questions.get(i);
+    // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
+    @Override
+    public List<String> giveAnswerOptionsRandom(Question question) {
         Random rand = new Random();
         List<String> answerOptions = new ArrayList<>();
 
         // create translations list to extract answer options randomly
-        List<Translation> translations = getAllAnswers(questions, i);
+        List<Translation> translations = getAllAnswers(question);
 
         // get Random Translation (if various possibilities)
         int index1 = rand.nextInt(translations.size()-1);
@@ -197,9 +148,11 @@ public class QuestionServiceImpl implements QuestionService {
         return answerOptions;
     }
 
-    public boolean answeredQuestion(String answer, List<Question> questions, int i) {
+    // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
+    @Override
+    public boolean answeredQuestion(String answer, Question question) {
 
-        Translation rightAnswer = questions.get(i).getRightAnswer();
+        Translation rightAnswer = question.getRightAnswer();
         List<String> translations = rightAnswer.getTranslations();
 
         for (String translation : translations) {
@@ -211,8 +164,10 @@ public class QuestionServiceImpl implements QuestionService {
         return false;
     }
 
-    public String giveVocabStringRandom(List<Question> questions, int i) {
-        Vocab vocab = questions.get(i).getVocab();
+    // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
+    @Override
+    public String giveVocabStringRandom(Question question) {
+        Vocab vocab = question.getVocab();
         Random rand = new Random();
 
         int index = rand.nextInt(vocab.getVocabs().size()-1);
@@ -227,6 +182,7 @@ public class QuestionServiceImpl implements QuestionService {
         for (Question q: questions) {
             Hibernate.initialize(q.getVocab().getVocabs());
             Hibernate.initialize(q.getVocab().getTranslations());
+            Hibernate.initialize(q.getRound().getQuestions());
 
             List<Translation> translations = q.getVocab().getTranslations();
             for (Translation t: translations) {
@@ -235,6 +191,23 @@ public class QuestionServiceImpl implements QuestionService {
             }
         }
         return questions;
+    }
+
+    @Transactional
+    @Override
+    public Question getQuestionById(Long Id){
+        Question question =  questionDao.getQuestionById(Id);
+
+        Hibernate.initialize(question.getVocab().getVocabs());
+        Hibernate.initialize(question.getVocab().getTranslations());
+
+        List<Translation> translations = question.getVocab().getTranslations();
+        for (Translation t: translations) {
+            Hibernate.initialize(t.getTranslations());
+            Hibernate.initialize(t.getVocabs());
+        }
+        return question;
+
     }
 
 
