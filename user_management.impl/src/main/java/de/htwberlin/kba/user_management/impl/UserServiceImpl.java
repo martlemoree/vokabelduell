@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean removeUserName(String name) throws UserNotFoundException {
+    public void removeUserName(String name) throws UserNotFoundException {
         User user;
         try {
             user = userDao.getUserByName(name);
@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
         }
 
         userDao.deleteUserId(user.getUserId());
-        return true;
     }
 
 }

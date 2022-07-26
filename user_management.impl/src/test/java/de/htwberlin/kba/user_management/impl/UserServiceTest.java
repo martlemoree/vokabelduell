@@ -1,6 +1,7 @@
 package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 
@@ -41,12 +42,12 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("getUserList gives back return parameter")
-    public void testGetUserListWOcurrentUserNotEmpty(){
+    public void testGetUserListWOcurrentUserNotEmpty() throws UserNotFoundException {
         // 1. Arrange
 
         // 2. Act
         Mockito.when(userDao.getAllUsers()).thenReturn(this.users);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1.getUserName());
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
@@ -55,14 +56,14 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("get all users without current user")
-    public void testGetUserListWOcurrentUser(){
+    public void testGetUserListWOcurrentUser() throws UserNotFoundException {
         // 1. Arrange
 
         boolean bol = true;
 
         // 2. Act
         Mockito.when(userDao.getAllUsers()).thenReturn(users);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1.getUserName());
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (u1.getUserName().equals(usersWithoutCurrentUser.get(i).getUserName())) {
@@ -73,7 +74,7 @@ public class UserServiceTest {
         }
 
         // 3. Assert
-        Assertions.assertEquals(true, bol);
+        assertTrue(bol);
     }
 
 }

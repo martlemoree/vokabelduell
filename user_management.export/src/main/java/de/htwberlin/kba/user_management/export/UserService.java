@@ -42,15 +42,15 @@ public interface UserService {
      */
     User getUserByUserName(String userName) throws UserNotFoundException;
 
-    /**
-     * find a user by his id
-     * @param id given id of the user
-     * @return the user with the given id
-     */
+//    /**
+//     * find a user by his id
+//     * @param id given id of the user
+//     * @return the user with the given id
+//     */
     // TODO kann gelöscht werden?
-    User getUserById(Long id) throws UserNotFoundException;
+//    User getUserById(Long id) throws UserNotFoundException;
 
     // TODO Es muss eigentlich removeUserByName sein
     @Transactional
-    boolean removeUserName(String name) throws UserNotFoundException;
+    void removeUserName(String name) throws UserNotFoundException;
 }

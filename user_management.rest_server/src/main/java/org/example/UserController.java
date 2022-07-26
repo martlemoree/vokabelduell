@@ -5,14 +5,11 @@ import de.htwberlin.kba.user_management.export.UserAlreadyExistsException;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.InvalidNameException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -61,8 +58,11 @@ public class UserController {
 
     // TODO Martin: in UserDAO einfügen, dass bevor der user gelöscht wird, alle seine spiele gelöscht werden über named query
     @DeleteMapping(value = "/deleteId/{id}")
-    public ResponseEntity<?> removeUserID(@PathVariable("name") String name) throws UserNotFoundException {
-        boolean successful = userService.removeUserName(name);
-        return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public void removeUserName(@PathVariable("name") String name) throws UserNotFoundException {
+        userService.removeUserName(name);
+
+        // TODO Den Rückgabewert brauchen wir nicht mehr, Kommentar löschen wenn Methode so ok
+//        boolean successful = userService.removeUserName(name);
+//        return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

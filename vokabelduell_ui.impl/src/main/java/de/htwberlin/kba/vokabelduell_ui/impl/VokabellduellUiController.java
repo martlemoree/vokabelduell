@@ -81,8 +81,20 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void run() {
 
         // TODO löschen, nur zum Test
+        try {
+            userService.getUserByUserName("lala");
+        } catch (UserNotFoundException e) {
+            view.printMessage("hm nopedinope");
+        }
+        // Ich möchte serverseitig eine Exception werfen
 
-//        }} /*
+        List<User> users = userService.getUserList();
+
+        for (User u : users) {
+            view.printMessage(u.getUserName());
+        }
+
+        }} /*
 
         //-----------------------------------------------------------------------------------------------------------------
 
@@ -615,4 +627,4 @@ public class VokabellduellUiController implements VokabellduellUi {
     }
 
 
-}
+}*/
