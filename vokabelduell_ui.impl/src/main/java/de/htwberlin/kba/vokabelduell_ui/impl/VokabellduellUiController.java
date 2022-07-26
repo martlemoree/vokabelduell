@@ -81,6 +81,7 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void run() {
 
         // TODO löschen, nur zum Test
+
 //        }} /*
 
         //-----------------------------------------------------------------------------------------------------------------
@@ -418,9 +419,9 @@ public class VokabellduellUiController implements VokabellduellUi {
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
             // new game is created starts immediately
-            Game game = gameService.createGame(request);
-               // game = gameService.createGame(request.getRequester(), game.getReceiver());
-                // TODO auskommentierte Zeile ist die richtige methode --> dann wird die exception falsch
+            //Game game = gameService.createGame(request);
+             Game game = gameService.createGame(request.getRequester(), request.getReceiver());
+                // TODO einkommentierte Zeile ist die richtige methode --> dann wird die exception falsch
 
 
             for (int i = 0; i < 2; i++) {

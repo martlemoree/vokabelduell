@@ -24,6 +24,7 @@
   </properties>
 
   <dependencies>
+<!--    hier ServiceImpls als Dependencies -->
     <dependency>
       <groupId>org.example</groupId>
       <artifactId>vocab-management.impl</artifactId>
@@ -39,16 +40,7 @@
       <artifactId>GameManagement</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>org.example</groupId>
-      <artifactId>user_management.rest_server</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.example</groupId>
-      <artifactId>game_management.rest_server</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
