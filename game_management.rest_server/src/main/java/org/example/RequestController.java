@@ -4,6 +4,7 @@ import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.game_management.export.RequestService;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.hibernate.resource.beans.internal.FallbackBeanInstanceProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class RequestController {
     }
 
     @PostMapping(value = "/create/{reqName}/{recName}")
-    public ResponseEntity<Void> createRequest(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws URISyntaxException, URISyntaxException, SQLException {
+    public ResponseEntity<Void> createRequest(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
 
@@ -52,7 +53,7 @@ public class RequestController {
     }
 
     @GetMapping("/pendingRequests/{userName}")
-    public List<Request> getPendingRequestsForCurrentUser(@PathVariable("userName") String userName){
+    public List<Request> getPendingRequestsForCurrentUser(@PathVariable("userName") String userName) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
         return requestService.getPendingRequestsForCurrentUser(user);
     }

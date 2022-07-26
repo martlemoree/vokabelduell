@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.hibernate.Hibernate;
@@ -58,7 +59,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void calculatePoints(Long gameId, String userName, int points) {
+    public void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
         Game game = this.getGamebyId(Long.valueOf(gameId));
         if (user.equals(game.getReceiver ())) {
@@ -74,7 +75,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public List<Game> getGamesFromCurrentUser(String userName) {
+    public List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
         List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user);
 

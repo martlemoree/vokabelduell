@@ -1,6 +1,7 @@
 package org.example;
 
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class VocabListRestController {
      */
 
     @DeleteMapping(value = "/delete/{vocabListId}")
-    public String removeVocabList(@PathVariable("vocabListId") Long vocabListId) {
+    public String removeVocabList(@PathVariable("vocabListId") Long vocabListId) throws VocabListNotFoundException {
         VocabList vocabList = vocabListService.getVocabListById(vocabListId);
         vocabListService.removeVocabList(vocabList);
         return "Vocab List was successfully deleted.";
@@ -40,7 +41,7 @@ public class VocabListRestController {
 
     @PutMapping(value = "/edit/{vocabListId}/{name}")
     public String editName(@PathVariable("vocabListId") Long vocabListId,
-                           @PathVariable("name") String name) {
+                           @PathVariable("name") String name) throws VocabListNotFoundException {
         VocabList vocabList = vocabListService.getVocabListById(vocabListId);
         vocabListService.editName(vocabList, name);
         return "Name of Vocab List was successfully changed.";
@@ -48,7 +49,7 @@ public class VocabListRestController {
 
     @PutMapping(value = "/edit/{vocabListId}/{language}")
     public String editLanguage(@PathVariable("vocabListId") Long vocabListId,
-                               @PathVariable("language") String language) {
+                               @PathVariable("language") String language) throws VocabListNotFoundException {
         VocabList vocabList = vocabListService.getVocabListById(vocabListId);
         vocabListService.editLanguage(vocabList, language);
         return "Language of Vocab List was successfully changed.";
@@ -56,7 +57,7 @@ public class VocabListRestController {
 
     @PutMapping(value = "/edit/{vocabListId}/{category}")
     public String editCategory(@PathVariable("vocabListId") Long vocabListId,
-                               @PathVariable("category") String category) {
+                               @PathVariable("category") String category) throws VocabListNotFoundException {
         VocabList vocabList = vocabListService.getVocabListById(vocabListId);
         vocabListService.editName(vocabList, category);
         return "Category of Vocab List was successfully changed.";

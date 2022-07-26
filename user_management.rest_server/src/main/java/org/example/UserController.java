@@ -2,6 +2,7 @@ package org.example;
 
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserAlreadyExistsException;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/all/{userName}")
-    public List<User> getUserListWOcurrentUser(@PathVariable("userName") String userName) { //throws UserNotFoundException
+    public List<User> getUserListWOcurrentUser(@PathVariable("userName") String userName) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
-        List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(user);
+        List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(userName);
         return userListWOcurrentUser;
     }
 
@@ -39,36 +40,29 @@ public class UserController {
     }
 
     @GetMapping(value = "/{userName}")
-    public User getUserByUserName(@PathVariable("userName") String userName) { //throws UserNotFoundException
+    public User getUserByUserName(@PathVariable("userName") String userName) throws UserNotFoundException { //throws UserNotFoundException
         User user = userService.getUserByUserName(userName);
         return user;
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createUser(@RequestBody User user) throws URISyntaxException, InvalidNameException, SQLException, UserAlreadyExistsException {
+    public ResponseEntity<Void> createUser(@RequestBody User user) throws URISyntaxException, UserAlreadyExistsException {
         User newUser = userService.createUser(user.getUserName(), user.getPassword());
         URI uri = new URI("/user/" + newUser.getUserName());
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "edit/{userName}")
-    public ResponseEntity<?> changePassword(@PathVariable("userName") String userName, @RequestBody String password) {
+    public ResponseEntity<?> changePassword(@PathVariable("userName") String userName, @RequestBody String password) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
         userService.changePassword(password, user);
         return user != null? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping(value = "/delete/{userName}")
-    public ResponseEntity<?> removeUser(@PathVariable("userName") String userName) {
-        User user = userService.getUserByUserName(userName);
-        boolean successful = userService.removeUser(user);
-        return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-    }
-
     // TODO Martin: in UserDAO einfügen, dass bevor der user gelöscht wird, alle seine spiele gelöscht werden über named query
     @DeleteMapping(value = "/deleteId/{id}")
-    public ResponseEntity<?> removeUserID(@PathVariable("id") String id) {
-        boolean successful = userService.removeUserId(Long.valueOf(id));
+    public ResponseEntity<?> removeUserID(@PathVariable("name") String name) throws UserNotFoundException {
+        boolean successful = userService.removeUserName(name);
         return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

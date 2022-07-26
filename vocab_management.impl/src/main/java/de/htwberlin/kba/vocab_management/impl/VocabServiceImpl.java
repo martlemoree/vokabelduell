@@ -2,6 +2,7 @@ package de.htwberlin.kba.vocab_management.impl;
 
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
+import de.htwberlin.kba.vocab_management.export.VocabNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class VocabServiceImpl implements VocabService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public Vocab getVocabByVocabString(String vocabString) throws EntityNotFoundException {
+    public Vocab getVocabByVocabString(String vocabString) throws VocabNotFoundException {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }

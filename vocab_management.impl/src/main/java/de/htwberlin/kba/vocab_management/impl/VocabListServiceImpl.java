@@ -1,9 +1,6 @@
 package de.htwberlin.kba.vocab_management.impl;
 
-import de.htwberlin.kba.vocab_management.export.Translation;
-import de.htwberlin.kba.vocab_management.export.Vocab;
-import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.export.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +59,7 @@ public class VocabListServiceImpl implements VocabListService {
 
     @Override
     @Transactional
-    public VocabList createVocabList(String text) throws FileNotFoundException, SQLException {
+    public VocabList createVocabList(String text) throws FileNotFoundException {
 
         //split text into chars and convert to list of chars
         char[] chars = text.toCharArray();
@@ -219,14 +216,14 @@ public class VocabListServiceImpl implements VocabListService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public VocabList getVocabListByName(String vocabListName) {
+    public VocabList getVocabListByName(String vocabListName) throws VocabListNotFoundException {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }
 
     @Override
     @Transactional
-    public VocabList getVocabListById(Long id) {
+    public VocabList getVocabListById(Long id) throws VocabListNotFoundException {
         VocabList vocabList = vocabListDao.getVocabListById(id);
         Hibernate.initialize(vocabList.getVocabs());
         Hibernate.initialize(vocabList.getVocabs());

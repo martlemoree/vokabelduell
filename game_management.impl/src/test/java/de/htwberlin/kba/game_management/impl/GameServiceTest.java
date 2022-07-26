@@ -2,6 +2,7 @@ package de.htwberlin.kba.game_management.impl;
 
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
@@ -17,8 +18,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,7 +69,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether a Game is created correctly.")
     @Test
-    public void testCreateGame() throws SQLException {
+    public void testCreateGame() {
         //1. Arrange
         //s. Set Up
 
@@ -119,7 +118,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether the method returns a list with games where the number of rounds is <6")
     @Test
-    public void getGamesFromCurrentUser() {
+    public void getGamesFromCurrentUser() throws UserNotFoundException {
         // 1. Assert
         Game game1 = new Game();
         Game game2 = new Game();

@@ -1,6 +1,7 @@
 package de.htwberlin.kba.user_management.impl;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public void createUser(User user) throws SQLException {
+    public void createUser(User user) {
         entityManager.persist(user);
     }
 
@@ -29,15 +30,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByName(String userName) {
-        TypedQuery<User> query = entityManager.createNamedQuery("getUserByUserName", User.class);
-        query.setParameter("userName", userName);
-        User user = query.getSingleResult();
-        if (user == null) {
-            throw new EntityNotFoundException("Can't find user with username" + userName);
-        } else {
-            return user;
+    public User getUserByName(String userName) throws UserNotFoundException {
+        User user;
+        try {
+            TypedQuery<User> query = entityManager.createNamedQuery("getUserByUserName", User.class);
+            query.setParameter("userName", userName);
+            user = query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new UserNotFoundException("Der User wurde nicht gefunden. Versuche es noch einmal");
         }
+        return user;
     }
 
     @Override
@@ -53,19 +55,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteUser(User user) {
-        entityManager.remove(user);
-    }
-
-    @Override
-    public void deleteUserId(Long userId) {
+    public void deleteUserId(Long userId) throws UserNotFoundException {
 
         //hier named query bei der alle games / requests löschen
 
-        User user = entityManager.find(User.class, userId);
-        if (user == null) {
-            throw new EntityNotFoundException("Can't find User with userId" + userId);
-        } else {
+        User user;
+        try {
+            user = entityManager.find(User.class, userId);
+        } catch (NoResultException e) {
+            throw new UserNotFoundException("Der User mit der Id "+userId + " wurde nicht gefunden.");
         }
         entityManager.remove(user);
     }

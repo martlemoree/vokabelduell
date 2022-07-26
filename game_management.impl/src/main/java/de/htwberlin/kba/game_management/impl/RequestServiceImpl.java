@@ -37,7 +37,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public Request createRequest(User requester, User receiver) throws SQLException {
+    public Request createRequest(User requester, User receiver) {
         Request request = new Request(PENDING, requester, receiver);
         requestDao.createRequest(request);
         return request;

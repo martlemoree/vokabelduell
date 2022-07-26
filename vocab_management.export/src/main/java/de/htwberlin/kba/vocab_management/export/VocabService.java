@@ -34,5 +34,5 @@ public interface VocabService {
      * @param vocabString given String
      * @return vocab with given name
      */
-    Vocab getVocabByVocabString(String vocabString) throws EntityNotFoundException;
+    Vocab getVocabByVocabString(String vocabString) throws VocabNotFoundException;
 }

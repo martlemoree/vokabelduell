@@ -3,8 +3,10 @@ package org.example;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.game_management.impl.GameServiceImpl;
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,7 @@ public class GameController
     } */
 
     @PostMapping(value = "/create/{reqName}/{recName}")
-    public ResponseEntity<Void> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws URISyntaxException, URISyntaxException {
+    public ResponseEntity<Void> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
         Game newGame = gameService.createGame(requester, receiver);
@@ -50,19 +52,19 @@ public class GameController
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) {
+    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) throws UserNotFoundException {
         gameService.calculatePoints(gameId, userName, points);
     }
 
     @GetMapping("/gamesOfUser/{name}")
-    public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name){
+    public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name) throws UserNotFoundException {
         return gameService.getGamesFromCurrentUser(name);
     }
 
     //TODO testen
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @PathVariable String gameId){
+                                        @PathVariable String gameId) throws UserNotFoundException, VocabListNotFoundException {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);

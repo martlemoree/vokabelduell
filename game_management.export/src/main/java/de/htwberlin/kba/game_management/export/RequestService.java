@@ -24,7 +24,7 @@ public interface RequestService {
      * @param receiver  is the user who receives the request
      * @return new request
      */
-    Request createRequest(User requester, User receiver) throws SQLException;
+    Request createRequest(User requester, User receiver);
 
     /**
      * gives back all requests with status pending, where given user is the receiver

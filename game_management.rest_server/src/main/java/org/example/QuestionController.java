@@ -28,7 +28,7 @@ public class QuestionController {
 
 
     @PostMapping(value = "/create/{roundId}/{vocablistId}")
-    public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException {
+    public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException, VocabListNotFoundException {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
 
@@ -49,13 +49,13 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/createQuestions/{gameId}/{vocablistId}/{roundId}")
-    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException {
+    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListNotFoundException {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
         Game game = gameService.getGamebyId(gameId);
 
         List<Question> questions = questionService.createQuestions(game, vocabList, round);
-        URI uri = null;
+        URI uri;
 
         for (int i = 0; i < 3; i++) {
             uri = new URI("/question/" + questions.get(i).getQuestionId());

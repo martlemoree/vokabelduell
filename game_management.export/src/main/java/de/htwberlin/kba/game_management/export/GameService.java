@@ -1,6 +1,7 @@
 package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,7 +15,7 @@ public interface GameService {
      * create an object of this class
      * @param requester the user who sent the request
      * @param receiver the user who accepted the request
-     * @return
+     * @return created Game
      */
     Game createGame(User requester, User receiver);
 
@@ -30,14 +31,14 @@ public interface GameService {
 
     /**
      * method for restController
-     * @param gameId
-     * @param userName
-     * @param points
+     * @param gameId id of the game which should be updated with new points
+     * @param userName user who made the points in a game
+     * @param points points won/lost in a game
      */
-    void calculatePoints(Long gameId, String userName, int points);
+    void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException;
 
 
-    List<Game> getGamesFromCurrentUser(String userName);
+    List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
 
     /**
      * returns questions for current game for two cases:

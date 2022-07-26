@@ -11,7 +11,7 @@ public interface VocabListService {
      * @param text holds Vocabulary List.
      * @return a new Vocabulary List
      */
-    VocabList createVocabList(String text) throws FileNotFoundException, SQLException;
+    VocabList createVocabList(String text) throws FileNotFoundException;
 
     /**
      * changes the Name of the VocabList.
@@ -75,7 +75,7 @@ public interface VocabListService {
      * @return vocablist with given name
      */
     //TODO brauchen wir beides? --> reicht nicht eins von beidem?
-    VocabList getVocabListByName( String vocabListName);
+    VocabList getVocabListByName( String vocabListName) throws VocabListNotFoundException;
 
     /**
      * holds logic to get a vocablist by given id
@@ -83,6 +83,6 @@ public interface VocabListService {
      * @return the requested vocabList
      */
     //TODO brauchen wir beides?
-    VocabList getVocabListById(Long id);
+    VocabList getVocabListById(Long id) throws VocabListNotFoundException;
 
 }

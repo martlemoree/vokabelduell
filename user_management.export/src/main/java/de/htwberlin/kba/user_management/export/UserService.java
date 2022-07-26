@@ -4,16 +4,15 @@ import javax.naming.InvalidNameException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
     /**
      * Shows the user a list of users without showing the user himself in the list.
-     * @param user current user
+     * @param userName current user
      * @return userList of all users except the current user
      */
-    List<User> getUserListWOcurrentUser(User user);
+    List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException;
 
     /**
      * Gives back list of all registered users
@@ -34,21 +33,14 @@ public interface UserService {
      * @param password password chosen by current user
      * @return new user created
      */
-    User createUser(String name, String password) throws SQLException, UserAlreadyExistsException;
+    User createUser(String name, String password) throws UserAlreadyExistsException;
 
     /**
      * holds logic to get user by userName
      * @param userName to identify the user
      * @return the user that belongs to the given userName
      */
-    User getUserByUserName(String userName) throws NoResultException;
-
-    /**
-     * holds logic to remove given user
-     * @param user which should be removed
-     */
-    // TODO kann gelöscht werden?
-    boolean removeUser(User user);
+    User getUserByUserName(String userName) throws UserNotFoundException;
 
     /**
      * find a user by his id
@@ -56,8 +48,9 @@ public interface UserService {
      * @return the user with the given id
      */
     // TODO kann gelöscht werden?
-    User getUserById(Long id);
+    User getUserById(Long id) throws UserNotFoundException;
 
+    // TODO Es muss eigentlich removeUserByName sein
     @Transactional
-    boolean removeUserId(Long id);
+    boolean removeUserName(String name) throws UserNotFoundException;
 }
