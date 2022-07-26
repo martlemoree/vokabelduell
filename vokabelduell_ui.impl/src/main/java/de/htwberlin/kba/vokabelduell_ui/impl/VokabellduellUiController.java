@@ -87,6 +87,7 @@ public class VokabellduellUiController implements VokabellduellUi {
             view.printMessage("hm nopedinope");
         }
         // Ich möchte serverseitig eine Exception werfen
+        // falscher hätte mana den UserController nicht machen können... wird der überhaupt aufgerufen?
 
         List<User> users = userService.getUserList();
 

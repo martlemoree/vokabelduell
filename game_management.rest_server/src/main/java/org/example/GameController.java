@@ -44,6 +44,7 @@ public class GameController
 
     @PostMapping(value = "/create/{reqName}/{recName}")
     public ResponseEntity<Void> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
+
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
         Game newGame = gameService.createGame(requester, receiver);
@@ -56,6 +57,7 @@ public class GameController
         gameService.calculatePoints(gameId, userName, points);
     }
 
+    // TODO JsonMappingException irgendwas mit lazy // jetzt klappts irgendwie doch
     @GetMapping("/gamesOfUser/{name}")
     public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name) throws UserNotFoundException {
         return gameService.getGamesFromCurrentUser(name);

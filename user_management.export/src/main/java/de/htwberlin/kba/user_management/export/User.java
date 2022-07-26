@@ -28,6 +28,7 @@ public class User {
     private Integer version;
 
     public User(String userName, String password) {
+        super();
         this.userName = userName;
         this.password = password;
     }

@@ -31,6 +31,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         } else if (clientHttpResponse.getStatusCode()
                 .series() == HttpStatus.Series.CLIENT_ERROR) {
             // handle CLIENT_ERROR
+            clientHttpResponse.getBody();
             if (clientHttpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
 //                throw new ChangeSetPersister.NotFoundException();
             }
