@@ -1,6 +1,7 @@
 package org.example;
 
 import org.junit.Test;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -11,7 +12,7 @@ public class AppTest
 
     @Test
     public void testRestTemplate(){
-        RestTemplate temp = new RestTemplate();
+        RestTemplateBuilder temp = new RestTemplateBuilder();
         UserRestAdapter adapter = new UserRestAdapter(temp);
 
         System.out.println(adapter.getUserList());

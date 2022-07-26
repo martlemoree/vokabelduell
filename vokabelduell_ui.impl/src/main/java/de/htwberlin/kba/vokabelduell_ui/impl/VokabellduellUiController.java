@@ -30,7 +30,7 @@ public class VokabellduellUiController implements VokabellduellUi {
     private String userName;
 
     @Autowired
-    public VokabellduellUiController(VokabelduellView view, VocabListService vocabListService, RoundService roundService, QuestionService questionService, GameService gameService, UserService userService, VocabService vocabService, TranslationService translationService) {
+    public VokabellduellUiController(VokabelduellView view, VocabListService vocabListService, RoundService roundService, QuestionService questionService, GameService gameService, UserService userService, VocabService vocabService, TranslationService translationService, RequestService requestService) {
         super();
         this.view = view;
         this.vocabListService = vocabListService;
@@ -40,6 +40,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         this.userService = userService;
         this.vocabService = vocabService;
         this.translationService = translationService;
+        this.requestService = requestService;
     }
 
     public VokabellduellUiController() {
@@ -81,22 +82,105 @@ public class VokabellduellUiController implements VokabellduellUi {
     public void run() {
 
         // TODO löschen, nur zum Test
+
+        view.printMessage("Gib deinen username ein.");
+        userName = view.userInputString();
+        User currentUser =null;
         try {
-            userService.getUserByUserName("lala");
+            currentUser = userService.getUserByUserName(userName);
         } catch (UserNotFoundException e) {
-            view.printMessage("hm nopedinope");
-        }
-        // Ich möchte serverseitig eine Exception werfen
-        // falscher hätte mana den UserController nicht machen können... wird der überhaupt aufgerufen?
-
-        List<User> users = userService.getUserList();
-
-        for (User u : users) {
-            view.printMessage(u.getUserName());
+            view.printMessage("Verschrieben idiot.");
         }
 
-        }} /*
+        List<Game> games = null;
 
+        try {
+            games = gameService.getGamesFromCurrentUser(userName);
+        } catch (UserNotFoundException e) {
+            view.printMessage("Der User " + userName + "wurde leider nicht gefunden. Starte das Spiel erneut und melde dich erneut an.");
+            System.exit(0);
+        }
+
+        if (games.isEmpty()) {
+            view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
+        }
+
+        view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
+
+        for (Game game : games) {
+            view.printMessage("" + game.getRounds());
+            // due to game logic, rounds cannot be empty if game has been started correctly
+            if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
+                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                } else {
+                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
+                }
+            } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
+                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                }
+            }
+        }
+
+        for (Game game : games) {
+            view.printMessage("" + game.getRounds());
+            // due to game logic, rounds cannot be empty if game has been started correctly
+            if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
+                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                } else {
+                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
+                }
+            } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
+                if (!game.getRounds().get(game.getRounds().size()-1).getLastUserPlayedName().equals(userName)) {
+                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                }
+            }
+        }
+
+        boolean bol = true;
+        do {
+
+            // TODO HIER EXCEPTION?
+            String chosenUser = view.userInputString();
+            for (Game game : games) {
+                if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
+                    // due to game logic rounds cannot be empty
+                    view.printMessage("Alles klar, kann losgehen!");
+                    view.printMessage("Das steckt dahinter: "+game.getRounds());
+                    view.printMessage("Das steckt außerdem dahinter: "+game.getRounds().size());
+                    view.printMessage("Das steckt noch dahinter: "+game.getRounds().get(game.getRounds().size()-1));
+                    if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+
+                        // vocabList just needs to be chosen if old round has been finished by the other player
+                        // View Aufruf hier:
+                        VocabList vocabList = null;
+                        if (!game.getRounds().get(game.getRounds().size() - 1).getisPlayedByTwo()) {
+                            view.printMessage("Hier bin ich!");//vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+                        } // no else: vocabList stays null if last existing round has been played by other player but not by current player
+                        List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
+                        // Schleife koordiniert den View Aufruf:
+                        for (int j = 0; j < 4; j++) {
+                            view.printMessage("Hallo hallo!");//askQuestions(game, currentUser, questions, j);
+                        }
+
+                        roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
+                        break;
+
+                    } else {
+                        view.printMessage("Hier ist dein Mitspieler dran. Versuche es noch einmal");
+                        bol = true;
+                    }
+                } else {
+                    view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal oder drücke enter, um die Auswahl abzubrechen.");
+                    bol = !chosenUser.isEmpty();
+                }
+            }
+        } while (bol);
+    }
+}
+/*
         //-----------------------------------------------------------------------------------------------------------------
 
         // hier geht es los mit der Spielelogik
@@ -215,15 +299,17 @@ public class VokabellduellUiController implements VokabellduellUi {
                     for (Game game : games) {
                         view.printMessage("" + game.getRounds());
                         // due to game logic, rounds cannot be empty if game has been started correctly
-                        if (game.getRounds().size() < 6) {
+                        // else game cant continue
+                        if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
                             if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
                                 view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
                             } else {
                                 view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
                             }
-                        } else {
-                            view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Das Spiel wurde beendet!");
-                            break;
+                        } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
+                            if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+                                view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+                            }
                         }
                     }
 
@@ -235,7 +321,8 @@ public class VokabellduellUiController implements VokabellduellUi {
                         for (Game game : games) {
                             if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
                                 // due to game logic rounds cannot be empty
-                                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(currentUser.getUserName())) {
+                                view.printMessage("Alles klar, kann losgehen!");
+                                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
 
                                     // vocabList just needs to be chosen if old round has been finished by the other player
                                     // View Aufruf hier:
@@ -356,7 +443,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                             view.printMessage("Die Kombination aus Benutzername und Passwort konnte leider nicht gefunden werden. Versuche es noch einmal. Drücke enter zum Verlassen des Menüpunkts.");
                         }
                     } catch (UserNotFoundException e) {
-                        if (userName==null & password==null) {
+                        if (userName == null & password == null) {
                             break;
                         }
                         view.printMessage("Den Benutzernamen gibt es leider nicht. Probiere es noch einmal.");
@@ -433,8 +520,8 @@ public class VokabellduellUiController implements VokabellduellUi {
             view.printMessage("Super! Das Spiel kann losgehen.");
             // new game is created starts immediately
             //Game game = gameService.createGame(request);
-             Game game = gameService.createGame(request.getRequester(), request.getReceiver());
-                // TODO einkommentierte Zeile ist die richtige methode --> dann wird die exception falsch
+            Game game = gameService.createGame(request.getRequester(), request.getReceiver());
+            // TODO einkommentierte Zeile ist die richtige methode --> dann wird die exception falsch
 
 
             for (int i = 0; i < 2; i++) {
@@ -510,8 +597,8 @@ public class VokabellduellUiController implements VokabellduellUi {
                         bol = false;
                     } catch (VocabListNotFoundException e) {
                         view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
-                        bol=true;
-                        if (vocabListName==null) {
+                        bol = true;
+                        if (vocabListName == null) {
                             inputVocabListManagementMenu = 4;
                             break;
                         }
@@ -586,7 +673,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                     vocabListService.removeVocabList(vocabList);
                 } catch (VocabListNotFoundException e) {
                     view.printMessage("Diese Vokabelliste gibt es nicht. Probiere es noch einmal. Oder drücke enter, um die Auswahl abzubrechen");
-                    if (vocabListName==null) {
+                    if (vocabListName == null) {
                         break;
                     }
                 }

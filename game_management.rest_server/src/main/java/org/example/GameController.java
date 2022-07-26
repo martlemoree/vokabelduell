@@ -80,7 +80,12 @@ public class GameController
         return games;
     }
 
-
+    // FIXME macht den "Could not write JSON: failed to lazily initialize a collection"-Fehler
+    @GetMapping(value = "/{gameId}")
+    public Game getGameById(@PathVariable("gameId") int gameId) {
+        Game game = gameService.getGamebyId((long) gameId);
+        return game;
+    }
 
 
 

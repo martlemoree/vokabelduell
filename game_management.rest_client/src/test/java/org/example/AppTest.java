@@ -9,6 +9,7 @@ import de.htwberlin.kba.user_management.impl.UserDao;
 import de.htwberlin.kba.user_management.impl.UserDaoImpl;
 import de.htwberlin.kba.user_management.impl.UserServiceImpl;
 import org.junit.Test;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class AppTest
 {
-    RestTemplate temp = new RestTemplate();
+    RestTemplateBuilder temp = new RestTemplateBuilder();
     RequestRestAdapter requestRestAdapter = new RequestRestAdapter(temp);
 
     @Test

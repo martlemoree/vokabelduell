@@ -1,8 +1,10 @@
 package org.example;
 
+import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -22,8 +24,10 @@ public class UserRestAdapter implements UserService {
     final String localhostUser = "http://localhost:8080/user/";
 
     @Autowired
-    public UserRestAdapter(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public UserRestAdapter(RestTemplateBuilder restTemplateBuilder){
+        this.restTemplate =  restTemplateBuilder
+                .errorHandler(new RestTemplateResponseErrorHandler())
+                .build();
     }
 
     public List<User> getUserListWOcurrentUser(String userName) {

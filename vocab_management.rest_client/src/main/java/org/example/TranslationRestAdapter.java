@@ -1,7 +1,9 @@
 package org.example;
 
+import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,10 @@ public class TranslationRestAdapter {
     final String localhostTranslation = "http://localhost:8080/translation/";
 
     @Autowired
-    public TranslationRestAdapter(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public TranslationRestAdapter(RestTemplateBuilder restTemplateBuilder){
+        this.restTemplate =  restTemplateBuilder
+                .errorHandler(new RestTemplateResponseErrorHandler())
+                .build();
     }
 
     public String createTranslation(Translation translation) {

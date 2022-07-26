@@ -1,10 +1,12 @@
 package org.example;
 
+import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.Round;
 import de.htwberlin.kba.game_management.export.RoundService;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,8 +22,10 @@ public class RoundRestAdapter implements RoundService {
     private RestTemplate restTemplate;
 
     @Autowired
-    public RoundRestAdapter(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public RoundRestAdapter(RestTemplateBuilder restTemplateBuilder){
+        this.restTemplate =  restTemplateBuilder
+                .errorHandler(new RestTemplateResponseErrorHandler())
+                .build();
     }
 
     final String localhost = "http://localhost:8080/round/";

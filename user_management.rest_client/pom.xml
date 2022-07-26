@@ -31,6 +31,12 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <version>2.7.1</version>
     </dependency>
+      <dependency>
+          <groupId>org.example</groupId>
+          <artifactId>configuration_client</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
 
 
   </dependencies>

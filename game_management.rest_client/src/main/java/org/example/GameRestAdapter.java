@@ -1,5 +1,6 @@
 package org.example;
 
+import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Question;
@@ -7,6 +8,7 @@ import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +33,10 @@ public class GameRestAdapter implements GameService
     final String localhost = "http://localhost:8080/game/";
 
     @Autowired
-    public GameRestAdapter(RestTemplate restTemplate){
-        this.restTemplate =  restTemplate;
+    public GameRestAdapter(RestTemplateBuilder restTemplateBuilder){
+        this.restTemplate =  restTemplateBuilder
+                .errorHandler(new RestTemplateResponseErrorHandler())
+                .build();
     }
 
    /*
@@ -91,9 +95,16 @@ public class GameRestAdapter implements GameService
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
+    // TODO Ist das so richtig?
     @Override
     public Game getGamebyId(Long gameId) {
-        return null;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
+        final String URL = localhost + gameId;
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, Game.class).getBody();
     }
 
     @Override

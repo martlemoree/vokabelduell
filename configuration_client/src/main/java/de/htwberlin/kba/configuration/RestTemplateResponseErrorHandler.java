@@ -28,13 +28,13 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         if (clientHttpResponse.getStatusCode()
                 .series() == HttpStatus.Series.SERVER_ERROR) {
             // handle SERVER_ERROR
+            throw new CustomServerError("Server Error: "+clientHttpResponse.getBody());
         } else if (clientHttpResponse.getStatusCode()
                 .series() == HttpStatus.Series.CLIENT_ERROR) {
-            // handle CLIENT_ERROR
-            clientHttpResponse.getBody();
-            if (clientHttpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-//                throw new ChangeSetPersister.NotFoundException();
+            throw new CustomServerError("Client Error: "+clientHttpResponse.getBody());
+        } else if (clientHttpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new CustomServerError("Unknown Error: "+clientHttpResponse.getBody());
             }
-        }
+
     }
 }
