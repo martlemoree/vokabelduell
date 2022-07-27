@@ -25,9 +25,6 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    // constructor without parameters needed for mockito tests
-//    public UserServiceImpl(){}
-
     @Transactional
     public List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException {
         List<User>listWOuser = userDao.getAllUsers();
@@ -36,6 +33,7 @@ public class UserServiceImpl implements UserService {
         return listWOuser;
     }
 
+    // method not tested because it only contains a database call
     @Transactional
     public List<User> getUserList() {
         return userDao.getAllUsers();
@@ -66,6 +64,7 @@ public class UserServiceImpl implements UserService {
         return u;
     }
 
+    // method not tested because it only contains a database call
     @Transactional
     public User getUserById(Long id) throws UserNotFoundException {
         User user;
@@ -77,6 +76,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    // method not tested because it only contains a database call
     @Override
     @Transactional
     public void removeUserName(String name) throws UserNotFoundException {
@@ -86,7 +86,6 @@ public class UserServiceImpl implements UserService {
         } catch (NoResultException e) {
             throw new UserNotFoundException("Der User mit dem Namen "+name+" konnte nicht gefunden werden.");
         }
-
         userDao.deleteUserId(user.getUserId());
     }
 

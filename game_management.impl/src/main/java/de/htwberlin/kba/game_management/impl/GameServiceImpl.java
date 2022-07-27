@@ -97,6 +97,7 @@ public class GameServiceImpl implements GameService {
         return questionService.createQuestions(game, vocabList, round);
     }
 
+    // method not tested because it is just a call of the database
     @Override
     @Transactional
     public Game getGamebyId(Long gameId) {

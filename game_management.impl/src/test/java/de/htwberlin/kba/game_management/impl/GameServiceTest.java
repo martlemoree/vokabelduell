@@ -3,6 +3,7 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
+import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
@@ -37,6 +38,8 @@ public class GameServiceTest {
     private RoundService mockRoundService;
     @Mock
     private QuestionService mockQuestionService;
+    @Mock
+    UserService userService;
     private User requester;
     private User receiver;
     private Game game;
@@ -50,6 +53,7 @@ public class GameServiceTest {
         this.requester = new User("MartinTheBrain", "lol123");
         this.receiver = new User("stellomello", "123lol");
         game = new Game( requester, receiver);
+        game.setGameId(1L);
         round = new Round(game);
 
         List<String> vocabStrings = Arrays.asList("Vocab");
@@ -66,8 +70,7 @@ public class GameServiceTest {
 
         questions= Arrays.asList(question);
     }
-    //TODO Überarbeiten
-/*
+
     @DisplayName("checks whether a Game is created correctly.")
     @Test
     public void testCreateGame() {
@@ -77,7 +80,7 @@ public class GameServiceTest {
         //2. Act
         //Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
         Request request = new Request(Status.PENDING, requester, receiver);
-        Game createdGame = gameService.createGame(request);
+        Game createdGame = gameService.createGame(request.getRequester(), request.getReceiver());
 
         //3. Assert
         Assert.assertNotNull(createdGame);
@@ -85,7 +88,7 @@ public class GameServiceTest {
         Assert.assertEquals(receiver, createdGame.getReceiver());
     }
 
- */
+
 
     @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
     @Test
@@ -96,6 +99,9 @@ public class GameServiceTest {
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+
+        when(gameDao.getGameById(Mockito.anyLong())).thenReturn(game);
+        when(userService.getUserByUserName(Mockito.anyString())).thenReturn(requester);
         gameService.calculatePoints(game.getGameId(), requester.getUserName(), newPoints);
 
         // 3. Assert
@@ -111,6 +117,8 @@ public class GameServiceTest {
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        when(gameDao.getGameById(Mockito.anyLong())).thenReturn(game);
+        when(userService.getUserByUserName(Mockito.anyString())).thenReturn(receiver);
         gameService.calculatePoints(game.getGameId(), receiver.getUserName(), newPoints);
         gameService.calculatePoints(game.getGameId(), receiver.getUserName(), morePoints);
         int sum = newPoints+morePoints;
@@ -153,6 +161,7 @@ public class GameServiceTest {
 
         // 2. Act
        // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
+        when(userService.getUserByUserName(Mockito.anyString())).thenReturn(user);
         List<Game> gamesOfUser = gameService.getGamesFromCurrentUser(user.getUserName());
 
         for (Game g:gamesOfUser) {

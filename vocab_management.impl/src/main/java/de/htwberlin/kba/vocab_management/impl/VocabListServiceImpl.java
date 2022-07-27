@@ -221,6 +221,7 @@ public class VocabListServiceImpl implements VocabListService {
         return null;
     }
 
+    // method not tested because it only contains the database call
     @Override
     @Transactional
     public VocabList getVocabListById(Long id) throws VocabListNotFoundException {

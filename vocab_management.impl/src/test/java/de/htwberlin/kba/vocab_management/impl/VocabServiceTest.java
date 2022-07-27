@@ -22,5 +22,6 @@ public class VocabServiceTest {
     @InjectMocks
     private VocabServiceImpl service = new VocabServiceImpl();
 
+    // no relevant methods for testing
 
 }

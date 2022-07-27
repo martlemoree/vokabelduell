@@ -22,10 +22,5 @@ public class TranslationServiceTest {
     private TranslationServiceImpl service = new TranslationServiceImpl();
 
     // there are no relevant methods to be tested for the game logic
-    @Test
-    @DisplayName("the method should return true")
-    public void testGiveVocabStringRandomNotNull(){
-        Assert.assertTrue(true);
-    }
 
 }

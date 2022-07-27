@@ -46,9 +46,9 @@ public class QuestionServiceImpl implements QuestionService {
                         .size()));
 
 
-        Translation wrongA = setAnswerOptions(rightAnswer.getTranslationId());
-        Translation wrongB = setAnswerOptions(rightAnswer.getTranslationId());
-        Translation wrongC = setAnswerOptions(rightAnswer.getTranslationId());
+        Translation wrongA = setAnswerOptions(); //rightAnswer.getTranslationId());
+        Translation wrongB = setAnswerOptions(); // TODO rightAnswer.getTranslationId());
+        Translation wrongC = setAnswerOptions(); // TODO rightAnswer.getTranslationId());
 
         Question question = new Question(round, wrongA,wrongB,wrongC,rightAnswer, vocab);
         questionDao.createQuestion(question);
@@ -56,7 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
         return question;
     }
 
-    public Translation setAnswerOptions(Long rightId) {
+    public Translation setAnswerOptions() {
 
         Random rand = new Random();
         List<VocabList> vocablists = vocabListService.getVocabLists();
@@ -174,6 +174,7 @@ public class QuestionServiceImpl implements QuestionService {
         return vocab.getVocabs().get(index);
     }
 
+    // not tested becase the method contains only the database call
     @Transactional
     @Override
     public List<Question> getAllQuestions(){
@@ -193,6 +194,7 @@ public class QuestionServiceImpl implements QuestionService {
         return questions;
     }
 
+    // not tested becase the method contains only the database call
     @Transactional
     @Override
     public Question getQuestionById(Long Id){

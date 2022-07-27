@@ -22,6 +22,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoundServiceTest {
@@ -31,7 +33,9 @@ public class RoundServiceTest {
     private RoundServiceImpl service;
 
     @Mock
-    RoundDao roundDao;
+    private RoundDao roundDao;
+    @Mock
+    private GameDao gameDao;
     private User requester;
     private User receiver;
     private Game game;
@@ -42,6 +46,7 @@ public class RoundServiceTest {
         this.requester = new User("MartinTheBrain", "lol123");
         this.receiver = new User("stellomello", "123lol");
         game = new Game( requester, receiver);
+        game.setGameId(1L);
         round = new Round(game);
     }
     
@@ -55,6 +60,8 @@ public class RoundServiceTest {
 
         // 2. Act & Assert
         Mockito.doNothing().when(roundDao).createRound(Mockito.any(Round.class));
+        Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+
         Assert.assertNotNull(service.startNewRound(game));
         Assert.assertEquals(service.startNewRound(game).getGame(), game);
 
@@ -69,6 +76,8 @@ public class RoundServiceTest {
         game.setRounds(rounds);
 
         // 2. Act
+        Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
+        when(gameDao.getGameById(Mockito.anyLong())).thenReturn(game);
         service.changeLastPlayer(game.getGameId(), requester.getUserName());
 
         // 3. Assert
