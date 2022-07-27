@@ -22,7 +22,7 @@ public class GameDaoImpl implements GameDao{
 
     @Override
     public Game getGameById(Long gameId) throws CustomObjectNotFoundException {
-        Game game =null;
+        Game game;
         try {
             game = entityManager.find(Game.class, gameId);
         } catch (NoResultException e) {
@@ -37,7 +37,7 @@ public class GameDaoImpl implements GameDao{
         try {
             entityManager.merge(game);
         } catch (OptimisticLockException e) {
-            throw new CustomOptimisticLockExceptionGame("Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal");
+            throw new CustomOptimisticLockExceptionGame("Das Update konnte leider nicht durchgeführt werden und wird wiederholt.");
         }
     }
 

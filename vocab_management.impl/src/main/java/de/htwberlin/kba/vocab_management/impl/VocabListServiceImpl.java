@@ -5,13 +5,11 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -216,14 +214,14 @@ public class VocabListServiceImpl implements VocabListService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public VocabList getVocabListByName(String vocabListName) throws VocabListNotFoundException {
+    public VocabList getVocabListByName(String vocabListName) throws VocabListObjectNotFoundException {
         // method not implemented and tested because it is not part of the game logic
         return null;
     }
 
     @Override
     @Transactional
-    public VocabList getVocabListById(Long id) throws VocabListNotFoundException {
+    public VocabList getVocabListById(Long id) throws VocabListObjectNotFoundException {
         VocabList vocabList = vocabListDao.getVocabListById(id);
         Hibernate.initialize(vocabList.getVocabs());
         Hibernate.initialize(vocabList.getVocabs());

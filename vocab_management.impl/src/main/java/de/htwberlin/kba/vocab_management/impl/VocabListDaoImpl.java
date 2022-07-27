@@ -1,7 +1,7 @@
 package de.htwberlin.kba.vocab_management.impl;
 
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListNotFoundException;
+import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -19,12 +19,12 @@ public class VocabListDaoImpl implements VocabListDao{
     }
 
     @Override
-    public VocabList getVocabListById(Long vocabListId) throws VocabListNotFoundException {
+    public VocabList getVocabListById(Long vocabListId) throws VocabListObjectNotFoundException {
         VocabList vocabList;
         try {
             vocabList = entityManager.find(VocabList.class, vocabListId);
         } catch (NoResultException e) {
-            throw new VocabListNotFoundException("Die VocabList wurde nicht gefunden. Versuche es noch einmal");
+            throw new VocabListObjectNotFoundException("Die VocabList wurde nicht gefunden. Versuche es noch einmal");
         }
         return vocabList;
     }

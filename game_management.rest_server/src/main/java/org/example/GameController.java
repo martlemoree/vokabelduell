@@ -5,7 +5,7 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListNotFoundException;
+import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +65,7 @@ public class GameController
     //TODO testen
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @PathVariable String gameId) throws UserNotFoundException, VocabListNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
+                                        @PathVariable String gameId) throws UserNotFoundException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);

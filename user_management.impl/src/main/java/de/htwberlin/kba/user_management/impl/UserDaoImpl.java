@@ -1,5 +1,6 @@
 package de.htwberlin.kba.user_management.impl;
 
+import de.htwberlin.kba.user_management.export.CustomOptimisticLockExceptionUser;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long userId) throws UserNotFoundException {
-        User user = null;
+        User user;
         try {
             user = entityManager.find(User.class, userId);
         } catch (NoResultException e) {
@@ -44,8 +45,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUser(User user) {
-        entityManager.merge(user);
+    public void updateUser(User user) throws CustomOptimisticLockExceptionUser {
+        try {
+            entityManager.merge(user);
+        } catch (OptimisticLockException e)  {
+            throw new CustomOptimisticLockExceptionUser("Das Update konnte leider nicht durchgeführt werden und wird wiederholt.");
+        }
+
     }
 
     @Override

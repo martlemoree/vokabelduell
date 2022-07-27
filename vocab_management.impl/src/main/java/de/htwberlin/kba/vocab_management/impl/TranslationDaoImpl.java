@@ -1,6 +1,8 @@
 package de.htwberlin.kba.vocab_management.impl;
 
+import de.htwberlin.kba.vocab_management.export.CustomOptimisticLockExceptionVocab;
 import de.htwberlin.kba.vocab_management.export.Translation;
+import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -18,18 +20,24 @@ public class TranslationDaoImpl implements TranslationDao{
     }
 
     @Override
-    public Translation getTranslationById(Long translationId) {
-        Translation translation = entityManager.find(Translation.class, translationId);
-        if (translation == null) {
-            throw new EntityNotFoundException("Can't find Translation with translationId" + translationId);
-        } else {
-            return translation;
+    public Translation getTranslationById(Long translationId) throws VocabListObjectNotFoundException {
+        Translation translation;
+        try {
+            translation = entityManager.find(Translation.class, translationId);
+        } catch (NoResultException e) {
+            throw new VocabListObjectNotFoundException("Can't find Translation with translationId" + translationId);
         }
+        return translation;
     }
 
     @Override
-    public void updateTranslation(Translation translation) {
-        entityManager.merge(translation);
+    public void updateTranslation(Translation translation) throws CustomOptimisticLockExceptionVocab {
+
+        try {
+            entityManager.merge(translation);
+        } catch (OptimisticLockException e) {
+            throw new CustomOptimisticLockExceptionVocab("Das Update konnte leider nicht durchgeführt werden und wird wiederholt.");
+        }
     }
 
     @Override

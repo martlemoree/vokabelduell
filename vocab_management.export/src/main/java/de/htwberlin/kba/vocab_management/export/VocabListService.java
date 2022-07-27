@@ -1,8 +1,6 @@
 package de.htwberlin.kba.vocab_management.export;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface VocabListService {
@@ -75,7 +73,7 @@ public interface VocabListService {
      * @return vocablist with given name
      */
     //TODO brauchen wir beides? --> reicht nicht eins von beidem?
-    VocabList getVocabListByName( String vocabListName) throws VocabListNotFoundException;
+    VocabList getVocabListByName( String vocabListName) throws VocabListObjectNotFoundException;
 
     /**
      * holds logic to get a vocablist by given id
@@ -83,6 +81,6 @@ public interface VocabListService {
      * @return the requested vocabList
      */
     //TODO brauchen wir beides?
-    VocabList getVocabListById(Long id) throws VocabListNotFoundException;
+    VocabList getVocabListById(Long id) throws VocabListObjectNotFoundException;
 
 }

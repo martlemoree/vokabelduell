@@ -1,5 +1,6 @@
 package de.htwberlin.kba.user_management.impl;
 
+import de.htwberlin.kba.user_management.export.CustomOptimisticLockExceptionUser;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 
@@ -14,7 +15,7 @@ public interface UserDao {
 
     User getUserByName(String name) throws UserNotFoundException;
 
-    void updateUser(User user);
+    void updateUser(User user) throws CustomOptimisticLockExceptionUser;
 
     List<User> getAllUsers();
 

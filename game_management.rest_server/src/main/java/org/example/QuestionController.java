@@ -28,7 +28,7 @@ public class QuestionController {
 
 
     @PostMapping(value = "/create/{roundId}/{vocablistId}")
-    public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException, VocabListNotFoundException, CustomObjectNotFoundException {
+    public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException, VocabListObjectNotFoundException, CustomObjectNotFoundException {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
 
@@ -49,7 +49,7 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/createQuestions/{gameId}/{vocablistId}/{roundId}")
-    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionVocab {
+    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
         Game game = gameService.getGamebyId(gameId);

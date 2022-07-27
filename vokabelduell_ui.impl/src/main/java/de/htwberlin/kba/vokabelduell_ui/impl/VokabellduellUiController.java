@@ -616,7 +616,7 @@ public class VokabellduellUiController implements VokabellduellUi {
             } else if (inputVocabListManagementMenu == 2) { // Vokabelliste bearbeiten
 
                 view.printMessage("Gib den Namen der zu bearbeitenden Vokabelliste ein.");
-                boolean bol = true;
+                boolean bol;
                 VocabList vocabList = null;
                 String vocabListName = null;
                 do {
@@ -624,7 +624,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                         vocabListName = view.userInputString();
                         vocabList = vocabListService.getVocabListByName(vocabListName);
                         bol = false;
-                    } catch (VocabListNotFoundException e) {
+                    } catch (VocabListObjectNotFoundException e) {
                         view.printMessage("Die Vokabelliste wurde nicht gefunden. Probier es noch einmal. Oder drücke enter zum Verlassen des Menüpunkts.");
                         bol = true;
                         if (vocabListName == null) {
@@ -682,7 +682,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                             } else if (inputEditVocab == 2) { // Rückkehr ins Hauptmenü
                                 break;
                             }
-                        } catch (VocabNotFoundException e) {
+                        } catch (VocabListObjectNotFoundException e) {
                             view.printMessage("Die Vokabel wurde nicht gefunden. Probier es noch einmal.");
                         }
                     } while (bol);
@@ -700,7 +700,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                     VocabList vocabList = vocabListService.getVocabListByName(vocabListName);
                     vocabListService.removeVocabList(vocabList);
-                } catch (VocabListNotFoundException e) {
+                } catch (VocabListObjectNotFoundException e) {
                     view.printMessage("Diese Vokabelliste gibt es nicht. Probiere es noch einmal. Oder drücke enter, um die Auswahl abzubrechen");
                     if (vocabListName == null) {
                         break;
