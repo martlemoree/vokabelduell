@@ -10,7 +10,7 @@ public interface UserDao {
 
     void createUser(User user);
 
-    User getUserById(Long userId);
+    User getUserById(Long userId) throws UserNotFoundException;
 
     User getUserByName(String name) throws UserNotFoundException;
 

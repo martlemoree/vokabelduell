@@ -20,13 +20,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserById(Long userId) {
-        User user = entityManager.find(User.class, userId);
-        if (user == null) {
-            throw new EntityNotFoundException("Can't find User with userId" + userId);
-        } else {
-            return user;
+    public User getUserById(Long userId) throws UserNotFoundException {
+        User user = null;
+        try {
+            user = entityManager.find(User.class, userId);
+        } catch (NoResultException e) {
+            throw new UserNotFoundException("Can't find User with userId" + userId);
         }
+        return user;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("userName", userName);
             user = query.getSingleResult();
         } catch (NoResultException e) {
-            throw new UserNotFoundException("Der User wurde nicht gefunden. Versuche es noch einmal");
+            throw new UserNotFoundException("Der User mit dem Namen " + userName + " wurde nicht gefunden. Versuche es noch einmal");
         }
         return user;
     }
