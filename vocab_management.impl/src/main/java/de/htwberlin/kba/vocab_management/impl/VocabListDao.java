@@ -1,5 +1,6 @@
 package de.htwberlin.kba.vocab_management.impl;
 
+import de.htwberlin.kba.vocab_management.export.CustomOptimisticLockExceptionVocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 
@@ -11,7 +12,7 @@ public interface VocabListDao {
 
     VocabList getVocabListById(Long vocabListId) throws VocabListObjectNotFoundException;
 
-    void updateVocabList(VocabList vocabList);
+    void updateVocabList(VocabList vocabList) throws CustomOptimisticLockExceptionVocab;
 
     List<VocabList> getAllVocabLists();
 

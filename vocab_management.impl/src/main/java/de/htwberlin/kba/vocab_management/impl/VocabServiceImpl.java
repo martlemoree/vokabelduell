@@ -1,10 +1,7 @@
 package de.htwberlin.kba.vocab_management.impl;
 
-import de.htwberlin.kba.vocab_management.export.Translation;
-import de.htwberlin.kba.vocab_management.export.Vocab;
+import de.htwberlin.kba.vocab_management.export.*;
 import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
-import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
-import de.htwberlin.kba.vocab_management.export.VocabService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +36,7 @@ public class VocabServiceImpl implements VocabService {
 
     @Override
     @Transactional
-    public void editVocabs(Vocab vocab, List<String> newVocabs) {
+    public void editVocabs(Vocab vocab, List<String> newVocabs) throws CustomOptimisticLockExceptionVocab {
         // method not implemented and tested because it is not part of the game logic
         vocab.setVocabs(newVocabs);
         vocabDao.updateVocab(vocab);
@@ -48,7 +45,7 @@ public class VocabServiceImpl implements VocabService {
 
     @Override
     @Transactional
-    public void editTranslations(Vocab vocab, List<Translation> translations) {
+    public void editTranslations(Vocab vocab, List<Translation> translations) throws CustomOptimisticLockExceptionVocab {
         // method not implemented and tested because it is not part of the game logic
         vocab.setTranslations(translations);
         vocabDao.updateVocab(vocab);

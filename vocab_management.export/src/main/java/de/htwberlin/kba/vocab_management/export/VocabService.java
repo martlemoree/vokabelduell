@@ -20,14 +20,14 @@ public interface VocabService {
      * @param vocab the object that should be changed
      * @param newVocabs list with the new vocabularies of this object
      */
-    void editVocabs(Vocab vocab, List<String> newVocabs);
+    void editVocabs(Vocab vocab, List<String> newVocabs) throws CustomOptimisticLockExceptionVocab;
 
     /**
      * change the translation of a vocabulary
      * @param vocab the object that should be changed
      * @param translations the list with new translations of a vocabulary
      */
-    void editTranslations(Vocab vocab, List<Translation> translations);
+    void editTranslations(Vocab vocab, List<Translation> translations) throws CustomOptimisticLockExceptionVocab;
 
     /**
      * holds logic to identify and get a vocab by given string

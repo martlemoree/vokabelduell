@@ -1,6 +1,8 @@
 package de.htwberlin.kba.vocab_management.impl;
 
+import de.htwberlin.kba.vocab_management.export.CustomOptimisticLockExceptionVocab;
 import de.htwberlin.kba.vocab_management.export.Vocab;
+import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -18,18 +20,23 @@ public class VocabDaoImpl implements VocabDao{
     }
 
     @Override
-    public Vocab getVocabById(Long vocabId) {
-        Vocab vocab = entityManager.find(Vocab.class, vocabId);
-        if (vocab == null) {
-            throw new EntityNotFoundException("Can't find Vocab with vocabId" + vocabId);
-        } else {
-            return vocab;
+    public Vocab getVocabById(Long vocabId) throws VocabListObjectNotFoundException {
+        Vocab vocab;
+        try {
+            vocab = entityManager.find(Vocab.class, vocabId);
+        } catch (NoResultException e) {
+            throw new VocabListObjectNotFoundException("Can't find Vocab with vocabId" + vocabId);
         }
+        return vocab;
     }
 
     @Override
-    public void updateVocab(Vocab vocab) {
-        entityManager.merge(vocab);
+    public void updateVocab(Vocab vocab) throws CustomOptimisticLockExceptionVocab {
+        try {
+            entityManager.merge(vocab);
+        } catch (OptimisticLockException e) {
+            throw new CustomOptimisticLockExceptionVocab("Das Update der Vocab konnte nicht durchgeführt werden und wird wiederholt.");
+        }
     }
 
     @Override
