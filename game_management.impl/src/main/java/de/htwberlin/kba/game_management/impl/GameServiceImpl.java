@@ -45,20 +45,6 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void calculatePoints(Game game, User user, int points) {
-        if (user.equals(game.getReceiver ())) {
-            int sum = game.getPointsReceiver()+points;
-            game.setPointsReceiver(sum);
-        }
-        if (user.equals(game.getRequester ())) {
-            int sum = game.getPointsReceiver()+points;
-            game.setPointsRequester(sum);
-        }
-        gameDao.updateGame(game);
-    }
-
-    @Transactional
-    @Override
     public void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
         Game game = this.getGamebyId(Long.valueOf(gameId));

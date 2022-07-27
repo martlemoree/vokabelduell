@@ -19,25 +19,22 @@ public interface GameService {
      */
     Game createGame(User requester, User receiver);
 
-    //TODO löschen und die andere Methode benutzen
     /**
      * method calculates points for given user and changes value accordingly
-     * @param game game which is to be changed
-     * @param user user for which points are calculated
-     * @param points number of points
-     */
-    void calculatePoints(Game game, User user, int points);
-
-
-    /**
-     * method for restController
      * @param gameId id of the game which should be updated with new points
      * @param userName user who made the points in a game
      * @param points points won/lost in a game
+     * @throws UserNotFoundException - is thrown when the given user does not exist
      */
     void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException;
 
 
+    /**
+     * returns the games of the given user
+     * @param userName of the user
+     * @return the games of the given user
+     * @throws UserNotFoundException - is thrown when the given user does not exist
+     */
     List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
 
     /**

@@ -11,6 +11,7 @@ public interface UserService {
      * Shows the user a list of users without showing the user himself in the list.
      * @param userName current user
      * @return userList of all users except the current user
+     * @throws UserNotFoundException is thrown when the User does not exist
      */
     List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException;
 
@@ -32,6 +33,7 @@ public interface UserService {
      * @param name user name chosen by current user
      * @param password password chosen by current user
      * @return new user created
+     * @throws UserAlreadyExistsException is thrown when the user name already exists in the database
      */
     User createUser(String name, String password) throws UserAlreadyExistsException;
 
@@ -39,6 +41,7 @@ public interface UserService {
      * holds logic to get user by userName
      * @param userName to identify the user
      * @return the user that belongs to the given userName
+     * @throws UserNotFoundException is thrown when the User does not exist
      */
     User getUserByUserName(String userName) throws UserNotFoundException;
 
@@ -51,6 +54,11 @@ public interface UserService {
 //    User getUserById(Long id) throws UserNotFoundException;
 
     // TODO Es muss eigentlich removeUserByName sein
-    @Transactional
+
+    /**
+     * a user is deleted in the data base
+     * @param name of the user that should be deleted
+     * @throws UserNotFoundException is thrown when the User does not exist
+     */
     void removeUserName(String name) throws UserNotFoundException;
 }

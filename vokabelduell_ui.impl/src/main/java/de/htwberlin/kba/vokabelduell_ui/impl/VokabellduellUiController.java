@@ -509,7 +509,7 @@ public class VokabellduellUiController implements VokabellduellUi {
             view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questionService.getAllAnswers(questions.get(i)).get(0));
         }
 
-        gameService.calculatePoints(game, currentUser, points);
+        gameService.calculatePoints(game.getGameId(), currentUser.getUserName(), points);
 
     }
 

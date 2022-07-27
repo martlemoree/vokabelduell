@@ -10,6 +10,7 @@ public interface VocabListService {
      * creates a new Vocabulary List.
      * @param text holds Vocabulary List.
      * @return a new Vocabulary List
+     * @throws FileNotFoundException is thrown when the file in the given filepath does not exist
      */
     VocabList createVocabList(String text) throws FileNotFoundException;
 
@@ -73,6 +74,7 @@ public interface VocabListService {
      * holds logic to get a vocablist by given name
      * @param vocabListName name of the vocablist
      * @return vocablist with given name
+     * @throws VocabListNotFoundException is thrown when given vocablist does not exist
      */
     //TODO brauchen wir beides? --> reicht nicht eins von beidem?
     VocabList getVocabListByName( String vocabListName) throws VocabListNotFoundException;
@@ -81,6 +83,7 @@ public interface VocabListService {
      * holds logic to get a vocablist by given id
      * @param id of the requested vocablist
      * @return the requested vocabList
+     * @throws VocabListNotFoundException is thrown when the vocablist does not exist
      */
     //TODO brauchen wir beides?
     VocabList getVocabListById(Long id) throws VocabListNotFoundException;

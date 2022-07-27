@@ -89,14 +89,14 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
     @Test
-    public void testCalculatePointsOnce() {
+    public void testCalculatePointsOnce() throws UserNotFoundException {
         // 1. Arrange
 
         int newPoints = 500;
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
-        gameService.calculatePoints(game, requester, newPoints);
+        gameService.calculatePoints(game.getGameId(), requester.getUserName(), newPoints);
 
         // 3. Assert
         Assert.assertEquals(newPoints, game.getPointsRequester());
@@ -104,15 +104,15 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly if added multiple times + for the correct user")
     @Test
-    public void testCalculatePointsMultipleTimes() {
+    public void testCalculatePointsMultipleTimes() throws UserNotFoundException {
         // 1. Arrange
         int newPoints = 500;
         int morePoints = 200;
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
-        gameService.calculatePoints(game, receiver, newPoints);
-        gameService.calculatePoints(game, receiver, morePoints);
+        gameService.calculatePoints(game.getGameId(), receiver.getUserName(), newPoints);
+        gameService.calculatePoints(game.getGameId(), receiver.getUserName(), morePoints);
         int sum = newPoints+morePoints;
 
         // 3. Assert

@@ -33,6 +33,7 @@ public interface VocabService {
      * holds logic to identify and get a vocab by given string
      * @param vocabString given String
      * @return vocab with given name
+     * @throws VocabNotFoundException is thrown when the vocab does not exist in the database
      */
     Vocab getVocabByVocabString(String vocabString) throws VocabNotFoundException;
 }

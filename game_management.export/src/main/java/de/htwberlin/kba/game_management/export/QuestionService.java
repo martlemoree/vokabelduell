@@ -57,11 +57,15 @@ public interface QuestionService {
      * @param question object that should be addressed
      * @return random string entry from list of strings of vocab
      */
-
     String giveVocabStringRandom(Question question);
 
     // TODO später löschen, nur zum testen
     List<Question> getAllQuestions();
 
+    /**
+     * searches a question in the database with the given id
+     * @param Id that should be searched
+     * @return the question
+     */
     Question getQuestionById(Long Id);
 }
