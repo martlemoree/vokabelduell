@@ -15,7 +15,7 @@ public interface RequestService {
      * @param accept gives information about whether the request was accepted (true) or rejected (false)
      * @param request is the object that should be updated
      */
-    void changeStatus(Boolean accept, Request request);
+    void changeStatus(Boolean accept, Request request) throws CustomLockException;
 
     /**
      * adds a new game request.
@@ -38,7 +38,7 @@ public interface RequestService {
      * @param Id that should be searched
      * @return the request with the given id
      */
-    Request getRequestById(Long Id);
+    Request getRequestById(Long Id) throws CustomObjectNotFoundException;
 
     // TODO llöschen nur für testzwecke
     List<Request> getAllRequests();

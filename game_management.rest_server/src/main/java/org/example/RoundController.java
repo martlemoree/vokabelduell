@@ -1,9 +1,6 @@
 package org.example;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.GameService;
-import de.htwberlin.kba.game_management.export.Round;
-import de.htwberlin.kba.game_management.export.RoundService;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,7 @@ public class RoundController {
     }
 
     @PostMapping(value = "/startNewRound/{gameId}")
-    public ResponseEntity<Void> startNewRound(@PathVariable("gameId") String gameId) throws URISyntaxException {
+    public ResponseEntity<Void> startNewRound(@PathVariable("gameId") String gameId) throws URISyntaxException, CustomObjectNotFoundException, CustomLockException {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
         Round round = roundService.startNewRound(game);
         URI uri = new URI("/game/" + round.getRoundId());
@@ -38,7 +35,7 @@ public class RoundController {
     }
 
     @PutMapping(value = "changeLastPlayer/{gameId}/{userName}")
-    public void changeLastPlayer(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName) {
+    public void changeLastPlayer(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName) throws CustomObjectNotFoundException, CustomLockException {
         roundService.changeLastPlayer(gameId, userName);
     }
 

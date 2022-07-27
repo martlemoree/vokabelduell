@@ -14,14 +14,14 @@ public interface RoundService {
      * @param game current game for which new round is needed
      * @return new round started
      */
-    Round startNewRound(Game game);
+    Round startNewRound(Game game) throws CustomLockException;
 
     /**
      * change the player who last played a round in the game
      * @param gameId - id of the current game
      * @param userName - name of the current user
      */
-    void changeLastPlayer(Long gameId, String userName);
+    void changeLastPlayer(Long gameId, String userName) throws CustomObjectNotFoundException, CustomLockException;
 
     // TODO löschen nur für tests
     List<Round> getAllRounds();
@@ -31,5 +31,5 @@ public interface RoundService {
      * @param id that should be searched
      * @return the round with given id
      */
-    Round getRoundById(Long id);
+    Round getRoundById(Long id) throws CustomObjectNotFoundException;
 }

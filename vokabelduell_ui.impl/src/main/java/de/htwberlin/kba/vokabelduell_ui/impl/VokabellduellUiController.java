@@ -83,104 +83,103 @@ public class VokabellduellUiController implements VokabellduellUi {
 
         // TODO löschen, nur zum Test
 
-        view.printMessage("Gib deinen username ein.");
-        userName = view.userInputString();
-        User currentUser =null;
-        try {
-            currentUser = userService.getUserByUserName(userName);
-        } catch (UserNotFoundException e) {
-            view.printMessage("Verschrieben idiot.");
-        }
+//        view.printMessage("Gib deinen username ein.");
+//        userName = view.userInputString();
+//        User currentUser =null;
+//        try {
+//            currentUser = userService.getUserByUserName(userName);
+//        } catch (UserNotFoundException e) {
+//            view.printMessage("Verschrieben idiot.");
+//        }
+//
+//        List<Game> games = null;
+//
+//        try {
+//            games = gameService.getGamesFromCurrentUser(userName);
+//        } catch (UserNotFoundException e) {
+//            view.printMessage("Der User " + userName + "wurde leider nicht gefunden. Starte das Spiel erneut und melde dich erneut an.");
+//            System.exit(0);
+//        }
+//
+//        if (games.isEmpty()) {
+//            view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
+//        }
+//
+//        view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
+//
+//        for (Game game : games) {
+//            view.printMessage("" + game.getRounds());
+//            // due to game logic, rounds cannot be empty if game has been started correctly
+//            if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
+//                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+//                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+//                } else {
+//                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
+//                }
+//            } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
+//                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+//                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+//                }
+//            }
+//        }
+//        for (Game game : games) {
+//            view.printMessage("" + game.getRounds());
+//            // due to game logic, rounds cannot be empty if game has been started correctly
+//            if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
+//                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+//                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+//                } else {
+//                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
+//                }
+//            } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
+//                if (!game.getRounds().get(game.getRounds().size()-1).getLastUserPlayedName().equals(userName)) {
+//                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
+//                }
+//            }
+//        }
+//
+//        boolean bol = true;
+//        do {
+//
+//            // TODO HIER EXCEPTION?
+//            String chosenUser = view.userInputString();
+//            for (Game game : games) {
+//                if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
+//                    // due to game logic rounds cannot be empty
+//                    view.printMessage("Alles klar, kann losgehen!");
+//                    view.printMessage("Das steckt dahinter: "+game.getRounds());
+//                    view.printMessage("Das steckt außerdem dahinter: "+game.getRounds().size());
+//                    view.printMessage("Das steckt noch dahinter: "+game.getRounds().get(game.getRounds().size()-1));
+//                    if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
+//
+//                        // vocabList just needs to be chosen if old round has been finished by the other player
+//                        // View Aufruf hier:
+//                        VocabList vocabList = null;
+//                        if (!game.getRounds().get(game.getRounds().size() - 1).getisPlayedByTwo()) {
+//                            view.printMessage("Hier bin ich!");//vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+//                        } // no else: vocabList stays null if last existing round has been played by other player but not by current player
+//                        List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
+//                        // Schleife koordiniert den View Aufruf:
+//                        for (int j = 0; j < 4; j++) {
+//                            view.printMessage("Hallo hallo!");//askQuestions(game, currentUser, questions, j);
+//                        }
+//
+//                        roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
+//                        break;
+//
+//                    } else {
+//                        view.printMessage("Hier ist dein Mitspieler dran. Versuche es noch einmal");
+//                        bol = true;
+//                    }
+//                } else {
+//                    view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal oder drücke enter, um die Auswahl abzubrechen.");
+//                    bol = !chosenUser.isEmpty();
+//                }
+//            }
+//        } while (bol);
+//    }
+//}
 
-        List<Game> games = null;
-
-        try {
-            games = gameService.getGamesFromCurrentUser(userName);
-        } catch (UserNotFoundException e) {
-            view.printMessage("Der User " + userName + "wurde leider nicht gefunden. Starte das Spiel erneut und melde dich erneut an.");
-            System.exit(0);
-        }
-
-        if (games.isEmpty()) {
-            view.printMessage("Leider gibt es noch keine begonnen Spiele. Verschicke Anfragen oder nimm eine an, um ein neues Spiel zu starten.");
-        }
-
-        view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
-
-        for (Game game : games) {
-            view.printMessage("" + game.getRounds());
-            // due to game logic, rounds cannot be empty if game has been started correctly
-            if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
-                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
-                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
-                } else {
-                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
-                }
-            } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
-                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
-                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
-                }
-            }
-        }
-
-        for (Game game : games) {
-            view.printMessage("" + game.getRounds());
-            // due to game logic, rounds cannot be empty if game has been started correctly
-            if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
-                if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
-                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
-                } else {
-                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
-                }
-            } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
-                if (!game.getRounds().get(game.getRounds().size()-1).getLastUserPlayedName().equals(userName)) {
-                    view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
-                }
-            }
-        }
-
-        boolean bol = true;
-        do {
-
-            // TODO HIER EXCEPTION?
-            String chosenUser = view.userInputString();
-            for (Game game : games) {
-                if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
-                    // due to game logic rounds cannot be empty
-                    view.printMessage("Alles klar, kann losgehen!");
-                    view.printMessage("Das steckt dahinter: "+game.getRounds());
-                    view.printMessage("Das steckt außerdem dahinter: "+game.getRounds().size());
-                    view.printMessage("Das steckt noch dahinter: "+game.getRounds().get(game.getRounds().size()-1));
-                    if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
-
-                        // vocabList just needs to be chosen if old round has been finished by the other player
-                        // View Aufruf hier:
-                        VocabList vocabList = null;
-                        if (!game.getRounds().get(game.getRounds().size() - 1).getisPlayedByTwo()) {
-                            view.printMessage("Hier bin ich!");//vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
-                        } // no else: vocabList stays null if last existing round has been played by other player but not by current player
-                        List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
-                        // Schleife koordiniert den View Aufruf:
-                        for (int j = 0; j < 4; j++) {
-                            view.printMessage("Hallo hallo!");//askQuestions(game, currentUser, questions, j);
-                        }
-
-                        roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
-                        break;
-
-                    } else {
-                        view.printMessage("Hier ist dein Mitspieler dran. Versuche es noch einmal");
-                        bol = true;
-                    }
-                } else {
-                    view.printMessage("Dieser User wurde leider nicht als Mitspieler einer deiner bestehenden Spiele gefunden. Versuche es noch einmal oder drücke enter, um die Auswahl abzubrechen.");
-                    bol = !chosenUser.isEmpty();
-                }
-            }
-        } while (bol);
-    }
-}
-/*
         //-----------------------------------------------------------------------------------------------------------------
 
         // hier geht es los mit der Spielelogik
@@ -300,15 +299,11 @@ public class VokabellduellUiController implements VokabellduellUi {
                         view.printMessage("" + game.getRounds());
                         // due to game logic, rounds cannot be empty if game has been started correctly
                         // else game cant continue
-                        if (game.getRounds().size() < 6 & game.getRounds().size() != 1 & game.getRounds() != null & game.getRounds().size() != 0) {
+                        if (game.getRounds().size() < 6 & game.getRounds() != null & game.getRounds().size() != 0) {
                             if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
                                 view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
                             } else {
                                 view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName() + "Hier ist dein Mitspieler dran.");
-                            }
-                        } else if (game.getRounds().size() == 1 & game.getRounds().size() != 0 & game.getRounds() != null) {
-                            if (!game.getRounds().get(game.getRounds().size() - 1).getLastUserPlayedName().equals(userName)) {
-                                view.printMessage(game.getRequester().getUserName() + " gegen " + game.getReceiver().getUserName());
                             }
                         }
                     }
@@ -330,13 +325,32 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     if (!game.getRounds().get(game.getRounds().size() - 1).getisPlayedByTwo()) {
                                         vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
                                     } // no else: vocabList stays null if last existing round has been played by other player but not by current player
-                                    List<Question> questions = gameService.giveQuestions(game, currentUser, vocabList);
+
+                                    boolean questionsChangedError = false;
+                                    List<Question> questions = null;
+                                    do {
+                                        try {
+                                            questions = gameService.giveQuestions(game, currentUser, vocabList);
+                                        } catch (CustomLockException e) {
+                                            questionsChangedError=true;
+                                        }
+                                    } while (questionsChangedError);
+
                                     // Schleife koordiniert den View Aufruf:
                                     for (int j = 0; j < 4; j++) {
                                         askQuestions(game, currentUser, questions, j);
                                     }
 
-                                    roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
+                                    boolean lastPlayerChangedError = false;
+                                    do {
+                                        try {
+                                            roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
+                                        } catch (CustomLockException e) {
+                                            lastPlayerChangedError=true;
+                                        } catch (CustomObjectNotFoundException ex) {
+                                            view.printMessage("Das hat leider nicht geklappt.");
+                                        }
+                                    } while (lastPlayerChangedError);
                                     break;
 
                                 } else {
@@ -509,7 +523,16 @@ public class VokabellduellUiController implements VokabellduellUi {
             view.printMessage("Das ist leider falsch. Die richtige Antwort lautet " + questionService.getAllAnswers(questions.get(i)).get(0));
         }
 
-        gameService.calculatePoints(game, currentUser, points);
+        boolean saved = false;
+        do {
+            try {
+                gameService.calculatePoints(game, currentUser, points);
+            } catch (CustomLockException e) {
+                saved=true;
+            }
+        } while (saved);
+
+
 
     }
 
@@ -530,7 +553,15 @@ public class VokabellduellUiController implements VokabellduellUi {
                     vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
                 }
                 // vocablist wurde ausgewählt und wird hier übergeben:
-                List<Question> questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
+                boolean questionsChangedError = false;
+                List<Question> questions = null;
+                do {
+                    try {
+                        questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
+                    } catch (CustomLockException e) {
+                        questionsChangedError=true;
+                    }
+                } while (questionsChangedError);
                 for (int j = 0; j < 4; j++) {
                     // View Aufruf hier:
                     askQuestions(game, request.getReceiver(), questions, j);
@@ -715,4 +746,4 @@ public class VokabellduellUiController implements VokabellduellUi {
     }
 
 
-}*/
+}

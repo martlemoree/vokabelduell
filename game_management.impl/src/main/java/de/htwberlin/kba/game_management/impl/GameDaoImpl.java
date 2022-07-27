@@ -1,6 +1,8 @@
 package de.htwberlin.kba.game_management.impl;
 
+import de.htwberlin.kba.game_management.export.CustomLockException;
 import de.htwberlin.kba.game_management.export.Game;
+import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.stereotype.Repository;
 
@@ -19,18 +21,24 @@ public class GameDaoImpl implements GameDao{
     }
 
     @Override
-    public Game getGameById(Long gameId) {
-        Game game = entityManager.find(Game.class, gameId);
-        if (game == null) {
-            throw new EntityNotFoundException("Can't find Game with gameId" + gameId);
-        } else {
-            return game;
+    public Game getGameById(Long gameId) throws CustomObjectNotFoundException {
+        Game game =null;
+        try {
+            game = entityManager.find(Game.class, gameId);
+        } catch (NoResultException e) {
+            throw new CustomObjectNotFoundException("Can't find Game with gameId" + gameId);
         }
+
+        return game;
     }
 
     @Override
-    public void updateGame(Game game) {
-        entityManager.merge(game);
+    public void updateGame(Game game) throws CustomLockException {
+        try {
+            entityManager.merge(game);
+        } catch (OptimisticLockException e) {
+            throw new CustomLockException("Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal");
+        }
     }
 
     @Override

@@ -4,9 +4,6 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface GameService {
@@ -26,7 +23,7 @@ public interface GameService {
      * @param user user for which points are calculated
      * @param points number of points
      */
-    void calculatePoints(Game game, User user, int points);
+    void calculatePoints(Game game, User user, int points) throws CustomLockException;
 
 
     /**
@@ -35,7 +32,7 @@ public interface GameService {
      * @param userName user who made the points in a game
      * @param points points won/lost in a game
      */
-    void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException;
+    void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomLockException, CustomObjectNotFoundException;
 
 
     List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
@@ -49,14 +46,14 @@ public interface GameService {
      * @param vocabList chosen vocabList by player or opponent
      * @return correct list of questions for the round
      */
-    List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList);
+    List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomLockException;
 
     /**
      * get a game object by the given gameId
      * @param gameId given Id that should be searched for
      * @return the game with the given gameId
      */
-    Game getGamebyId(Long gameId);
+    Game getGamebyId(Long gameId) throws CustomObjectNotFoundException;
 
 //TODO löschen, nur für testzwecke
     List<Game> getALlGames();

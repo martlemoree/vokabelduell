@@ -28,7 +28,7 @@ public class QuestionController {
 
 
     @PostMapping(value = "/create/{roundId}/{vocablistId}")
-    public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException, VocabListNotFoundException {
+    public ResponseEntity<Void> createQuestion(@PathVariable("roundId") Long roundId, @PathVariable("vocablistId") Long vocablistId) throws URISyntaxException, VocabListNotFoundException, CustomObjectNotFoundException {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
 
@@ -44,12 +44,12 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/getAllAnswers/{questionId}")
-    public List<Translation> getAllAnswers(@PathVariable("questionId") Long questionId) {
+    public List<Translation> getAllAnswers(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
         return questionService.getAllAnswers(questionService.getQuestionById(questionId));
     }
 
     @PostMapping(value = "/createQuestions/{gameId}/{vocablistId}/{roundId}")
-    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListNotFoundException {
+    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListNotFoundException, CustomObjectNotFoundException, CustomLockException {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
         Game game = gameService.getGamebyId(gameId);
@@ -65,19 +65,19 @@ public class QuestionController {
 
     // TODO hier gibt es probleme wenn die answer options leer sind
     @GetMapping(value = "/giveAnswerOptionsRandom/{questionId}")
-    public List<String> giveAnswerOptionsRandom(@PathVariable("questionId") Long questionId) {
+    public List<String> giveAnswerOptionsRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
         return questionService.giveAnswerOptionsRandom(questionService.getQuestionById(questionId));
     }
 
     // TODO hier gibt es probleme wenn die answer options leer sind
     @GetMapping(value = "/giveVocabStringRandom/{questionId}")
-    public String giveVocabStringRandom(@PathVariable("questionId") Long questionId) {
+    public String giveVocabStringRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
         return questionService.giveVocabStringRandom(questionService.getQuestionById(questionId));
     }
 
 
     @GetMapping(value = "/answeredQuestion/{answer}/{questionId}")
-    public boolean answeredQuestion(@PathVariable("questionId") Long questionId, @PathVariable("answer") String answer) {
+    public boolean answeredQuestion(@PathVariable("questionId") Long questionId, @PathVariable("answer") String answer) throws CustomObjectNotFoundException {
         return questionService.answeredQuestion(answer, questionService.getQuestionById(questionId));
     }
 }

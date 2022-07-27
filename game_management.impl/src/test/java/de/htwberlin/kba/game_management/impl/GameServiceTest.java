@@ -6,10 +6,8 @@ import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,7 +87,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
     @Test
-    public void testCalculatePointsOnce() {
+    public void testCalculatePointsOnce() throws CustomLockException {
         // 1. Arrange
 
         int newPoints = 500;
@@ -104,7 +102,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly if added multiple times + for the correct user")
     @Test
-    public void testCalculatePointsMultipleTimes() {
+    public void testCalculatePointsMultipleTimes() throws CustomLockException {
         // 1. Arrange
         int newPoints = 500;
         int morePoints = 200;

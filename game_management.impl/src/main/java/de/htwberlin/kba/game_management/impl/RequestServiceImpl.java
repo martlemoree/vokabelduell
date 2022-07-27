@@ -26,7 +26,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public void changeStatus(Boolean accept, Request request) {
+    public void changeStatus(Boolean accept, Request request) throws CustomLockException {
         if (accept) {
             request.setRequestStatus(ACCEPTED);
         } else {
@@ -52,7 +52,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public Request getRequestById(Long Id) {
+    public Request getRequestById(Long Id) throws CustomObjectNotFoundException {
         return requestDao.getRequestById(Id);
     }
 

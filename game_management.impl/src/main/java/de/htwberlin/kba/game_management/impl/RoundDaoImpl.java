@@ -1,5 +1,7 @@
 package de.htwberlin.kba.game_management.impl;
 
+import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Round;
 import org.springframework.stereotype.Repository;
 
@@ -18,18 +20,23 @@ public class RoundDaoImpl implements RoundDao{
     }
 
     @Override
-    public Round getRoundById(Long roundId) {
-        Round round = entityManager.find(Round.class, roundId);
-        if (round == null) {
-            throw new EntityNotFoundException("Can't find Round with roundId" + roundId);
-        } else {
-            return round;
+    public Round getRoundById(Long roundId) throws CustomObjectNotFoundException {
+        Round round = null;
+        try {
+            round = entityManager.find(Round.class, roundId);
+        } catch (NoResultException e) {
+            throw new CustomObjectNotFoundException("Can't find Round with roundId" + roundId);
         }
+        return round;
     }
 
     @Override
-    public void updateRound(Round round) {
-        entityManager.merge(round);
+    public void updateRound(Round round) throws CustomLockException {
+        try {
+            entityManager.merge(round);
+        } catch (OptimisticLockException e) {
+            throw new CustomLockException("Das Update der Round konnte leider nicht durchgeführt werden. Der Vorgang wird wiederholt.");
+        }
     }
 
     @Override

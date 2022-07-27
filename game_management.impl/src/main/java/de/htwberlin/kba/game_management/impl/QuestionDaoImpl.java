@@ -1,5 +1,7 @@
 package de.htwberlin.kba.game_management.impl;
 
+import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Question;
 import org.springframework.stereotype.Repository;
 
@@ -18,18 +20,23 @@ public class QuestionDaoImpl implements QuestionDao{
     }
 
     @Override
-    public Question getQuestionById(Long questionId) {
-        Question question = entityManager.find(Question.class, questionId);
-        if (question == null) {
-            throw new EntityNotFoundException("Can't find Question with questionId" + questionId);
-        } else {
-            return question;
+    public Question getQuestionById(Long questionId) throws CustomObjectNotFoundException {
+        Question question = null;
+        try {
+            question = entityManager.find(Question.class, questionId);
+        } catch (NoResultException e) {
+            throw new CustomObjectNotFoundException("Can't find Question with questionId" + questionId);
         }
+        return question;
     }
 
     @Override
-    public void updateQuestion(Question question) {
-        entityManager.merge(question);
+    public void updateQuestion(Question question) throws CustomLockException {
+        try {
+            entityManager.merge(question);
+        } catch (OptimisticLockException e) {
+            throw new CustomLockException("\"Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal.");
+        }
     }
 
     @Override

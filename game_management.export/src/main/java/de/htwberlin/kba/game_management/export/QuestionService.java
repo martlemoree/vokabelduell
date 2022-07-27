@@ -33,7 +33,7 @@ public interface QuestionService {
      * @param chosenVocabList the chosen vocablist from which the questions should be created
      * @return List of three questions
      */
-    List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round);
+    List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomLockException;
 
     /**
      * the answer options for a question should not always be given in the same order
@@ -63,5 +63,5 @@ public interface QuestionService {
     // TODO später löschen, nur zum testen
     List<Question> getAllQuestions();
 
-    Question getQuestionById(Long Id);
+    Question getQuestionById(Long Id) throws CustomObjectNotFoundException;
 }

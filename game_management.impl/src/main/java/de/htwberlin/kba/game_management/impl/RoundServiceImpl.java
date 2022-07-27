@@ -1,8 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.Round;
-import de.htwberlin.kba.game_management.export.RoundService;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class RoundServiceImpl implements RoundService {
 
 
     @Transactional
-    public Round startNewRound(Game game) {
+    public Round startNewRound(Game game) throws CustomLockException {
         List<Round> rounds = new ArrayList<>(); //das war schon richtig so
 
         if (game.getRounds() != null){
@@ -48,7 +46,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Transactional
     @Override
-    public void changeLastPlayer(Long gameId, String userName) {
+    public void changeLastPlayer(Long gameId, String userName) throws CustomObjectNotFoundException, CustomLockException {
         Game game = gameDao.getGameById(gameId);
         game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(userName);
         gameDao.updateGame(game);
@@ -67,7 +65,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     @Transactional
-    public Round getRoundById(Long id) {
+    public Round getRoundById(Long id) throws CustomObjectNotFoundException {
         return roundDao.getRoundById(id);
     }
 

@@ -9,10 +9,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +42,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void calculatePoints(Game game, User user, int points) {
+    public void calculatePoints(Game game, User user, int points) throws CustomLockException {
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;
             game.setPointsReceiver(sum);
@@ -59,7 +56,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException {
+    public void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomLockException, CustomObjectNotFoundException {
         User user = userService.getUserByUserName(userName);
         Game game = this.getGamebyId(Long.valueOf(gameId));
         if (user.equals(game.getReceiver ())) {
@@ -87,7 +84,7 @@ public class GameServiceImpl implements GameService {
         return gamesFromUser;
     }
 
-    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) {
+    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomLockException {
 
         List<Round> rounds = game.getRounds();
 
@@ -113,7 +110,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public Game getGamebyId(Long gameId) {
+    public Game getGamebyId(Long gameId) throws CustomObjectNotFoundException {
         Game game = gameDao.getGameById(gameId);
         Hibernate.initialize(game.getRounds());
         return game;

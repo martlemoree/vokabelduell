@@ -1,9 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.Question;
-import de.htwberlin.kba.game_management.export.QuestionService;
-import de.htwberlin.kba.game_management.export.Round;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
@@ -89,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Transactional
-    public List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) {
+    public List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomLockException {
         List<Question> questions = new ArrayList<>();
         Question question1 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
         Question question2 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
@@ -195,7 +192,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
-    public Question getQuestionById(Long Id){
+    public Question getQuestionById(Long Id) throws CustomObjectNotFoundException {
         Question question =  questionDao.getQuestionById(Id);
 
         Hibernate.initialize(question.getVocab().getVocabs());

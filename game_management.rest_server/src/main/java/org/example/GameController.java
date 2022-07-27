@@ -53,7 +53,7 @@ public class GameController
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) throws UserNotFoundException {
+    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) throws UserNotFoundException, CustomObjectNotFoundException, CustomLockException {
         gameService.calculatePoints(gameId, userName, points);
     }
 
@@ -66,7 +66,7 @@ public class GameController
     //TODO testen
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @PathVariable String gameId) throws UserNotFoundException, VocabListNotFoundException {
+                                        @PathVariable String gameId) throws UserNotFoundException, VocabListNotFoundException, CustomObjectNotFoundException, CustomLockException {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);
@@ -82,7 +82,7 @@ public class GameController
 
     // FIXME macht den "Could not write JSON: failed to lazily initialize a collection"-Fehler
     @GetMapping(value = "/{gameId}")
-    public Game getGameById(@PathVariable("gameId") int gameId) {
+    public Game getGameById(@PathVariable("gameId") int gameId) throws CustomObjectNotFoundException {
         Game game = gameService.getGamebyId((long) gameId);
         return game;
     }

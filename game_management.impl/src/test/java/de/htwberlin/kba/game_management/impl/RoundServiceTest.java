@@ -1,9 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.QuestionService;
-import de.htwberlin.kba.game_management.export.Round;
-import de.htwberlin.kba.game_management.export.RoundService;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
@@ -47,7 +44,7 @@ public class RoundServiceTest {
     
     @DisplayName("checks whether the method returns a round")
     @Test
-    public void testStartNewRound() {
+    public void testStartNewRound() throws CustomLockException {
         // 1. Arrange
         User requester = new User("MartinTheBrain", "lol123");
         User receiver = new User("stellomello", "123lol");
@@ -62,7 +59,7 @@ public class RoundServiceTest {
 
     @Test
     @DisplayName("check if user is last player")
-    public void testSetLastPlayer(){
+    public void testSetLastPlayer() throws CustomObjectNotFoundException, CustomLockException {
         // 1. Arrange
         List<Round> rounds = new ArrayList<>();
         rounds.add(round);

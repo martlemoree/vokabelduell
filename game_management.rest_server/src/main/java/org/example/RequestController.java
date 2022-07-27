@@ -1,8 +1,6 @@
 package org.example;
 
-import de.htwberlin.kba.game_management.export.Game;
-import de.htwberlin.kba.game_management.export.Request;
-import de.htwberlin.kba.game_management.export.RequestService;
+import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
@@ -40,7 +38,7 @@ public class RequestController {
     }
 
     @PutMapping(value = "changeStatus/{requestId}/{accept}")
-    public ResponseEntity<?> changeStatus(@PathVariable("requestId") String requestId, @PathVariable("accept") String accept) {
+    public ResponseEntity<?> changeStatus(@PathVariable("requestId") String requestId, @PathVariable("accept") String accept) throws CustomLockException, CustomObjectNotFoundException {
         Boolean accept_bol = Boolean.FALSE;
         if (accept.equals("1")) {
             accept_bol = Boolean.TRUE;
