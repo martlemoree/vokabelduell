@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.user_management.export.User;
@@ -33,11 +33,11 @@ public class GameDaoImpl implements GameDao{
     }
 
     @Override
-    public void updateGame(Game game) throws CustomLockException {
+    public void updateGame(Game game) throws CustomOptimisticLockExceptionGame {
         try {
             entityManager.merge(game);
         } catch (OptimisticLockException e) {
-            throw new CustomLockException("Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal");
+            throw new CustomOptimisticLockExceptionGame("Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal");
         }
     }
 

@@ -42,7 +42,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void calculatePoints(Game game, User user, int points) throws CustomLockException {
+    public void calculatePoints(Game game, User user, int points) throws CustomOptimisticLockExceptionGame {
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;
             game.setPointsReceiver(sum);
@@ -56,7 +56,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomLockException, CustomObjectNotFoundException {
+    public void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomOptimisticLockExceptionGame, CustomObjectNotFoundException {
         User user = userService.getUserByUserName(userName);
         Game game = this.getGamebyId(Long.valueOf(gameId));
         if (user.equals(game.getReceiver ())) {
@@ -84,7 +84,7 @@ public class GameServiceImpl implements GameService {
         return gamesFromUser;
     }
 
-    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomLockException {
+    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomOptimisticLockExceptionGame {
 
         List<Round> rounds = game.getRounds();
 

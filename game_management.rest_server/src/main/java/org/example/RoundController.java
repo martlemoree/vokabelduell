@@ -1,7 +1,6 @@
 package org.example;
 
 import de.htwberlin.kba.game_management.export.*;
-import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class RoundController {
     }
 
     @PostMapping(value = "/startNewRound/{gameId}")
-    public ResponseEntity<Void> startNewRound(@PathVariable("gameId") String gameId) throws URISyntaxException, CustomObjectNotFoundException, CustomLockException {
+    public ResponseEntity<Void> startNewRound(@PathVariable("gameId") String gameId) throws URISyntaxException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
         Round round = roundService.startNewRound(game);
         URI uri = new URI("/game/" + round.getRoundId());
@@ -35,7 +34,7 @@ public class RoundController {
     }
 
     @PutMapping(value = "changeLastPlayer/{gameId}/{userName}")
-    public void changeLastPlayer(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName) throws CustomObjectNotFoundException, CustomLockException {
+    public void changeLastPlayer(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName) throws CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         roundService.changeLastPlayer(gameId, userName);
     }
 

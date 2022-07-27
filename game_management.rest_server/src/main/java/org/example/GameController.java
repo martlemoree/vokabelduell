@@ -1,7 +1,6 @@
 package org.example;
 
 import de.htwberlin.kba.game_management.export.*;
-import de.htwberlin.kba.game_management.impl.GameServiceImpl;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
@@ -53,7 +52,7 @@ public class GameController
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
-    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) throws UserNotFoundException, CustomObjectNotFoundException, CustomLockException {
+    public void calculatePoints(@PathVariable("gameId") Long gameId, @PathVariable("userName") String userName, @PathVariable("points") int points) throws UserNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         gameService.calculatePoints(gameId, userName, points);
     }
 
@@ -66,7 +65,7 @@ public class GameController
     //TODO testen
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @PathVariable String gameId) throws UserNotFoundException, VocabListNotFoundException, CustomObjectNotFoundException, CustomLockException {
+                                        @PathVariable String gameId) throws UserNotFoundException, VocabListNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         Game game = gameService.getGamebyId(Long.valueOf(gameId));
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);

@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Request;
 import org.springframework.stereotype.Repository;
@@ -31,11 +31,11 @@ public class RequestDaoImpl implements RequestDao{
     }
 
     @Override
-    public void updateRequest(Request request) throws CustomLockException {
+    public void updateRequest(Request request) throws CustomOptimisticLockExceptionGame {
         try {
             entityManager.merge(request);
         } catch (OptimisticLockException e) {
-            throw new CustomLockException("Das Update der Request muss noch einmal durchgeführt werden.");
+            throw new CustomOptimisticLockExceptionGame("Das Update der Request muss noch einmal durchgeführt werden.");
         }
 
     }

@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Round;
 
@@ -12,7 +12,7 @@ public interface RoundDao {
 
     Round getRoundById(Long roundId) throws CustomObjectNotFoundException;
 
-    void updateRound(Round round) throws CustomLockException;
+    void updateRound(Round round) throws CustomOptimisticLockExceptionGame;
 
     List<Round> getAllRounds();
 

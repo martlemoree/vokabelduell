@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Request;
 
@@ -12,7 +12,7 @@ public interface RequestDao {
 
     Request getRequestById(Long requestId) throws CustomObjectNotFoundException;
 
-    void updateRequest(Request request) throws CustomLockException;
+    void updateRequest(Request request) throws CustomOptimisticLockExceptionGame;
 
     List<Request> getAllRequests();
 

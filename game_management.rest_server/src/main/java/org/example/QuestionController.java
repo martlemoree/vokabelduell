@@ -49,7 +49,7 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/createQuestions/{gameId}/{vocablistId}/{roundId}")
-    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListNotFoundException, CustomObjectNotFoundException, CustomLockException {
+    public void createQuestions(@PathVariable("gameId") Long gameId, @PathVariable("vocablistId") Long vocablistId, @PathVariable("roundId") Long roundId) throws URISyntaxException, VocabListNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionVocab {
         Round round = roundService.getRoundById(roundId);
         VocabList vocabList = vocabListService.getVocabListById(vocablistId);
         Game game = gameService.getGamebyId(gameId);

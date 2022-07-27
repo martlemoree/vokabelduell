@@ -1,12 +1,9 @@
 package de.htwberlin.kba.game_management.export;
 
 
-import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.Translation;
-import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface QuestionService {
@@ -33,7 +30,7 @@ public interface QuestionService {
      * @param chosenVocabList the chosen vocablist from which the questions should be created
      * @return List of three questions
      */
-    List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomLockException;
+    List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomOptimisticLockExceptionGame;
 
     /**
      * the answer options for a question should not always be given in the same order

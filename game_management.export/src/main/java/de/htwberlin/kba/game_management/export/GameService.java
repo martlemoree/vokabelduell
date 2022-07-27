@@ -23,7 +23,7 @@ public interface GameService {
      * @param user user for which points are calculated
      * @param points number of points
      */
-    void calculatePoints(Game game, User user, int points) throws CustomLockException;
+    void calculatePoints(Game game, User user, int points) throws CustomOptimisticLockExceptionGame;
 
 
     /**
@@ -32,7 +32,7 @@ public interface GameService {
      * @param userName user who made the points in a game
      * @param points points won/lost in a game
      */
-    void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomLockException, CustomObjectNotFoundException;
+    void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomOptimisticLockExceptionGame, CustomObjectNotFoundException;
 
 
     List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
@@ -46,7 +46,7 @@ public interface GameService {
      * @param vocabList chosen vocabList by player or opponent
      * @return correct list of questions for the round
      */
-    List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomLockException;
+    List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomOptimisticLockExceptionGame;
 
     /**
      * get a game object by the given gameId

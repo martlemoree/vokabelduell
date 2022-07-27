@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Round;
 import org.springframework.stereotype.Repository;
@@ -31,11 +31,11 @@ public class RoundDaoImpl implements RoundDao{
     }
 
     @Override
-    public void updateRound(Round round) throws CustomLockException {
+    public void updateRound(Round round) throws CustomOptimisticLockExceptionGame {
         try {
             entityManager.merge(round);
         } catch (OptimisticLockException e) {
-            throw new CustomLockException("Das Update der Round konnte leider nicht durchgeführt werden. Der Vorgang wird wiederholt.");
+            throw new CustomOptimisticLockExceptionGame("Das Update der Round konnte leider nicht durchgeführt werden. Der Vorgang wird wiederholt.");
         }
     }
 

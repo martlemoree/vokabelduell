@@ -1,9 +1,5 @@
 package de.htwberlin.kba.game_management.export;
 
-import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.vocab_management.export.VocabList;
-
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RoundService {
@@ -14,14 +10,14 @@ public interface RoundService {
      * @param game current game for which new round is needed
      * @return new round started
      */
-    Round startNewRound(Game game) throws CustomLockException;
+    Round startNewRound(Game game) throws CustomOptimisticLockExceptionGame;
 
     /**
      * change the player who last played a round in the game
      * @param gameId - id of the current game
      * @param userName - name of the current user
      */
-    void changeLastPlayer(Long gameId, String userName) throws CustomObjectNotFoundException, CustomLockException;
+    void changeLastPlayer(Long gameId, String userName) throws CustomObjectNotFoundException, CustomOptimisticLockExceptionGame;
 
     // TODO löschen nur für tests
     List<Round> getAllRounds();

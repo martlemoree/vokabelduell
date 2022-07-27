@@ -86,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Transactional
-    public List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomLockException {
+    public List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomOptimisticLockExceptionGame {
         List<Question> questions = new ArrayList<>();
         Question question1 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);
         Question question2 = createQuestion(game.getRounds().get(game.getRounds().size()-1), chosenVocabList);

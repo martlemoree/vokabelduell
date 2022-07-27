@@ -87,7 +87,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
     @Test
-    public void testCalculatePointsOnce() throws CustomLockException {
+    public void testCalculatePointsOnce() throws CustomOptimisticLockExceptionGame {
         // 1. Arrange
 
         int newPoints = 500;
@@ -102,7 +102,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly if added multiple times + for the correct user")
     @Test
-    public void testCalculatePointsMultipleTimes() throws CustomLockException {
+    public void testCalculatePointsMultipleTimes() throws CustomOptimisticLockExceptionGame {
         // 1. Arrange
         int newPoints = 500;
         int morePoints = 200;

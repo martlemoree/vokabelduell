@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.SQLException;
 import java.util.List;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
@@ -26,7 +25,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public void changeStatus(Boolean accept, Request request) throws CustomLockException {
+    public void changeStatus(Boolean accept, Request request) throws CustomOptimisticLockExceptionGame {
         if (accept) {
             request.setRequestStatus(ACCEPTED);
         } else {

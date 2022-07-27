@@ -4,14 +4,11 @@ import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
-import org.hibernate.resource.beans.internal.FallbackBeanInstanceProducer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -38,7 +35,7 @@ public class RequestController {
     }
 
     @PutMapping(value = "changeStatus/{requestId}/{accept}")
-    public ResponseEntity<?> changeStatus(@PathVariable("requestId") String requestId, @PathVariable("accept") String accept) throws CustomLockException, CustomObjectNotFoundException {
+    public ResponseEntity<?> changeStatus(@PathVariable("requestId") String requestId, @PathVariable("accept") String accept) throws CustomOptimisticLockExceptionGame, CustomObjectNotFoundException {
         Boolean accept_bol = Boolean.FALSE;
         if (accept.equals("1")) {
             accept_bol = Boolean.TRUE;

@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Question;
 import org.springframework.stereotype.Repository;
@@ -31,11 +31,11 @@ public class QuestionDaoImpl implements QuestionDao{
     }
 
     @Override
-    public void updateQuestion(Question question) throws CustomLockException {
+    public void updateQuestion(Question question) throws CustomOptimisticLockExceptionGame {
         try {
             entityManager.merge(question);
         } catch (OptimisticLockException e) {
-            throw new CustomLockException("\"Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal.");
+            throw new CustomOptimisticLockExceptionGame("\"Das Update konnte leider nicht durchgeführt werden. Bitte versuche es noch einmal.");
         }
     }
 

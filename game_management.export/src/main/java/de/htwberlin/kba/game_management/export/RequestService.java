@@ -2,8 +2,6 @@ package de.htwberlin.kba.game_management.export;
 
 import de.htwberlin.kba.user_management.export.User;
 
-import javax.transaction.Transactional;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface RequestService {
@@ -15,7 +13,7 @@ public interface RequestService {
      * @param accept gives information about whether the request was accepted (true) or rejected (false)
      * @param request is the object that should be updated
      */
-    void changeStatus(Boolean accept, Request request) throws CustomLockException;
+    void changeStatus(Boolean accept, Request request) throws CustomOptimisticLockExceptionGame;
 
     /**
      * adds a new game request.

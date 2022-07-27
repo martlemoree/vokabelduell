@@ -1,6 +1,6 @@
 package de.htwberlin.kba.game_management.impl;
 
-import de.htwberlin.kba.game_management.export.CustomLockException;
+import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.user_management.export.User;
@@ -13,7 +13,7 @@ public interface GameDao {
 
     Game getGameById(Long gameId) throws CustomObjectNotFoundException;
 
-    void updateGame(Game game) throws CustomLockException;
+    void updateGame(Game game) throws CustomOptimisticLockExceptionGame;
 
     List<Game> getAllGames();
 

@@ -10,9 +10,7 @@ import de.htwberlin.kba.vokabelduell_ui.export.VokabellduellUi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.naming.InvalidNameException;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -331,7 +329,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     do {
                                         try {
                                             questions = gameService.giveQuestions(game, currentUser, vocabList);
-                                        } catch (CustomLockException e) {
+                                        } catch (CustomOptimisticLockExceptionGame e) {
                                             questionsChangedError=true;
                                         }
                                     } while (questionsChangedError);
@@ -345,7 +343,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     do {
                                         try {
                                             roundService.changeLastPlayer(game.getGameId(), currentUser.getUserName());
-                                        } catch (CustomLockException e) {
+                                        } catch (CustomOptimisticLockExceptionGame e) {
                                             lastPlayerChangedError=true;
                                         } catch (CustomObjectNotFoundException ex) {
                                             view.printMessage("Das hat leider nicht geklappt.");
@@ -527,7 +525,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         do {
             try {
                 gameService.calculatePoints(game, currentUser, points);
-            } catch (CustomLockException e) {
+            } catch (CustomOptimisticLockExceptionGame e) {
                 saved=true;
             }
         } while (saved);
@@ -558,7 +556,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 do {
                     try {
                         questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
-                    } catch (CustomLockException e) {
+                    } catch (CustomOptimisticLockExceptionGame e) {
                         questionsChangedError=true;
                     }
                 } while (questionsChangedError);
