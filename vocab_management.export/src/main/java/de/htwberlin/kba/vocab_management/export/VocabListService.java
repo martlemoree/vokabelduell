@@ -68,19 +68,10 @@ public interface VocabListService {
     List<VocabList> getVocabLists();
 
     /**
-     * holds logic to get a vocablist by given name
-     * @param vocabListName name of the vocablist
-     * @return vocablist with given name
-     */
-    //TODO brauchen wir beides? --> reicht nicht eins von beidem?
-    VocabList getVocabListByName( String vocabListName) throws VocabListObjectNotFoundException;
-
-    /**
      * holds logic to get a vocablist by given id
      * @param id of the requested vocablist
      * @return the requested vocabList
      */
-    //TODO brauchen wir beides?
     VocabList getVocabListById(Long id) throws VocabListObjectNotFoundException;
 
 }

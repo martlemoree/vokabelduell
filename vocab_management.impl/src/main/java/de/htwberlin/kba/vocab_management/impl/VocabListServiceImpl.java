@@ -214,11 +214,6 @@ public class VocabListServiceImpl implements VocabListService {
         // method not implemented and tested because it is not part of the game logic
     }
 
-    public VocabList getVocabListByName(String vocabListName) throws VocabListObjectNotFoundException {
-        // method not implemented and tested because it is not part of the game logic
-        return null;
-    }
-
     @Override
     @Transactional
     public VocabList getVocabListById(Long id) throws VocabListObjectNotFoundException {

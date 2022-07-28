@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Repository
-public class VocabDaoImpl implements VocabDao{
+public class VocabDaoImpl implements VocabDao {
 
     @PersistenceContext
     private EntityManager entityManager;

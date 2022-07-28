@@ -94,8 +94,6 @@ public class GameRestAdapter implements GameService
         final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
-
-    // TODO Ist das so richtig?
     @Override
     public Game getGamebyId(Long gameId) {
 

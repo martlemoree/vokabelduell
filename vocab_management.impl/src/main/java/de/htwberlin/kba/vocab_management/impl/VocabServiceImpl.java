@@ -24,9 +24,8 @@ public class VocabServiceImpl implements VocabService {
     //Constructor without parameters is needed for Mockito Tests
     public VocabServiceImpl() {}
 
-    @Override
     @Transactional
-    public Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations) {
+    public Vocab createVocab(List<String> vocabs, List<Translation> translations) {
         // method not implmeneted and tested because it is not part of the game logic
         Vocab vocab = new Vocab(vocabs,translations );
         vocabDao.createVocab(vocab);

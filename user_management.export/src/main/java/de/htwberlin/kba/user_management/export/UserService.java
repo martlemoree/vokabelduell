@@ -9,10 +9,10 @@ import java.util.List;
 public interface UserService {
     /**
      * Shows the user a list of users without showing the user himself in the list.
-     * @param userName current user
+     * @param user current user
      * @return userList of all users except the current user
      */
-    List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException;
+    List<User> getUserListWOcurrentUser(User user) throws UserNotFoundException;
 
     /**
      * Gives back list of all registered users
@@ -22,10 +22,10 @@ public interface UserService {
 
     /**
      * Offers functionality for user to change password according to given standards
+     * @param userName id of User who wants to change password
      * @param password chosen password from the user
-     * @param user User who wants to change password
      */
-    void changePassword(String password, User user);
+    void changePassword(String userName, String password) throws UserNotFoundException;
 
     /**
      * creates new user with given user input
@@ -42,15 +42,5 @@ public interface UserService {
      */
     User getUserByUserName(String userName) throws UserNotFoundException;
 
-//    /**
-//     * find a user by his id
-//     * @param id given id of the user
-//     * @return the user with the given id
-//     */
-    // TODO kann gelöscht werden?
-//    User getUserById(Long id) throws UserNotFoundException;
-
-    // TODO Es muss eigentlich removeUserByName sein
-    @Transactional
     void removeUserName(String name) throws UserNotFoundException;
 }

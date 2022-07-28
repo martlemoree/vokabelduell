@@ -3,11 +3,14 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
+import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +38,8 @@ public class GameServiceTest {
     private RoundService mockRoundService;
     @Mock
     private QuestionService mockQuestionService;
+    @Mock
+    UserService userService;
     private User requester;
     private User receiver;
     private Game game;
@@ -48,6 +53,7 @@ public class GameServiceTest {
         this.requester = new User("MartinTheBrain", "lol123");
         this.receiver = new User("stellomello", "123lol");
         game = new Game( requester, receiver);
+        game.setGameId(1L);
         round = new Round(game);
 
         List<String> vocabStrings = Arrays.asList("Vocab");
@@ -64,8 +70,7 @@ public class GameServiceTest {
 
         questions= Arrays.asList(question);
     }
-    //TODO Überarbeiten
-/*
+
     @DisplayName("checks whether a Game is created correctly.")
     @Test
     public void testCreateGame() {
@@ -75,7 +80,7 @@ public class GameServiceTest {
         //2. Act
         //Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
         Request request = new Request(Status.PENDING, requester, receiver);
-        Game createdGame = gameService.createGame(request);
+        Game createdGame = gameService.createGame(request.getRequester(), request.getReceiver());
 
         //3. Assert
         Assert.assertNotNull(createdGame);
@@ -83,18 +88,21 @@ public class GameServiceTest {
         Assert.assertEquals(receiver, createdGame.getReceiver());
     }
 
- */
+
 
     @DisplayName("checks whether points are calculated correctly the first time points are added + for the correct user")
     @Test
-    public void testCalculatePointsOnce() throws CustomOptimisticLockExceptionGame {
+    public void testCalculatePointsOnce() throws UserNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         // 1. Arrange
 
         int newPoints = 500;
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
-        gameService.calculatePoints(game, requester, newPoints);
+
+        when(gameDao.getGameById(Mockito.anyLong())).thenReturn(game);
+        when(userService.getUserByUserName(Mockito.anyString())).thenReturn(requester);
+        gameService.calculatePoints(game.getGameId(), requester.getUserName(), newPoints);
 
         // 3. Assert
         Assert.assertEquals(newPoints, game.getPointsRequester());
@@ -102,15 +110,17 @@ public class GameServiceTest {
 
     @DisplayName("checks whether points are calculated correctly if added multiple times + for the correct user")
     @Test
-    public void testCalculatePointsMultipleTimes() throws CustomOptimisticLockExceptionGame {
+    public void testCalculatePointsMultipleTimes() throws UserNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         // 1. Arrange
         int newPoints = 500;
         int morePoints = 200;
 
         //2. Act
         //Mockito.doNothing().when(gameDao).updateGame(Mockito.any(Game.class));
-        gameService.calculatePoints(game, receiver, newPoints);
-        gameService.calculatePoints(game, receiver, morePoints);
+        when(gameDao.getGameById(Mockito.anyLong())).thenReturn(game);
+        when(userService.getUserByUserName(Mockito.anyString())).thenReturn(receiver);
+        gameService.calculatePoints(game.getGameId(), receiver.getUserName(), newPoints);
+        gameService.calculatePoints(game.getGameId(), receiver.getUserName(), morePoints);
         int sum = newPoints+morePoints;
 
         // 3. Assert
@@ -150,7 +160,8 @@ public class GameServiceTest {
         boolean bol = true;
 
         // 2. Act
-       // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
+        // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
+        when(userService.getUserByUserName(Mockito.anyString())).thenReturn(user);
         List<Game> gamesOfUser = gameService.getGamesFromCurrentUser(user.getUserName());
 
         for (Game g:gamesOfUser) {
@@ -167,7 +178,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether questions are returned when game has no rounds yet")
     @Test
-    public void testGiveQuestionsNoRoundsReturn() {
+    public void testGiveQuestionsNoRoundsReturn() throws CustomOptimisticLockExceptionGame {
         // 1. Arrange
         // s. setup
 
@@ -184,7 +195,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether questions are returned when game already has rounds and game has not been played by both players")
     @Test
-    public void testGiveQuestionsRoundsIsPlayedByTwoFalse() {
+    public void testGiveQuestionsRoundsIsPlayedByTwoFalse() throws CustomOptimisticLockExceptionGame {
         // 1. Arrange
         // s. setup
         List<Round> rounds = Arrays.asList(round);
@@ -201,7 +212,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether questions are returned when game already has rounds and game has already been played by both players")
     @Test
-    public void testGiveQuestionsRoundsIsPlayedByTwoTrue() {
+    public void testGiveQuestionsRoundsIsPlayedByTwoTrue() throws CustomOptimisticLockExceptionGame {
         // 1. Arrange
         // s. setup
 

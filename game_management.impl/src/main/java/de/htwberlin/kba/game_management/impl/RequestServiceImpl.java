@@ -1,11 +1,14 @@
 package de.htwberlin.kba.game_management.impl;
 
+import com.fasterxml.classmate.Annotations;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static de.htwberlin.kba.game_management.export.Status.*;
@@ -46,7 +49,23 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public List<Request> getPendingRequestsForCurrentUser(User user) {
 
-        return requestDao.getAllPendingRequests();
+        List<Request> requests = requestDao.getAllRequests();
+
+//        List<Request> deleteCandidates = new ArrayList<>();
+//
+//        // Alle Anfragen ausgeben, wo der currentUser der Receiver ist, die noch nicht bearbeitet wurden
+//
+//        for (Request request : requests) {
+//            if (request.getReceiver() != user || request.getRequestStatus() != PENDING) {
+//                deleteCandidates.add(request);
+//            }
+//        }
+//
+//        for (Request deleteCandidate : deleteCandidates) {
+//            requests.remove(deleteCandidate);
+//        }
+
+        return requests;
     }
 
     @Override

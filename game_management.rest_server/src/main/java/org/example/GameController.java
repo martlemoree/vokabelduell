@@ -56,13 +56,11 @@ public class GameController
         gameService.calculatePoints(gameId, userName, points);
     }
 
-    // TODO JsonMappingException irgendwas mit lazy // jetzt klappts irgendwie doch
     @GetMapping("/gamesOfUser/{name}")
     public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name) throws UserNotFoundException {
         return gameService.getGamesFromCurrentUser(name);
     }
 
-    //TODO testen
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
                                         @PathVariable String gameId) throws UserNotFoundException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {

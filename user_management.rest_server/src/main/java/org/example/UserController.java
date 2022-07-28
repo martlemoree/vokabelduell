@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping(value = "/all/{userName}")
     public List<User> getUserListWOcurrentUser(@PathVariable("userName") String userName) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
-        List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(userName);
+        List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(user);
         return userListWOcurrentUser;
     }
 
@@ -45,24 +45,21 @@ public class UserController {
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createUser(@RequestBody User user) throws URISyntaxException, UserAlreadyExistsException {
         User newUser = userService.createUser(user.getUserName(), user.getPassword());
-        URI uri = new URI("/user/" + newUser.getUserName());
+        URI uri = new URI("/user/" + newUser.getUserId());
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping(value = "edit/{userName}")
-    public ResponseEntity<?> changePassword(@PathVariable("userName") String userName, @RequestBody String password) throws UserNotFoundException {
+    @PutMapping(value = "edit/{userName}/{password}")
+    public ResponseEntity<?> changePassword(@PathVariable("userName") String userName, @PathVariable("password") String password) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
-        userService.changePassword(password, user);
+        userService.changePassword(userName, password);
         return user != null? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
-    // TODO Martin: in UserDAO einfügen, dass bevor der user gelöscht wird, alle seine spiele gelöscht werden über named query
-    @DeleteMapping(value = "/deleteId/{id}")
+    // Methode nicht weiter umgesetzt, da nicht wichtiger Bestandteil der Spielelogik
+    // in UserDAO einfügen, dass bevor der user gelöscht wird, alle seine spiele gelöscht werden über named query
+    @DeleteMapping(value = "/deleteId/{name}")
     public void removeUserName(@PathVariable("name") String name) throws UserNotFoundException {
         userService.removeUserName(name);
-
-        // TODO Den Rückgabewert brauchen wir nicht mehr, Kommentar löschen wenn Methode so ok
-//        boolean successful = userService.removeUserName(name);
-//        return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

@@ -41,7 +41,6 @@ public class GameServiceImpl implements GameService {
     }
 
     @Transactional
-    @Override
     public void calculatePoints(Game game, User user, int points) throws CustomOptimisticLockExceptionGame {
         if (user.equals(game.getReceiver ())) {
             int sum = game.getPointsReceiver()+points;

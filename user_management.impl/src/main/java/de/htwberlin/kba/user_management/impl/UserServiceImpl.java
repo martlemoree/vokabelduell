@@ -29,9 +29,8 @@ public class UserServiceImpl implements UserService {
 //    public UserServiceImpl(){}
 
     @Transactional
-    public List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException {
+    public List<User> getUserListWOcurrentUser(User user) throws UserNotFoundException {
         List<User>listWOuser = userDao.getAllUsers();
-        User user = userDao.getUserByName(userName);
         listWOuser.remove(user);
         return listWOuser;
     }
@@ -42,7 +41,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void changePassword(String password, User user) {
+    public void changePassword(String userName, String password) throws UserNotFoundException {
+
+        User user = getUserByUserName(userName);
         // method not implemented and tested because it is not part of the game logic
         user.setPassword(password);
     }

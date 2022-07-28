@@ -7,13 +7,12 @@ public interface VocabService {
 
     /**
      * a new German Vocabulary is created.
-     * @param vocabId is the unqiue identifier of a vocabulary
      * @param vocabs is a list with the vocabulary and its different synonyms.
      * @param translations is a list of the different translation of the vocabulary. A vocabulary can have different meanings so that
      *                     there are several translations for every different meaning.
      * @return a new vocabulary
      */
-    Vocab createVocab(Long vocabId, List<String> vocabs, List<Translation> translations);
+    Vocab createVocab(List<String> vocabs, List<Translation> translations);
 
     /**
      * change the items of a vocabulary

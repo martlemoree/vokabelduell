@@ -24,8 +24,6 @@ public class Round {
     @ManyToOne
     @JoinColumn(name = "vocablist_id", referencedColumnName = "vocablist_id")
     private VocabList vocablist;
-
-    // TODO: DAO ZWEI NEUE FELDER:
     private boolean playedByTwo;
 
     private String lastUserPlayedName;

@@ -41,13 +41,11 @@ public class RoundRestAdapter implements RoundService {
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Round.class).getBody();
     }
 
-    public void changeLastPlayer(Game game, User user){
+    public void changeLastPlayer(Long gameId, String userName){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        String gameId = String.valueOf(game.getGameId());
-        String userName = user.getUserName();
         final String URL = localhost + "changeLastPlayer/" + gameId + "/" + userName;
         String result = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, String.class).getBody();
     }

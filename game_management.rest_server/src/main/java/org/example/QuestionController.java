@@ -63,13 +63,11 @@ public class QuestionController {
         }
     }
 
-    // TODO hier gibt es probleme wenn die answer options leer sind
     @GetMapping(value = "/giveAnswerOptionsRandom/{questionId}")
     public List<String> giveAnswerOptionsRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
         return questionService.giveAnswerOptionsRandom(questionService.getQuestionById(questionId));
     }
 
-    // TODO hier gibt es probleme wenn die answer options leer sind
     @GetMapping(value = "/giveVocabStringRandom/{questionId}")
     public String giveVocabStringRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
         return questionService.giveVocabStringRandom(questionService.getQuestionById(questionId));

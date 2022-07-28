@@ -16,16 +16,6 @@ public interface GameService {
      */
     Game createGame(User requester, User receiver);
 
-    //TODO löschen und die andere Methode benutzen
-    /**
-     * method calculates points for given user and changes value accordingly
-     * @param game game which is to be changed
-     * @param user user for which points are calculated
-     * @param points number of points
-     */
-    void calculatePoints(Game game, User user, int points) throws CustomOptimisticLockExceptionGame;
-
-
     /**
      * method for restController
      * @param gameId id of the game which should be updated with new points

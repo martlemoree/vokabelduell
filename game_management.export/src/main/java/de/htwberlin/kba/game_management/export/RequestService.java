@@ -38,6 +38,6 @@ public interface RequestService {
      */
     Request getRequestById(Long Id) throws CustomObjectNotFoundException;
 
-    // TODO llöschen nur für testzwecke
+    // TODO löschen nur für testzwecke
     List<Request> getAllRequests();
 }

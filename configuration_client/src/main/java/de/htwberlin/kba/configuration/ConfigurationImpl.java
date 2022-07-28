@@ -18,6 +18,4 @@ public class ConfigurationImpl {
         controller.run();
     }
 
-
-
 }
