@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -13,43 +14,18 @@
   <artifactId>configuration_client</artifactId>
 
   <name>configuration_client</name>
+  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-      <version>5.3.12</version>
-    </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-web</artifactId>
-          <version>4.3.11.RELEASE</version>
-          <scope>compile</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-          <version>5.3.20</version>
-          <scope>compile</scope>
-      </dependency>
-
-      <dependency>
-          <groupId>org.springframework.data</groupId>
-          <artifactId>spring-data-commons</artifactId>
-          <version>2.6.1</version>
-          <scope>compile</scope>
-      </dependency>
-
-<!--    trying to user Adapters-->
-<!--    Game Client adapter-->
+    <!-- trying to user Adapters -->
+    <!-- Game Client adapter -->
     <dependency>
       <groupId>org.example</groupId>
       <artifactId>game_management.rest_client</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-<!--    Client adapter einfügen-->
+    <!-- Client adapter einfÃ¼gen -->
     <dependency>
       <groupId>org.example</groupId>
       <artifactId>user_management.rest_client</artifactId>
@@ -60,20 +36,36 @@
       <artifactId>vocab_management.rest_client</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-
     <dependency>
       <groupId>org.example</groupId>
       <artifactId>vokabelduell_ui.impl</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
-      <groupId>org.example</groupId>
-      <artifactId>vokabelduell_ui.export</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>5.3.12</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>4.3.11.RELEASE</version>
       <scope>compile</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.3.20</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
 </project>

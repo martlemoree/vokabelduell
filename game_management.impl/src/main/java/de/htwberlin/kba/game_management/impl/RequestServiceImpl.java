@@ -51,19 +51,23 @@ public class RequestServiceImpl implements RequestService {
 
         List<Request> requests = requestDao.getAllRequests();
 
-//        List<Request> deleteCandidates = new ArrayList<>();
-//
-//        // Alle Anfragen ausgeben, wo der currentUser der Receiver ist, die noch nicht bearbeitet wurden
-//
-//        for (Request request : requests) {
-//            if (request.getReceiver() != user || request.getRequestStatus() != PENDING) {
-//                deleteCandidates.add(request);
-//            }
-//        }
-//
-//        for (Request deleteCandidate : deleteCandidates) {
-//            requests.remove(deleteCandidate);
-//        }
+        List<Request> deleteCandidates = new ArrayList<>();
+
+        // Alle Anfragen ausgeben, wo der currentUser der Receiver ist, die noch nicht bearbeitet wurden
+        // Ich möchte alle Anfragen aus der Liste löschen, wo der current user NICHT der Receiver ist und der Status
+        // Ich möchte alle Anfragen aus der Liste löschen, wo der status nicht pending nicht
+
+        for (Request request : requests) {
+            if (!request.getReceiver().getUserName().equals(user.getUserName()) || request.getRequestStatus() != PENDING) { //
+                // Hier sage ich: der status ist nicht pending? -- löschen
+                // der receiver ist nicht der user? -- löschen
+                deleteCandidates.add(request);
+            }
+        }
+
+        for (Request deleteCandidate : deleteCandidates) {
+            requests.remove(deleteCandidate);
+        }
 
         return requests;
     }

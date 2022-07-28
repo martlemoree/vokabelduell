@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 @Component
 public class ConfigurationImpl {
 
-    private static ConfigurableApplicationContext context = new AnnotationConfigApplicationContext("de.htwberlin");
+    private static ConfigurableApplicationContext context = new AnnotationConfigApplicationContext("org.example", "de.htwberlin");
 
     public static void main(String[] args) throws FileNotFoundException, UserAlreadyExistsException {
         VokabellduellUi controller = context.getBean(VokabellduellUi.class);

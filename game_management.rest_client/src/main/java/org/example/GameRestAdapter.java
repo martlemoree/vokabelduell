@@ -1,29 +1,21 @@
 package org.example;
 
-import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Question;
-import de.htwberlin.kba.game_management.export.Request;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.client.RestTemplate;
-
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class GameRestAdapter implements GameService
@@ -38,10 +30,6 @@ public class GameRestAdapter implements GameService
                 .errorHandler(new RestTemplateResponseErrorHandler())
                 .build();
     }
-
-   /*
-    @GetMapping(value = "/all")
-    public List<Game> getGameList() {*/
 
 
     public Game createGame(User requester, User receiver){

@@ -1,6 +1,3 @@
-package de.htwberlin.kba.configuration;
-
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -33,8 +30,8 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
                 .series() == HttpStatus.Series.CLIENT_ERROR) {
             throw new CustomServerError("Client Error: "+clientHttpResponse.getBody());
         } else if (clientHttpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new CustomServerError("Unknown Error: "+clientHttpResponse.getBody());
-            }
+            throw new CustomServerError("Unknown Error: "+clientHttpResponse.getBody());
+        }
 
     }
 }
