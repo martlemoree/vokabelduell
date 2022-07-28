@@ -35,6 +35,12 @@ public interface GameService {
     void calculatePoints(Long gameId, String userName, int points) throws UserNotFoundException, CustomOptimisticLockExceptionGame, CustomObjectNotFoundException;
 
 
+    /**
+     * java doc test
+     * @param userName
+     * @return
+     * @throws UserNotFoundException
+     */
     List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
 
     /**
