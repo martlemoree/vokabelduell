@@ -34,10 +34,10 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public Game createGame(User requester, User receiver) {
+    public Long createGame(User requester, User receiver) {
         Game game =  new Game (requester, receiver);
         this.gameDao.createGame(game);
-        return game;
+        return game.getGameId();
     }
 
     @Transactional

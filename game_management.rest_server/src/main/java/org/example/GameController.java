@@ -8,6 +8,7 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,23 +34,29 @@ public class GameController
         this.roundService = roundService;
     }
 
-    /* MIT DIESER METHODE WERDEN DIE USER DOPPELT ANGELEGT
-    @PostMapping(value = "/create")
-    public ResponseEntity<Void> createGame(@RequestBody Request request) throws URISyntaxException, URISyntaxException {
-        Game newGame = gameService.createGame(request);
-        URI uri = new URI("/game/" + newGame.getGameId());
-        return ResponseEntity.created(uri).build();
-    } */
+//    @PostMapping(value = "/create/{reqName}/{recName}")
+//    public Game createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
+//
+//        User requester = userService.getUserByUserName(reqName);
+//        User receiver = userService.getUserByUserName(recName);
+//        Game newGame = gameService.createGame(requester, receiver);
+////        URI uri = new URI("/game/" + newGame.getGameId());
+////        return ResponseEntity.created(uri).build();
+//        return gameService.createGame(requester, receiver);
+//    }
 
     @PostMapping(value = "/create/{reqName}/{recName}")
-    public Game createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
+    public ResponseEntity<Long> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
 
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
-        Game newGame = gameService.createGame(requester, receiver);
+        Long gameId = gameService.createGame(requester, receiver);
 //        URI uri = new URI("/game/" + newGame.getGameId());
 //        return ResponseEntity.created(uri).build();
-        return gameService.createGame(requester, receiver);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("token", "tokenValue");
+
+        return ResponseEntity.ok().headers(headers).body(gameId);
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")

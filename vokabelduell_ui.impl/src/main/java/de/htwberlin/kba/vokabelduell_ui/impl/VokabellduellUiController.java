@@ -122,7 +122,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         if (status == Status.ACCEPTED) {
             view.printMessage("Super! Das Spiel kann losgehen.");
             // new game is created starts immediately
-            Game game = gameService.createGame(request.getRequester(), request.getReceiver());
+            Long gameId = gameService.createGame(request.getRequester(), request.getReceiver());
 
             for (int i = 0; i < 2; i++) {
                 VocabList vocabList = null;
@@ -134,14 +134,16 @@ public class VokabellduellUiController implements VokabellduellUi {
                 List<Question> questions = null;
                 do {
                     try {
-                        questions = gameService.giveQuestions(game, request.getReceiver(), vocabList);
+                        questions = gameService.giveQuestions(gameService.getGamebyId(gameId), request.getReceiver(), vocabList);
                     } catch (CustomOptimisticLockExceptionGame e) {
                         questionsChangedError=true;
+                    } catch (CustomObjectNotFoundException e) {
+                        throw new RuntimeException(e);
                     }
                 } while (questionsChangedError);
                 for (int j = 0; j < 4; j++) {
                     // View Aufruf hier:
-                    askQuestions(game, request.getReceiver(), questions, j);
+                    askQuestions(gameId, request.getReceiver(), questions, j);
                 }
             }
         } else if (status == Status.REJECTED) {
@@ -185,7 +187,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         return randomVocabList;
     }
 
-    public void askQuestions(Game game, User currentUser, List<Question> questions, int i) {
+    public void askQuestions(Long gameId, User currentUser, List<Question> questions, int i) {
 
         List<String> answerOptions = questionService.giveAnswerOptionsRandom(questions.get(i));
         String vocabString = questionService.giveVocabStringRandom(questions.get(i));
@@ -212,7 +214,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         boolean saved = false;
         do {
             try {
-                gameService.calculatePoints(game.getGameId(), userName, points);
+                gameService.calculatePoints(gameId, userName, points);
             } catch (CustomOptimisticLockExceptionGame e) {
                 saved=true;
             } catch (UserNotFoundException e) {

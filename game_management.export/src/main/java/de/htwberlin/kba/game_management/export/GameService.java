@@ -11,9 +11,9 @@ public interface GameService {
      * create an object of this class
      * @param requester the user who sent the request
      * @param receiver the user who accepted the request
-     * @return created Game
+     * @return id of created Game
      */
-    Game createGame(User requester, User receiver);
+    Long createGame(User requester, User receiver);
 
     /**
      * method for restController
@@ -38,7 +38,7 @@ public interface GameService {
      * returns questions for current game for two cases:
      * old round has to be finished
      * new round has to be created
-     * @param game game thats being played
+     * @param gameId id of game thats being played
      * @param currentUser user who plays
      * @param vocabList chosen vocabList by player or opponent
      * @return correct list of questions for the round

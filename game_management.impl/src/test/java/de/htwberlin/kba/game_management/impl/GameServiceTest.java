@@ -73,19 +73,19 @@ public class GameServiceTest {
 
     @DisplayName("checks whether a Game is created correctly.")
     @Test
-    public void testCreateGame() {
+    public void testCreateGame() throws CustomObjectNotFoundException {
         //1. Arrange
         //s. Set Up
 
         //2. Act
         //Mockito.doNothing().when(gameDao).createGame(Mockito.any(Game.class));
         Request request = new Request(Status.PENDING, requester, receiver);
-        Game createdGame = gameService.createGame(request.getRequester(), request.getReceiver());
+        Long createdGameId = gameService.createGame(request.getRequester(), request.getReceiver());
 
         //3. Assert
-        Assert.assertNotNull(createdGame);
-        Assert.assertEquals(requester, createdGame.getRequester());
-        Assert.assertEquals(receiver, createdGame.getReceiver());
+        Assert.assertNotNull(createdGameId);
+        Assert.assertEquals(requester, gameService.getGamebyId(createdGameId).getRequester());
+        Assert.assertEquals(receiver, gameService.getGamebyId(createdGameId).getReceiver());
     }
 
 
