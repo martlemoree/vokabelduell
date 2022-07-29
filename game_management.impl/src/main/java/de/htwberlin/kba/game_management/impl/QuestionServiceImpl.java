@@ -104,50 +104,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
     @Override
-    public List<String> giveAnswerOptionsRandom(Question question) {
-        Random rand = new Random();
-        List<String> answerOptions = new ArrayList<>();
+    public boolean answeredQuestion(String answer, Long questionId) throws CustomObjectNotFoundException {
 
-        // create translations list to extract answer options randomly
-        List<Translation> translations = getAllAnswers(question);
-
-        // get Random Translation (if various possibilities)
-        int index1 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings1 = translations.get(index1).getTranslations();
-
-        // get Random Translation String (if various possibilities)
-        int translationStringsindex1 = rand.nextInt(translationStrings1.size());
-
-        // add to answerOptionsList of Strings and remove entry from translations list
-        answerOptions.add(translationStrings1.get(translationStringsindex1));
-        translations.remove(index1);
-
-        // das ganze 4 Mal, noch keine einfache Lösung gefunden das auszugliedern
-        int index2 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings2 = translations.get(index2).getTranslations();
-        int translationStringsindex2 = rand.nextInt(translationStrings2.size());
-
-        answerOptions.add(translationStrings2.get(translationStringsindex2));
-        translations.remove(index2);
-
-        int index3 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings3 = translations.get(index3).getTranslations();
-        int translationStringsindex3 = rand.nextInt(translationStrings3.size());
-        answerOptions.add(translationStrings3.get(translationStringsindex3));
-        translations.remove(index3);
-
-        List<String> translationStrings4 = translations.get(0).getTranslations();
-        int translationStringsindex4 = rand.nextInt(translationStrings4.size());
-
-        answerOptions.add(translationStrings4.get(translationStringsindex4));
-        translations.remove(0);
-
-        return answerOptions;
-    }
-
-    // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
-    @Override
-    public boolean answeredQuestion(String answer, Question question) {
+        Question question = getQuestionById(questionId);
 
         Translation rightAnswer = question.getRightAnswer();
         List<String> translations = rightAnswer.getTranslations();
@@ -161,15 +120,7 @@ public class QuestionServiceImpl implements QuestionService {
         return false;
     }
 
-    // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
-    @Override
-    public String giveVocabStringRandom(Question question) {
-        Vocab vocab = question.getVocab();
-        Random rand = new Random();
 
-        int index = rand.nextInt(vocab.getVocabs().size()-1);
-        return vocab.getVocabs().get(index);
-    }
 
     @Transactional
     @Override

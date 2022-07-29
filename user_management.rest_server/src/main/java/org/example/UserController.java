@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping(value = "/all/{userName}")
     public List<User> getUserListWOcurrentUser(@PathVariable("userName") String userName) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
-        List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(user);
+        List<User> userListWOcurrentUser = userService.getUserListWOcurrentUser(userName);
         return userListWOcurrentUser;
     }
 

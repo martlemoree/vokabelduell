@@ -64,33 +64,15 @@ public class QuestionRestAdapter implements QuestionService {
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, List.class).getBody();
     }
 
-    public List<String> giveAnswerOptionsRandom(Question question){
+
+
+    public boolean answeredQuestion(String answer, Long questionId){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "giveAnswerOptionsRandom" + "/" + question.getQuestionId();
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<String>>() {}).getBody();
-
-
-    }
-
-    public boolean answeredQuestion(String answer, Question question){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
-
-        final String URL = localhost + "answeredQuestion" + "/" + answer +  "/"  + question.getQuestionId();
+        final String URL = localhost + "answeredQuestion" + "/" + answer +  "/"  + questionId;
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,boolean.class).getBody();
-    }
-
-    public String giveVocabStringRandom(Question question){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
-
-        final String URL = localhost + "giveVocabStringRandom" + "/" + question.getQuestionId();
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,String.class).getBody();
     }
 
 

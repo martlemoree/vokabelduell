@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -48,32 +49,6 @@ public class GameRestAdapter implements GameService
         return gameId;
     }
 
-//    public Long createGame(User requester, User receiver){
-//        String reqName = requester.getUserName();
-//        String recName = receiver.getUserName();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
-//
-//
-//        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-////Add the Jackson Message converter
-//        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//
-//// Note: here we are making this converter to process any kind of response,
-//// not only application/*json, which is the default behaviour
-//        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
-//        messageConverters.add(converter);
-//        restTemplate.setMessageConverters(messageConverters);
-//
-//
-//
-//        final String URL = localhost + "create/" + reqName + "/" + recName;
-//        Game game = restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Game.class).getBody();
-//        return game.getGameId();
-//    }
-
     public void calculatePoints(Game game, User user, int points){
        String gameId = String.valueOf(game.getGameId());
        String userName = user.getUserName();
@@ -100,20 +75,70 @@ public class GameRestAdapter implements GameService
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
-    public List<Question> giveQuestions(Long gameId, User currentUser, VocabList vocabList){
-        String userName = currentUser.getUserName();
-        String vocablistId = null;
-        if (vocabList != null) {
-            vocablistId = String.valueOf(vocabList.getVocabListId());
+    public List<List<String>> giveQuestions(Long gameId, String userName, Long vocablistId) {
+        // Wo wird der vocabList-Parameter befüllt bei einer laufenden Runde?
 
-        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<String> requestEntity = new HttpEntity<>("parameters",headers);
 
+        final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
+
+
+        ResponseEntity<Long> result = restTemplate.exchange(URL, HttpMethod.GET, requestEntity, Long.class);
+
+
+        List<String> question1 = new ArrayList<>();
+        question1.add(result.getHeaders().get("question1").toString());
+        question1.add(result.getHeaders().get("question1answer1").toString());
+        question1.add(result.getHeaders().get("question1answer2").toString());
+        question1.add(result.getHeaders().get("question1answer3").toString());
+        question1.add(result.getHeaders().get("question1answer4").toString());
+        question1.add(result.getHeaders().get("questionId1").toString());
+
+        List<String> question2 = new ArrayList<>();
+        question2.add(result.getHeaders().get("question2").toString());
+        question2.add(result.getHeaders().get("question2answer1").toString());
+        question2.add(result.getHeaders().get("question2answer2").toString());
+        question2.add(result.getHeaders().get("question2answer3").toString());
+        question2.add(result.getHeaders().get("question2answer4").toString());
+        question1.add(result.getHeaders().get("questionId2").toString());
+
+        List<String> question3 = new ArrayList<>();
+        question3.add(result.getHeaders().get("question3").toString());
+        question3.add(result.getHeaders().get("question3answer1").toString());
+        question3.add(result.getHeaders().get("question3answer2").toString());
+        question3.add(result.getHeaders().get("question3answer3").toString());
+        question3.add(result.getHeaders().get("question3answer4").toString());
+        question1.add(result.getHeaders().get("questionId3").toString());
+
+
+        List<List<String>> questions = new ArrayList<>();
+        questions.add(question1);
+        questions.add(question2);
+        questions.add(question3);
+
+        return questions;
+    }
+
+    public String giveVocabStringRandom(Long questionId){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
+        final String URL = localhost + "giveVocabStringRandom" + "/" + questionId;
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,String.class).getBody();
+    }
+
+    public List<String> giveAnswerOptionsRandom(Long questionId){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
+        final String URL = localhost + "giveAnswerOptionsRandom" + "/" + questionId;
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<String>>() {}).getBody();
+
+
     }
     @Override
     public Game getGamebyId(Long gameId) {

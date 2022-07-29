@@ -33,29 +33,15 @@ public interface QuestionService {
      */
     List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomOptimisticLockExceptionGame;
 
-    /**
-     * the answer options for a question should not always be given in the same order
-     * e.g. the correct answer is always the first given answer
-     * therefore the answer options should be given randomly
-     * @param question the question which should be asked
-     * @return a string list with the answer options
-     */
-    List<String> giveAnswerOptionsRandom(Question question);
+
 
     /**
      * checks if the given answer from the user is consistent with one of the translations of the right answer
      * @param answer given answer from the user
-     * @param question object that should be addressed
+     * @param questionId object that should be addressed
      * @return true if given answer is consistent with rightAnswer, false if not
      */
-    boolean answeredQuestion(String answer, Question question);
-
-    /**
-     * holds logic to give a random entry from the list of strings of the given vocab
-     * @param question object that should be addressed
-     * @return random string entry from list of strings of vocab
-     */
-    String giveVocabStringRandom(Question question);
+    boolean answeredQuestion(String answer, Long QuestionId) throws CustomObjectNotFoundException;
 
     // TODO später löschen, nur zum testen
     List<Question> getAllQuestions();

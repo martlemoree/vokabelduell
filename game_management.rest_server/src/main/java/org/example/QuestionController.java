@@ -63,20 +63,10 @@ public class QuestionController {
         }
     }
 
-    @GetMapping(value = "/giveAnswerOptionsRandom/{questionId}")
-    public List<String> giveAnswerOptionsRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
-        return questionService.giveAnswerOptionsRandom(questionService.getQuestionById(questionId));
-    }
-
-    @GetMapping(value = "/giveVocabStringRandom/{questionId}")
-    public String giveVocabStringRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
-        return questionService.giveVocabStringRandom(questionService.getQuestionById(questionId));
-    }
-
 
     @GetMapping(value = "/answeredQuestion/{answer}/{questionId}")
     public boolean answeredQuestion(@PathVariable("questionId") Long questionId, @PathVariable("answer") String answer) throws CustomObjectNotFoundException {
-        return questionService.answeredQuestion(answer, questionService.getQuestionById(questionId));
+        return questionService.answeredQuestion(answer, questionId);
     }
 }
 

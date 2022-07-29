@@ -47,7 +47,7 @@ public class UserServiceTest {
 
         // 2. Act
         Mockito.when(userDao.getAllUsers()).thenReturn(this.users);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1.getUserName());
 
         // 3. Assert
         assertNotNull(usersWithoutCurrentUser);
@@ -64,7 +64,7 @@ public class UserServiceTest {
         // 2. Act
         Mockito.when(userDao.getAllUsers()).thenReturn(users);
         Mockito.when(userDao.getUserByName(Mockito.anyString())).thenReturn(u1);
-        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
+        List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1.getUserName());
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (u1.getUserName().equals(usersWithoutCurrentUser.get(i).getUserName())) {

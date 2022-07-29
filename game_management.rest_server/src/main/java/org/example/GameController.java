@@ -34,25 +34,12 @@ public class GameController
         this.roundService = roundService;
     }
 
-//    @PostMapping(value = "/create/{reqName}/{recName}")
-//    public Game createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
-//
-//        User requester = userService.getUserByUserName(reqName);
-//        User receiver = userService.getUserByUserName(recName);
-//        Game newGame = gameService.createGame(requester, receiver);
-////        URI uri = new URI("/game/" + newGame.getGameId());
-////        return ResponseEntity.created(uri).build();
-//        return gameService.createGame(requester, receiver);
-//    }
-
     @PostMapping(value = "/create/{reqName}/{recName}")
     public ResponseEntity<Long> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
 
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
         Long gameId = gameService.createGame(requester, receiver);
-//        URI uri = new URI("/game/" + newGame.getGameId());
-//        return ResponseEntity.created(uri).build();
         HttpHeaders headers = new HttpHeaders();
         headers.add("token", "tokenValue");
 
@@ -70,13 +57,53 @@ public class GameController
     }
 
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
-    public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @PathVariable String gameId) throws UserNotFoundException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
-//        Game game = gameService.getGamebyId(Long.valueOf(gameId));
+    public ResponseEntity<Long> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
+                                        @PathVariable Long gameId) throws UserNotFoundException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
+
+        HttpHeaders headers = new HttpHeaders();
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);
+        List<List<String>> questions = gameService.giveQuestions(Long.valueOf(gameId), userName, vocablistId);
 
-        return gameService.giveQuestions(Long.valueOf(gameId), user, vlist);
+        List<String> questions1 = questions.get(0);
+        List<String> questions2 = questions.get(1);
+        List<String> questions3 = questions.get(2);
+
+        headers.add("question1", questions1.get(0));
+        headers.add("question1answer1", questions1.get(1));
+        headers.add("question1answer2", questions1.get(2));
+        headers.add("question1answer3", questions1.get(3));
+        headers.add("question1answer4", questions1.get(4));
+        headers.add("questionId1", questions1.get(5));
+
+        headers.add("question2", questions1.get(0));
+        headers.add("question2answer1", questions1.get(1));
+        headers.add("question2answer2", questions1.get(2));
+        headers.add("question2answer3", questions1.get(3));
+        headers.add("question2answer4", questions1.get(4));
+        headers.add("questionId2", questions1.get(5));
+
+        headers.add("question3",questions1.get(0));
+        headers.add("question3answer1", questions1.get(1));
+        headers.add("question3answer2", questions1.get(2));
+        headers.add("question3answer3", questions1.get(3));
+        headers.add("question3answer4", questions1.get(4));
+        headers.add("questionId3", questions1.get(5));
+
+
+        return ResponseEntity.ok().headers(headers).body(gameId);
+    }
+
+    @GetMapping(value = "/giveAnswerOptionsRandom/{questionId}")
+    public List<String> giveAnswerOptionsRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
+        return gameService.giveAnswerOptionsRandom(questionId);
+    }
+
+
+
+    @GetMapping(value = "/giveVocabStringRandom/{questionId}")
+    public String giveVocabStringRandom(@PathVariable("questionId") Long questionId) throws CustomObjectNotFoundException {
+        return gameService.giveVocabStringRandom(questionId);
     }
 
     @GetMapping(value = "/all")

@@ -162,46 +162,6 @@ public class QuestionServiceTest {
         Assert.assertEquals(vocab, question.getVocab());
     }
 
-    // List<String> giveAnswerOptionsRandom(Question question);
-    @Test
-    @DisplayName("method gives back List of string")
-    public void testGiveAnswerOptionsRandomReturn(){
-        // 1. Arrange
-        // s. setup
-
-        // 2. Act
-        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        Question question = questionService.createQuestion(round, vocabList);
-
-
-        Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
-
-        List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
-
-        // 3. Assert
-        Assert.assertNotNull(answerOptions);
-    }
-
-    @Test
-    @DisplayName("method gives back correct List of string")
-    public void testGiveAnswerOptionsRandomReturnCorrect(){
-        // 1. Arrange
-        // s. setup
-        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
-        Question question = questionService.createQuestion(round, vocabList);
-
-
-        // 2. Act
-        Mockito.when(questionService.getAllAnswers(question)).thenReturn(translations);
-        List<String> answerOptions = questionService.giveAnswerOptionsRandom(question);
-
-        // 3. Assert
-        Assert.assertTrue(answerOptions.contains("Translation"));
-        Assert.assertTrue(answerOptions.contains("Translation2"));
-        Assert.assertTrue(answerOptions.contains("Translation3"));
-        Assert.assertTrue(answerOptions.contains("Translation4"));
-    }
-
     // boolean answeredQuestion(String answer, Translation rightAnswer);
     @Test
     @DisplayName("question was answered wrong")
@@ -271,41 +231,4 @@ public class QuestionServiceTest {
         Assert.assertEquals(4, answerOptions.size());
         Assert.assertTrue(translationInAnswerOption);
     }
-
-    @Test
-    @DisplayName("the method should return a string that is not empty")
-    public void testGiveVocabStringRandomNotNull(){
-        //1. Arrange
-
-        /*
-        Candidates for new Question() are:   Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab)
-         */
-        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
-        List<Question> questions = new ArrayList<>();
-        questions.add(question);
-        String randomString = questionService.giveVocabStringRandom(question);
-
-        //2. Act & 3. Assert
-        Assert.assertNotNull(randomString);
-    }
-
-    @Test
-    @DisplayName("the method should return a reasonable string")
-    public void testGiveVocabStringRandom(){
-        //1. Arrange
-
-        /*
-        Candidates for new Question() are:   Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab)
-         */
-        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
-        List<Question> questions = new ArrayList<>();
-        questions.add(question);
-        String randomString = questionService.giveVocabStringRandom(question);
-
-        //2. Act & 3. Assert
-        Assert.assertTrue(randomString.equals(vocab.getVocabs().get(0)) || randomString.equals(vocab.getVocabs().get(1)));
-    }
-
-
-
 }

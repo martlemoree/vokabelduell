@@ -29,7 +29,8 @@ public class UserServiceImpl implements UserService {
 //    public UserServiceImpl(){}
 
     @Transactional
-    public List<User> getUserListWOcurrentUser(User user) throws UserNotFoundException {
+    public List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException {
+        User user = getUserByUserName(userName);
         List<User>listWOuser = userDao.getAllUsers();
         listWOuser.remove(user);
         return listWOuser;

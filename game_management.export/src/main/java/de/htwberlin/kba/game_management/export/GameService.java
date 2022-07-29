@@ -3,6 +3,8 @@ package de.htwberlin.kba.game_management.export;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
+
 import java.util.List;
 
 public interface GameService {
@@ -39,12 +41,17 @@ public interface GameService {
      * old round has to be finished
      * new round has to be created
      * @param gameId id of game thats being played
-     * @param currentUser user who plays
-     * @param vocabList chosen vocabList by player or opponent
-     * @return correct list of questions for the round
+     * @param userName user who plays
+     * @param vocabListId chosen vocabList by player or opponent
+     * @return List with the questions.
+     *          each list element (=question) contains one question to be ask.
+     *          The Strings in the list are in a specific order
+     *          first comes the vocab which forms the question
+     *          then the four answer possibilies
+     *          last the question id to be able to see which answer option was corret
      * @throws CustomOptimisticLockExceptionGame - is thrown in case of two users are working on the same object. The second user has to reload the object
      */
-    List<Question> giveQuestions(Long gameId, User currentUser, VocabList vocabList) throws CustomOptimisticLockExceptionGame;
+    List<List<String>> giveQuestions(Long gameId, String userName, Long vocabListId) throws CustomOptimisticLockExceptionGame, CustomObjectNotFoundException, VocabListObjectNotFoundException;
 
     /**
      * get a game object by the given gameId
@@ -54,7 +61,23 @@ public interface GameService {
      */
     Game getGamebyId(Long gameId) throws CustomObjectNotFoundException;
 
+    /**
+     * the answer options for a question should not always be given in the same order
+     * e.g. the correct answer is always the first given answer
+     * therefore the answer options should be given randomly
+     * @param questionId from questions the question which should be asked
+     * @return a string list with the answer options
+     */
+    List<String> giveAnswerOptionsRandom(Long questionId) throws CustomObjectNotFoundException;
+
 //TODO löschen, nur für testzwecke
     List<Game> getALlGames();
+
+    /**
+     * holds logic to give a random entry from the list of strings of the given vocab
+     * @param questionId from questions that should be addressed
+     * @return random string entry from list of strings of vocab
+     */
+    String giveVocabStringRandom(Long questionId) throws CustomObjectNotFoundException;
 
 }

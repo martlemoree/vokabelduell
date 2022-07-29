@@ -9,11 +9,11 @@ import java.util.List;
 public interface UserService {
     /**
      * Shows the user a list of users without showing the user himself in the list.
-     * @param user current user
+     * @param userName current user
      * @return userList of all users except the current user
      * @throws UserNotFoundException is thrown when the user cannot be found
      */
-    List<User> getUserListWOcurrentUser(User user) throws UserNotFoundException;
+    List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException;
 
     /**
      * Gives back list of all registered users

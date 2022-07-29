@@ -30,9 +30,9 @@ public class UserRestAdapter implements UserService {
 
 
     @Override
-    public List<User> getUserListWOcurrentUser(User user) throws UserNotFoundException {
-        final String URL = localhostUser + "all/" + user.getUserName();
-        HttpEntity<String> httpEntity = new HttpEntity<>(user.getUserName());
+    public List<User> getUserListWOcurrentUser(String userName) throws UserNotFoundException {
+        final String URL = localhostUser + "all/" + userName;
+        HttpEntity<String> httpEntity = new HttpEntity<>(userName);
         return restTemplate.exchange(URL, HttpMethod.GET, httpEntity, List.class).getBody();
     }
 

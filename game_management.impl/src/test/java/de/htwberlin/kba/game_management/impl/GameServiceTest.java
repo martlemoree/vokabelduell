@@ -4,10 +4,7 @@ import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
-import de.htwberlin.kba.vocab_management.export.Translation;
-import de.htwberlin.kba.vocab_management.export.Vocab;
-import de.htwberlin.kba.vocab_management.export.VocabList;
-import de.htwberlin.kba.vocab_management.export.VocabListService;
+import de.htwberlin.kba.vocab_management.export.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
@@ -33,6 +30,8 @@ public class GameServiceTest {
     @InjectMocks
     private GameServiceImpl gameService;
     @Mock
+    private VocabListService mockVocabListService;
+    @Mock
     private GameDaoImpl gameDao;
     @Mock
     private RoundService mockRoundService;
@@ -46,6 +45,13 @@ public class GameServiceTest {
     private Round round;
     List<Question> questions;
     VocabList vocabList = new VocabList();
+    private List<Translation> translations = new ArrayList<>();
+    Translation translation;
+    Translation translation2;
+    Translation translation3;
+    Translation translation4;
+    private List<VocabList> vocabLists = new ArrayList<>();
+    private Vocab vocab;
 
     @Before
     public void setUp() {
@@ -69,6 +75,41 @@ public class GameServiceTest {
         Question question = new Question(round, translation, translation, translation, translation, vocab);
 
         questions= Arrays.asList(question);
+
+
+        vocabStrings.add("Vocab");
+        vocabStrings.add("Vocab2");
+        translationString = "Translation";
+        translation = new Translation(translationStrings);
+        translations.add(translation);
+
+        List<String> translationStrings2 = Arrays.asList("Translation2");
+        translation2 = new Translation(translationStrings2);
+        List<String> translationStrings3 = Arrays.asList("Translation3");
+        translation3 = new Translation(translationStrings3);
+        List<String> translationStrings4 = Arrays.asList("Translation4");
+        translation4 = new Translation(translationStrings4);
+
+        translations.add(translation2);
+        translations.add(translation3);
+        translations.add(translation4);
+
+        vocab = new Vocab(vocabStrings, translations);
+        vocabs = new ArrayList<>();
+        vocabs.add(vocab);
+
+        translation.setVocabs(vocabs);
+        vocabList = new VocabList("Category", "Name","Language", vocabs);
+
+        vocabLists.add(vocabList);
+
+        List<Round> rounds = new ArrayList<>();
+        rounds.add(round);
+        game.setRounds(rounds);
+
+        question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        questions = new ArrayList<>();
+        questions.add(question);
     }
 
     @DisplayName("checks whether a Game is created correctly.")
@@ -179,7 +220,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether questions are returned when game has no rounds yet")
     @Test
-    public void testGiveQuestionsNoRoundsReturn() throws CustomOptimisticLockExceptionGame {
+    public void testGiveQuestionsNoRoundsReturn() throws CustomOptimisticLockExceptionGame, CustomObjectNotFoundException, VocabListObjectNotFoundException {
         // 1. Arrange
         // s. setup
 
@@ -187,7 +228,8 @@ public class GameServiceTest {
         when(mockRoundService.startNewRound(Mockito.any(Game.class))).thenReturn(round);
         when(mockQuestionService.createQuestions(game, vocabList, round)).thenReturn(questions);
 
-        List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
+
+        List<List<String>> givenQuestions = gameService.giveQuestions(game.getGameId(), receiver.getUserName(), vocabList.getVocabListId());
 
         // 3. Assert
         Assert.assertNotNull(givenQuestions);
@@ -196,7 +238,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether questions are returned when game already has rounds and game has not been played by both players")
     @Test
-    public void testGiveQuestionsRoundsIsPlayedByTwoFalse() throws CustomOptimisticLockExceptionGame {
+    public void testGiveQuestionsRoundsIsPlayedByTwoFalse() throws CustomOptimisticLockExceptionGame, CustomObjectNotFoundException, VocabListObjectNotFoundException {
         // 1. Arrange
         // s. setup
         List<Round> rounds = Arrays.asList(round);
@@ -204,7 +246,7 @@ public class GameServiceTest {
         game.setRounds(rounds);
 
         //2. Act
-        List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
+        List<List<String>> givenQuestions = gameService.giveQuestions(game.getGameId(), receiver.getUserName(), vocabList.getVocabListId());
 
         // 3. Assert
         Assert.assertTrue(round.getisPlayedByTwo());
@@ -213,7 +255,7 @@ public class GameServiceTest {
 
     @DisplayName("checks whether questions are returned when game already has rounds and game has already been played by both players")
     @Test
-    public void testGiveQuestionsRoundsIsPlayedByTwoTrue() throws CustomOptimisticLockExceptionGame {
+    public void testGiveQuestionsRoundsIsPlayedByTwoTrue() throws CustomOptimisticLockExceptionGame, CustomObjectNotFoundException, VocabListObjectNotFoundException {
         // 1. Arrange
         // s. setup
 
@@ -221,10 +263,84 @@ public class GameServiceTest {
         when(mockRoundService.startNewRound(Mockito.any(Game.class))).thenReturn(round);
         when(mockQuestionService.createQuestions(game, vocabList, round)).thenReturn(questions);
 
-        List<Question> givenQuestions = gameService.giveQuestions(game, receiver, vocabList);
+        List<List<String>> givenQuestions = gameService.giveQuestions(game.getGameId(), receiver.getUserName(), vocabList.getVocabListId());
 
         // 3. Assert
         Assert.assertFalse(round.getisPlayedByTwo());
         Assert.assertNotNull(givenQuestions);
+    }
+
+    @Test
+    @DisplayName("the method should return a string that is not empty")
+    public void testGiveVocabStringRandomNotNull() throws CustomObjectNotFoundException {
+        //1. Arrange
+
+        /*
+        Candidates for new Question() are:   Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab)
+         */
+        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
+        String randomString = gameService.giveVocabStringRandom(question.getQuestionId());
+
+        //2. Act & 3. Assert
+        Assert.assertNotNull(randomString);
+    }
+
+    @Test
+    @DisplayName("the method should return a reasonable string")
+    public void testGiveVocabStringRandom() throws CustomObjectNotFoundException {
+        //1. Arrange
+
+        /*
+        Candidates for new Question() are:   Question(Round round, Translation wrongA, Translation wrongB, Translation wrongC, Translation rightAnswer, Vocab vocab)
+         */
+        Question question = new Question(round, translation, translation2, translation3, translation4, vocab);
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
+        String randomString = gameService.giveVocabStringRandom(question.getQuestionId());
+
+        //2. Act & 3. Assert
+        Assert.assertTrue(randomString.equals(vocab.getVocabs().get(0)) || randomString.equals(vocab.getVocabs().get(1)));
+    }
+
+    // List<String> giveAnswerOptionsRandom(Question question);
+    @Test
+    @DisplayName("method gives back List of string")
+    public void testGiveAnswerOptionsRandomReturn() throws CustomObjectNotFoundException {
+        // 1. Arrange
+        // s. setup
+
+        // 2. Act
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
+        Question question = mockQuestionService.createQuestion(round, vocabList);
+
+
+        Mockito.when(mockQuestionService.getAllAnswers(question)).thenReturn(translations);
+
+        List<String> answerOptions = gameService.giveAnswerOptionsRandom(question.getQuestionId());
+
+        // 3. Assert
+        Assert.assertNotNull(answerOptions);
+    }
+
+    @Test
+    @DisplayName("method gives back correct List of string")
+    public void testGiveAnswerOptionsRandomReturnCorrect() throws CustomObjectNotFoundException {
+        // 1. Arrange
+        // s. setup
+        Mockito.when(mockVocabListService.getVocabLists()).thenReturn(vocabLists);
+        Question question = mockQuestionService.createQuestion(round, vocabList);
+
+
+        // 2. Act
+        Mockito.when(mockQuestionService.getAllAnswers(question)).thenReturn(translations);
+        List<String> answerOptions = gameService.giveAnswerOptionsRandom(question.getQuestionId());
+
+        // 3. Assert
+        Assert.assertTrue(answerOptions.contains("Translation"));
+        Assert.assertTrue(answerOptions.contains("Translation2"));
+        Assert.assertTrue(answerOptions.contains("Translation3"));
+        Assert.assertTrue(answerOptions.contains("Translation4"));
     }
 }
