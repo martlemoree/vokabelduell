@@ -42,13 +42,14 @@ public class GameController
     } */
 
     @PostMapping(value = "/create/{reqName}/{recName}")
-    public ResponseEntity<Void> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
+    public Game createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
 
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
         Game newGame = gameService.createGame(requester, receiver);
-        URI uri = new URI("/game/" + newGame.getGameId());
-        return ResponseEntity.created(uri).build();
+//        URI uri = new URI("/game/" + newGame.getGameId());
+//        return ResponseEntity.created(uri).build();
+        return gameService.createGame(requester, receiver);
     }
 
     @PutMapping(value = "calculatePoints/{gameId}/{userName}/{points}")
