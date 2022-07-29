@@ -44,7 +44,7 @@ public interface GameService {
      * @return correct list of questions for the round
      * @throws CustomOptimisticLockExceptionGame - is thrown in case of two users are working on the same object. The second user has to reload the object
      */
-    List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList) throws CustomOptimisticLockExceptionGame;
+    List<Question> giveQuestions(Long gameId, User currentUser, VocabList vocabList) throws CustomOptimisticLockExceptionGame;
 
     /**
      * get a game object by the given gameId

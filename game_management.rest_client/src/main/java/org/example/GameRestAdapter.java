@@ -100,15 +100,19 @@ public class GameRestAdapter implements GameService
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
 
-    public List<Question> giveQuestions(Game game, User currentUser, VocabList vocabList){
+    public List<Question> giveQuestions(Long gameId, User currentUser, VocabList vocabList){
         String userName = currentUser.getUserName();
-        String vocablistId = String.valueOf(vocabList.getVocabListId());
+        String vocablistId = null;
+        if (vocabList != null) {
+            vocablistId = String.valueOf(vocabList.getVocabListId());
+
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
-        final String URL = localhost + "getQuestions" + "/" + game.getGameId() + "/" + userName + "/" + vocablistId;
+        final String URL = localhost + "getQuestions" + "/" + gameId + "/" + userName + "/" + vocablistId;
         return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
     }
     @Override
@@ -119,7 +123,9 @@ public class GameRestAdapter implements GameService
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
         final String URL = localhost + gameId;
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, Game.class).getBody();
+        Game game = restTemplate.exchange(URL, HttpMethod.GET, requestEntity, Game.class).getBody(); // Hier passiert der Fehler, nicht im return
+        String lol = "lol";
+        return game;
     }
 
     @Override

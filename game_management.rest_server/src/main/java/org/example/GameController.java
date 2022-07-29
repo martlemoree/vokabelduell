@@ -72,11 +72,11 @@ public class GameController
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public List<Question> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
                                         @PathVariable String gameId) throws UserNotFoundException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
-        Game game = gameService.getGamebyId(Long.valueOf(gameId));
+//        Game game = gameService.getGamebyId(Long.valueOf(gameId));
         User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);
 
-        return gameService.giveQuestions(game, user, vlist);
+        return gameService.giveQuestions(Long.valueOf(gameId), user, vlist);
     }
 
     @GetMapping(value = "/all")
@@ -87,8 +87,8 @@ public class GameController
 
     // FIXME macht den "Could not write JSON: failed to lazily initialize a collection"-Fehler
     @GetMapping(value = "/{gameId}")
-    public Game getGameById(@PathVariable("gameId") int gameId) throws CustomObjectNotFoundException {
-        Game game = gameService.getGamebyId((long) gameId);
+    public Game getGameById(@PathVariable("gameId") Long gameId) throws CustomObjectNotFoundException {
+        Game game = gameService.getGamebyId(gameId);
         return game;
     }
 
