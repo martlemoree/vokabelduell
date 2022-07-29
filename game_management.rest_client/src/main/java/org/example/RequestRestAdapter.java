@@ -1,11 +1,10 @@
 package org.example;
 
-import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
-import de.htwberlin.kba.game_management.export.Request;
-import de.htwberlin.kba.game_management.export.RequestService;
-import de.htwberlin.kba.user_management.export.User;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,7 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import de.htwberlin.kba.game_management.export.Request;
+import de.htwberlin.kba.game_management.export.RequestService;
+import de.htwberlin.kba.user_management.export.User;
 
 
 @Service
@@ -21,12 +22,9 @@ public class RequestRestAdapter implements RequestService {
     private RestTemplate restTemplate;
 
     @Autowired
-    public RequestRestAdapter(RestTemplateBuilder restTemplateBuilder){
-        this.restTemplate =  restTemplateBuilder
-                .errorHandler(new RestTemplateResponseErrorHandler())
-                .build();
+    public RequestRestAdapter(RestTemplate restTemplate){
+        this.restTemplate =  restTemplate;
     }
-
     final String localhost = "http://localhost:8080/request/";
 
     public Request createRequest(User requester, User receiver){
@@ -66,7 +64,11 @@ public class RequestRestAdapter implements RequestService {
 
         String userName = user.getUserName();
         final String URL = localhost + "pendingRequests" + "/" + userName;
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
+
+        ParameterizedTypeReference<List<Request>> typeRef = new ParameterizedTypeReference<List<Request>>() {
+        };
+
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, typeRef).getBody();
     }
 
     @Override

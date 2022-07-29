@@ -59,22 +59,23 @@ public class UserServiceTest {
     public void testGetUserListWOcurrentUser() throws UserNotFoundException {
         // 1. Arrange
 
-        boolean bol = true;
+        Boolean bol = Boolean.TRUE;
 
         // 2. Act
         Mockito.when(userDao.getAllUsers()).thenReturn(users);
+        Mockito.when(userDao.getUserByName(Mockito.anyString())).thenReturn(u1);
         List<User> usersWithoutCurrentUser = service.getUserListWOcurrentUser(u1);
 
         for (int i = 0; i < usersWithoutCurrentUser.size(); i++) {
             if (u1.getUserName().equals(usersWithoutCurrentUser.get(i).getUserName())) {
-                bol = false;
+                bol = Boolean.FALSE;
                 break;
             }
             i++;
         }
 
         // 3. Assert
-        assertTrue(bol);
+        assertEquals(Boolean.TRUE, bol);
     }
 
 }

@@ -36,6 +36,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Configuration" target="1.7" />
+      <module name="ErrorHandlingRestTemplate" target="17" />
       <module name="GameManagementTest" target="1.7" />
       <module name="template_module" target="1.7" />
       <module name="test" target="1.7" />

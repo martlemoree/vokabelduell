@@ -1,23 +1,20 @@
 package org.example;
 
-import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
-import de.htwberlin.kba.user_management.export.User;
-import de.htwberlin.kba.user_management.export.UserNotFoundException;
-import de.htwberlin.kba.user_management.export.UserService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
+import de.htwberlin.kba.user_management.export.User;
+import de.htwberlin.kba.user_management.export.UserAlreadyExistsException;
+import de.htwberlin.kba.user_management.export.UserNotFoundException;
+import de.htwberlin.kba.user_management.export.UserService;
 
 @Service
 public class UserRestAdapter implements UserService {
@@ -27,18 +24,16 @@ public class UserRestAdapter implements UserService {
     final String localhostUser = "http://localhost:8080/user/";
 
     @Autowired
-    public UserRestAdapter(RestTemplateBuilder restTemplateBuilder){
-        this.restTemplate =  restTemplateBuilder
-                .errorHandler(new RestTemplateResponseErrorHandler())
-                .build();
+    public UserRestAdapter(RestTemplate restTemplate){
+        this.restTemplate =  restTemplate;
     }
 
-    public List<User> getUserListWOcurrentUser(User user) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
+    @Override
+    public List<User> getUserListWOcurrentUser(User user) throws UserNotFoundException {
         final String URL = localhostUser + "all/" + user.getUserName();
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
+        HttpEntity<String> httpEntity = new HttpEntity<>(user.getUserName());
+        return restTemplate.exchange(URL, HttpMethod.GET, httpEntity, List.class).getBody();
     }
 
     public List<User> getUserList() {
@@ -46,20 +41,25 @@ public class UserRestAdapter implements UserService {
         return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
     }
 
+
     public void changePassword(String userName, String password) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
-        final String URL = localhostUser + "edit/" + userName + "/" + password;
-        restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, void.class).getBody();
+        final String URL = localhostUser + "edit/" + userName;
+        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(multiValueMap);
+        restTemplate.exchange(URL, HttpMethod.PUT, httpEntity, String.class).getBody();
     }
 
-    public User createUser(String name, String password) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+    @Override
+    public User createUser(String name, String password) throws UserAlreadyExistsException {
+        User user = new User(name, password);
         final String URL = localhostUser + "create";
-        return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, User.class).getBody();
+        HttpEntity<User> httpEntity = new HttpEntity<>(user);
+        return restTemplate.exchange(URL, HttpMethod.POST, httpEntity, User.class).getBody();
+    }
+
+    public void removeUser(String userName) {
+        final String URL = localhostUser + "delete/" + userName;
+        restTemplate.delete(URL);
     }
 
     public User getUserByUserName(String userName) {
@@ -79,12 +79,23 @@ public class UserRestAdapter implements UserService {
         restTemplate.delete(URL);
         return true;
     }
+/*
 
-    public User getUserById(Long id) {
+    @Override
+    public void changePassword(String password, User user) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public User createUser(String name, String password) throws UserAlreadyExistsException {
+        // TODO Auto-generated method stub
         return null;
     }
 
-    public boolean removeUserId(Long id) {
-        return false;
-    }
+    @Override
+    public void removeUserName(String name) throws UserNotFoundException {
+        // TODO Auto-generated method stub
+
+    }*/
 }

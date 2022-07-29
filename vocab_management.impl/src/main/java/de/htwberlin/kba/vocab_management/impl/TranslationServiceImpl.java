@@ -23,8 +23,8 @@ public class TranslationServiceImpl implements TranslationService {
     // constructor without parameters is needed for mockito tests
     public TranslationServiceImpl() {}
 
-    @Transactional
-    public Translation createTranslation(Long translationId, List<String> translations) {
+    @Override
+    public Translation createTranslation(List<String> translations) {
         Translation translation = new Translation(translations);
         translationDao.createTranslation(translation);
         Hibernate.initialize(translation.getTranslations());

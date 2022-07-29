@@ -8,6 +8,7 @@ public interface VocabListService {
      * creates a new Vocabulary List.
      * @param text holds Vocabulary List.
      * @return a new Vocabulary List
+     * @throws FileNotFoundException is thrown when the file in the given filepath does not exist
      */
     VocabList createVocabList(String text) throws FileNotFoundException;
 
@@ -71,6 +72,7 @@ public interface VocabListService {
      * holds logic to get a vocablist by given id
      * @param id of the requested vocablist
      * @return the requested vocabList
+     * throws VocabListObjectNotFoundException is thrown when the Vocablist cannot be found in the database
      */
     VocabList getVocabListById(Long id) throws VocabListObjectNotFoundException;
 

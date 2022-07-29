@@ -127,6 +127,7 @@ public class GameServiceTest {
         Assert.assertEquals(sum, game.getPointsReceiver());
     }
 
+    // Test wird grün wenn man ihn einzeln ausführt
     @DisplayName("checks whether the method returns a list with games where the number of rounds is <6")
     @Test
     public void getGamesFromCurrentUser() throws UserNotFoundException {

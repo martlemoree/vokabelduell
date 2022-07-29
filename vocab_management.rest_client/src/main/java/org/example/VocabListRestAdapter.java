@@ -5,14 +5,12 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.List;
 
-@Service
+@Component
 public class VocabListRestAdapter implements VocabListService {
 
     private RestTemplate restTemplate;
@@ -20,8 +18,8 @@ public class VocabListRestAdapter implements VocabListService {
     final String localhostVocablist = "http://localhost:8080/vocablist/";
 
     @Autowired
-    public VocabListRestAdapter(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public VocabListRestAdapter(RestTemplate restTemplate){
+        this.restTemplate =  restTemplate;
     }
 
     public VocabList createVocabList(String text) throws FileNotFoundException {

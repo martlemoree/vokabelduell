@@ -29,6 +29,7 @@ public interface QuestionService {
      * @param game current game, for the last existing round the questions should be created
      * @param chosenVocabList the chosen vocablist from which the questions should be created
      * @return List of three questions
+     * @throws CustomOptimisticLockExceptionGame - is thrown in case of two users are working on the same object. The second user has to reload the object
      */
     List<Question> createQuestions(Game game, VocabList chosenVocabList, Round round) throws CustomOptimisticLockExceptionGame;
 
@@ -54,11 +55,16 @@ public interface QuestionService {
      * @param question object that should be addressed
      * @return random string entry from list of strings of vocab
      */
-
     String giveVocabStringRandom(Question question);
 
     // TODO später löschen, nur zum testen
     List<Question> getAllQuestions();
 
+    /**
+     * searches a question in the database with the given id
+     * @param Id that should be searched
+     * @return the question
+     * @throws CustomObjectNotFoundException - is thrown when the Question cannot be found in the database
+     */
     Question getQuestionById(Long Id) throws CustomObjectNotFoundException;
 }

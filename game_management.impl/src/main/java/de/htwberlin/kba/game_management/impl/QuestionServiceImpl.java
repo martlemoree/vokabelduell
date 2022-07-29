@@ -43,9 +43,9 @@ public class QuestionServiceImpl implements QuestionService {
                         .size()));
 
 
-        Translation wrongA = setAnswerOptions(rightAnswer.getTranslationId());
-        Translation wrongB = setAnswerOptions(rightAnswer.getTranslationId());
-        Translation wrongC = setAnswerOptions(rightAnswer.getTranslationId());
+        Translation wrongA = setAnswerOptions();
+        Translation wrongB = setAnswerOptions();
+        Translation wrongC = setAnswerOptions();
 
         Question question = new Question(round, wrongA,wrongB,wrongC,rightAnswer, vocab);
         questionDao.createQuestion(question);
@@ -53,7 +53,7 @@ public class QuestionServiceImpl implements QuestionService {
         return question;
     }
 
-    public Translation setAnswerOptions(Long rightId) {
+    public Translation setAnswerOptions() {
 
         Random rand = new Random();
         List<VocabList> vocablists = vocabListService.getVocabLists();

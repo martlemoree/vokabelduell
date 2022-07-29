@@ -3,19 +3,19 @@ package org.example;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import de.htwberlin.kba.game_management.export.Game;
 import de.htwberlin.kba.game_management.export.GameService;
 import de.htwberlin.kba.game_management.export.Question;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.vocab_management.export.VocabList;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GameRestAdapter implements GameService
@@ -25,10 +25,8 @@ public class GameRestAdapter implements GameService
     final String localhost = "http://localhost:8080/game/";
 
     @Autowired
-    public GameRestAdapter(RestTemplateBuilder restTemplateBuilder){
-        this.restTemplate =  restTemplateBuilder
-                .errorHandler(new RestTemplateResponseErrorHandler())
-                .build();
+    public GameRestAdapter(RestTemplate restTemplate){
+        this.restTemplate =  restTemplate;
     }
 
 

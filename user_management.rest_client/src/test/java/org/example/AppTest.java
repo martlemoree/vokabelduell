@@ -12,7 +12,7 @@ public class AppTest
 
     @Test
     public void testRestTemplate(){
-        RestTemplateBuilder temp = new RestTemplateBuilder();
+        RestTemplate temp = new RestTemplate();
         UserRestAdapter adapter = new UserRestAdapter(temp);
 
         System.out.println(adapter.getUserList());

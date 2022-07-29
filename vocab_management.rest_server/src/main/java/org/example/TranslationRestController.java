@@ -18,7 +18,7 @@ public class TranslationRestController {
 
     @PostMapping(value = "/create")
     public String createTranslation(@RequestBody Translation translation) {
-        translationService.createTranslation(translation.getTranslationId(), translation.getTranslations());
+        translationService.createTranslation(translation.getTranslations());
         return "Translation was successfully created.";
     }
 

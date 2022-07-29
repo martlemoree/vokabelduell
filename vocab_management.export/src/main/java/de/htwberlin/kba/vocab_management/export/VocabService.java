@@ -18,6 +18,8 @@ public interface VocabService {
      * change the items of a vocabulary
      * @param vocab the object that should be changed
      * @param newVocabs list with the new vocabularies of this object
+     * @throws CustomOptimisticLockExceptionVocab - is thrown in case of two users are working on the same object. The second user has to reload the object
+
      */
     void editVocabs(Vocab vocab, List<String> newVocabs) throws CustomOptimisticLockExceptionVocab;
 
@@ -25,6 +27,7 @@ public interface VocabService {
      * change the translation of a vocabulary
      * @param vocab the object that should be changed
      * @param translations the list with new translations of a vocabulary
+     * @throws CustomOptimisticLockExceptionVocab - is thrown in case of two users are working on the same object. The second user has to reload the object
      */
     void editTranslations(Vocab vocab, List<Translation> translations) throws CustomOptimisticLockExceptionVocab;
 
@@ -32,6 +35,7 @@ public interface VocabService {
      * holds logic to identify and get a vocab by given string
      * @param vocabString given String
      * @return vocab with given name
+     * @throws CustomOptimisticLockExceptionVocab - is thrown in case of two users are working on the same object. The second user has to reload the object
      */
     Vocab getVocabByVocabString(String vocabString) throws VocabListObjectNotFoundException;
 }

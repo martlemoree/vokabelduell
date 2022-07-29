@@ -1,6 +1,4 @@
 package org.example;
-
-import de.htwberlin.kba.configuration.RestTemplateResponseErrorHandler;
 import de.htwberlin.kba.vocab_management.export.Translation;
 import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabService;
@@ -9,13 +7,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Service
+@Component
 public class VocabRestAdapter implements VocabService {
 
     private RestTemplate restTemplate;
@@ -23,10 +22,8 @@ public class VocabRestAdapter implements VocabService {
     final String localhostVocab = "http://localhost:8080/vocab/";
 
     @Autowired
-    public VocabRestAdapter(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder
-                .errorHandler(new RestTemplateResponseErrorHandler())
-                .build();
+    public VocabRestAdapter(RestTemplate restTemplate){
+        this.restTemplate =  restTemplate;
     }
 
     public Vocab createVocab(List<String> vocabs, List<Translation> translations) {

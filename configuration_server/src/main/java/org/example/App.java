@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication(scanBasePackages = {"de.htwberlin.kba","org.example"}, exclude = {DataSourceAutoConfiguration.class })

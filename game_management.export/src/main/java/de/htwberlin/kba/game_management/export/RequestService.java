@@ -9,15 +9,14 @@ public interface RequestService {
     /**
      * Processes the answer from a user to a request.
      * Changes status of request accordingly.
-     *
      * @param accept gives information about whether the request was accepted (true) or rejected (false)
      * @param request is the object that should be updated
+     * @throws CustomOptimisticLockExceptionGame - is thrown in case of two users are working on the same object. The second user has to reload the object
      */
     void changeStatus(Boolean accept, Request request) throws CustomOptimisticLockExceptionGame;
 
     /**
      * adds a new game request.
-     *
      * @param requester is the user who created the request
      * @param receiver  is the user who receives the request
      * @return new request
@@ -35,6 +34,7 @@ public interface RequestService {
      * search a request with the given id
      * @param Id that should be searched
      * @return the request with the given id
+     * @throws CustomObjectNotFoundException is thrown when the Request cannot be found
      */
     Request getRequestById(Long Id) throws CustomObjectNotFoundException;
 

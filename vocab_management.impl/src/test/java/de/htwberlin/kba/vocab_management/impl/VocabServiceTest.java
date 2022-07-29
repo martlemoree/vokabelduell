@@ -22,5 +22,7 @@ public class VocabServiceTest {
     @InjectMocks
     private VocabServiceImpl service = new VocabServiceImpl();
 
+    // there are no relevant methods to be tested for the game logic
+
 
 }

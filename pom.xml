@@ -27,7 +27,6 @@
         <module>vokabelduell_ui.export</module>
         <module>vokabelduell_ui.impl</module>
         <module>configuration_client</module>
-        <module>ErrorHandlingRestTemplate</module>
     </modules>
 
     <name>Vokabelduell</name>
