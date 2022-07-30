@@ -38,7 +38,7 @@ public interface QuestionService {
     /**
      * checks if the given answer from the user is consistent with one of the translations of the right answer
      * @param answer given answer from the user
-     * @param questionId object that should be addressed
+     * @param QuestionId object that should be addressed
      * @return true if given answer is consistent with rightAnswer, false if not
      */
     boolean answeredQuestion(String answer, Long QuestionId) throws CustomObjectNotFoundException;

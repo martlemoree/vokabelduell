@@ -67,6 +67,7 @@ public interface GameService {
      * therefore the answer options should be given randomly
      * @param questionId from questions the question which should be asked
      * @return a string list with the answer options
+     * @throws CustomObjectNotFoundException is thrown when a game cannot be found
      */
     List<String> giveAnswerOptionsRandom(Long questionId) throws CustomObjectNotFoundException;
 
@@ -77,6 +78,7 @@ public interface GameService {
      * holds logic to give a random entry from the list of strings of the given vocab
      * @param questionId from questions that should be addressed
      * @return random string entry from list of strings of vocab
+     * @throws CustomObjectNotFoundException is thrown when the game cannot be found
      */
     String giveVocabStringRandom(Long questionId) throws CustomObjectNotFoundException;
 

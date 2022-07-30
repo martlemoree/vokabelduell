@@ -18,6 +18,7 @@ public interface RoundService {
      * @param gameId - id of the current game
      * @param userName - name of the current user
      * @throws CustomOptimisticLockExceptionGame - is thrown in case of two users are working on the same object. The second user has to reload the object
+     * @throws CustomObjectNotFoundException is thrown when the round cannot be found
      */
     void changeLastPlayer(Long gameId, String userName) throws CustomObjectNotFoundException, CustomOptimisticLockExceptionGame;
 

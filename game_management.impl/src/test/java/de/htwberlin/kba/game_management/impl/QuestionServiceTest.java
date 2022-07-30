@@ -165,13 +165,13 @@ public class QuestionServiceTest {
     // boolean answeredQuestion(String answer, Translation rightAnswer);
     @Test
     @DisplayName("question was answered wrong")
-    public void testAnsweredQuestionWrong() {
+    public void testAnsweredQuestionWrong() throws CustomObjectNotFoundException {
         // 1. Arrange
         // s. setup
         String wrongAnswer = "Falsche Antwort";
 
         // 2. Act
-        boolean givenAnswer = questionService.answeredQuestion(wrongAnswer, question);
+        boolean givenAnswer = questionService.answeredQuestion(wrongAnswer, question.getQuestionId());
 
         // 3. Assert
         Assert.assertFalse(givenAnswer);
@@ -180,12 +180,12 @@ public class QuestionServiceTest {
 
     @Test
     @DisplayName("question was answered correctly")
-    public void testAnsweredQuestionCorrect() {
+    public void testAnsweredQuestionCorrect() throws CustomObjectNotFoundException {
         // 1. Arrange
         // s. setup
 
         // 2. Act
-        boolean givenAnswer = questionService.answeredQuestion("Translation4", question);
+        boolean givenAnswer = questionService.answeredQuestion("Translation4", question.getQuestionId());
 
         // 3. Assert
         Assert.assertTrue(givenAnswer);

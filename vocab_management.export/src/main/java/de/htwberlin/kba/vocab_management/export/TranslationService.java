@@ -7,7 +7,7 @@ public interface TranslationService {
     /**
      * method offers functionality to create new translation from user input according to given standard
      * @param translations string list of synonymous translations. can also contain just one entry if no synonym given
-     * @return Translation object
+     * @return Translation that is created
      */
     Translation createTranslation(List<String> translations);
 
