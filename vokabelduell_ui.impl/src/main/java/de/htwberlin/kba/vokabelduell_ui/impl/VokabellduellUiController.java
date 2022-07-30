@@ -1,5 +1,6 @@
 package de.htwberlin.kba.vokabelduell_ui.impl;
 
+import antlr.StringUtils;
 import de.htwberlin.kba.game_management.export.*;
 import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserAlreadyExistsException;
@@ -78,173 +79,6 @@ public class VokabellduellUiController implements VokabellduellUi {
     }
 
     public void run() {
-
-        // TODO löschen, nur zum Test
-
-        userName = "MartinTheBrain";
-        User currentUser = null;
-
-        try {
-            currentUser = userService.getUserByUserName(userName);
-        } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        view.printMessage("Gib den Benutzernamen des:r Nutzers:in ein, dessen Anfrage du annehmen oder ablehnen möchtest oder '6' zur Rückkehr ins Hauptmenü!");
-
-        // Alle Anfragen ausgeben, wo der currentUser involviert ist, die noch nicht bearbeitet wurden
-        List<Request> requests = requestService.getPendingRequestsForCurrentUser(currentUser);
-
-        for (Request request : requests) {
-            view.printMessage(request.getRequester().getUserName() + "\n");
-        }
-
-        String userOrMenu = "AntjeWinner";
-
-        for (Request request : requests) {
-            if (userOrMenu.equals(request.getRequester().getUserName())) {
-                // Status der Anfrage ändern
-                view.printMessage("Möchtest du (1) die Anfrage annehmen oder sie (2) ablehnen? Oder wähle 6 zur Rückkehr ins Hauptmenü!");
-                int requestAnswer = 1;
-                if (requestAnswer == 1) {
-                    changeRequestStatus(request, Status.ACCEPTED);
-                } else if (requestAnswer == 2) {
-                    changeRequestStatus(request, Status.REJECTED);
-                }
-            }
-        }
-    }
-    public void changeRequestStatus(Request request, Status status) {
-
-        if (status == Status.ACCEPTED) {
-            view.printMessage("Super! Das Spiel kann losgehen.");
-            // new game is created starts immediately
-            Long gameId = gameService.createGame(request.getRequester(), request.getReceiver());
-
-
-//            List<Long> randomVocabLists = vocabListService.getRandomVocabLists();
-//            VocabList vocabList = chooseVocablist(vocabListService.getVocabListById());
-
-            VocabList vocabList = null;
-            try {
-                vocabList = vocabListService.getVocabListById(2L);
-            } catch (VocabListObjectNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            // vocablist wurde ausgewählt und wird hier übergeben:
-                boolean questionsChangedError = false;
-                List<List<String>> questions = null;
-                do {
-                    try {
-                        questions = gameService.giveQuestions(gameId, request.getReceiver().getUserName(), 2L);
-                    } catch (CustomOptimisticLockExceptionGame e) {
-                        questionsChangedError=true;
-                    } catch (CustomObjectNotFoundException e) {
-                        view.printMessage("Das hat leider nicht geklappt. Bitte versuche es noch einmal.");
-                        break;
-                    } catch (VocabListObjectNotFoundException e) {
-                        view.printMessage("Das hat leider nicht geklappt. Bitte versuche es noch einmal.");
-                        break;
-                    }
-                } while (questionsChangedError);
-                for (int j = 0; j < 4; j++) {
-                    // View Aufruf hier:
-                    askQuestions(gameId, request.getReceiver(), questions, j);
-                }
-        } else if (status == Status.REJECTED) {
-            view.printMessage("Die Anfrage wurde abgelehnt.");
-        }
-
-        // change status only if everything went through correctly
-        request.setRequestStatus(status);
-    }
-
-    public void askQuestions(Long gameId, User currentUser, List<List<String>> questions, int i) {
-
-        List<String> question = questions.get(i);
-
-        view.printMessage("Wie kann" + question.get(0) + " richtig übersetzt werden? Gib die richtige Antwort ein.\n " +
-                "1 - " + question.get(1) + ",\n " +
-                "2 - " + question.get(2) + "oder \n " +
-                "3 - " + question.get(3) + "oder \n " +
-                "4 - " + question.get(4) + "?");
-        // user answers question
-        String answer = view.userInputString();
-        // is answer correct?
-        boolean rightOrWrong = false;
-        try {
-            rightOrWrong = questionService.answeredQuestion(answer, Long.valueOf(question.get(5)));
-        } catch (CustomObjectNotFoundException e) {
-            view.printMessage("Das hat leider nicht geklappt. Bitte versuche es noch einmal.");
-            System.exit(0);
-        }
-
-        int points;
-        if (rightOrWrong) {
-            points = 500;
-            view.printMessage("Super, das ist richtig!");
-        } else {
-            points = -200;
-            view.printMessage("Das ist leider falsch.");
-        }
-
-        boolean saved = false;
-        do {
-            try {
-                gameService.calculatePoints(gameId, userName, points);
-            } catch (CustomOptimisticLockExceptionGame e) {
-                saved=true;
-            } catch (UserNotFoundException e) {
-                saved=true;
-            } catch (CustomObjectNotFoundException e) {
-                saved=true;
-            }
-        } while (saved);
-
-
-
-    }
-/*
-    public VocabList chooseVocablist(List<Long> randomVocabLists) {
-
-        boolean bol = false;
-        VocabList randomVocabList = null;
-
-        do {
-
-            view.printMessage("Welche Vokabelliste möchtest du wählen? \n " +
-                    "1 - " + randomVocabLists.get(0).getName() + ",\n " +
-                    "2 - " + randomVocabLists.get(1).getName() + "oder \n " +
-                    "3 - " + randomVocabLists.get(2).getName() + "? \n " +
-                    "4 - " + "Rückkehr ins Hauptmenü?");
-
-            int input = view.userInputInt();
-
-            if (input == 1) {
-                randomVocabList = randomVocabLists.get(0);
-            }
-            if (input == 2) {
-                randomVocabList = randomVocabLists.get(1);
-            }
-            if (input == 3) {
-                randomVocabList = randomVocabLists.get(2);
-            } else {
-                view.printMessage("Gib eine Zahl aus dem Menü ein.");
-                bol = true;
-            }
-
-        } while (bol);
-
-        return randomVocabList;
-    }
-
- */
-}/*
-
-        //-----------------------------------------------------------------------------------------------------------------
-
-        // hier geht es los mit der Spielelogik
-
 
         try {
             // Login
@@ -341,7 +175,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                 // Spiel weiterspielen
                 if (input == 3) {
                     // show all existing games from current user
-                    List<Game> games = null;
+                    List<Long> games = null;
 
                     try {
                         games = gameService.getGamesFromCurrentUser(userName);
@@ -356,7 +190,14 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                     view.printMessage("Gegen wen möchtest du weiterspielen? \n ");
 
-                    for (Game game : games) {
+                    for (Long g : games) {
+
+            Game game;
+            try {
+                game = gameService.getGamebyId(g);
+            } catch (CustomObjectNotFoundException e) {
+                throw new RuntimeException(e);
+            }
                         view.printMessage("" + game.getRounds());
                         // due to game logic, rounds cannot be empty if game has been started correctly
                         // else game cant continue
@@ -373,7 +214,13 @@ public class VokabellduellUiController implements VokabellduellUi {
                     do {
 
                         String chosenUser = view.userInputString();
-                        for (Game game : games) {
+                        for (Long g : games) {
+            Game game;
+            try {
+                game = gameService.getGamebyId(g);
+            } catch (CustomObjectNotFoundException e) {
+                throw new RuntimeException(e);
+            }
                             if (chosenUser.equals(game.getRequester().getUserName()) || chosenUser.equals(game.getReceiver().getUserName())) {
                                 // due to game logic rounds cannot be empty
                                 view.printMessage("Alles klar, kann losgehen!");
@@ -401,7 +248,7 @@ public class VokabellduellUiController implements VokabellduellUi {
 
                                     // Schleife koordiniert den View Aufruf:
                                     for (int j = 0; j < 4; j++) {
-                                        askQuestions(game.getGameId(), currentUser, questions, j);
+                                        askQuestions(game.getGameId(), questions, j);
                                     }
 
                                     boolean lastPlayerChangedError = false;
@@ -568,15 +415,15 @@ public class VokabellduellUiController implements VokabellduellUi {
         return user;
     }
 
-    public void askQuestions(Long gameId, User currentUser, List<List<String>> questions, int i) {
+    public void askQuestions(Long gameId, List<List<String>> questions, int i) {
 
         List<String> question = questions.get(i);
 
         view.printMessage("Wie kann" + question.get(0) + " richtig übersetzt werden? Gib die richtige Antwort ein.\n " +
-                "1 - " + question.get(1) + ",\n " +
-                "2 - " + question.get(2) + "oder \n " +
-                "3 - " + question.get(3) + "oder \n " +
-                "4 - " + question.get(4) + "?");
+                "1 - " + question.get(1) + "\n " +
+                "2 - " + question.get(2) + " \n " +
+                "3 - " + question.get(3) + " \n " +
+                "4 - " + question.get(4) + " ");
         // user answers question
         String answer = view.userInputString();
         // is answer correct?
@@ -601,11 +448,7 @@ public class VokabellduellUiController implements VokabellduellUi {
         do {
             try {
                 gameService.calculatePoints(gameId, userName, points);
-            } catch (CustomOptimisticLockExceptionGame e) {
-                saved=true;
-            } catch (UserNotFoundException e) {
-                saved=true;
-            } catch (CustomObjectNotFoundException e) {
+            } catch (CustomOptimisticLockExceptionGame | UserNotFoundException | CustomObjectNotFoundException e) {
                 saved=true;
             }
         } while (saved);
@@ -623,7 +466,7 @@ public class VokabellduellUiController implements VokabellduellUi {
             Long gameId = gameService.createGame(request.getRequester(), request.getReceiver());
 
 
-                   VocabList vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
+              VocabList vocabList = chooseVocablist(vocabListService.getRandomVocabLists());
                 // vocablist wurde ausgewählt und wird hier übergeben:
                 boolean questionsChangedError = false;
                 List<List<String>> questions = null;
@@ -632,17 +475,14 @@ public class VokabellduellUiController implements VokabellduellUi {
                         questions = gameService.giveQuestions(gameId, request.getReceiver().getUserName(), vocabList.getVocabListId());
                     } catch (CustomOptimisticLockExceptionGame e) {
                         questionsChangedError=true;
-                    } catch (CustomObjectNotFoundException e) {
-                        view.printMessage("Das hat leider nicht geklappt. Bitte versuche es noch einmal.");
-                        break;
-                    } catch (VocabListObjectNotFoundException e) {
+                    } catch (VocabListObjectNotFoundException | CustomObjectNotFoundException e) {
                         view.printMessage("Das hat leider nicht geklappt. Bitte versuche es noch einmal.");
                         break;
                     }
                 } while (questionsChangedError);
                 for (int j = 0; j < 4; j++) {
                     // View Aufruf hier:
-                    askQuestions(gameId, request.getReceiver(), questions, j);
+                    askQuestions(gameId, questions, j);
                 }
         } else if (status == Status.REJECTED) {
             view.printMessage("Die Anfrage wurde abgelehnt.");
@@ -789,29 +629,40 @@ public class VokabellduellUiController implements VokabellduellUi {
         } while (inputVocabListManagementMenu != 4);
     }
 
-    public VocabList chooseVocablist(List<VocabList> randomVocabLists) {
+    public VocabList chooseVocablist(List<Long> randomVocabLists) {
 
         boolean bol = false;
         VocabList randomVocabList = null;
 
         do {
+            VocabList v1 = null;
+            VocabList v2 = null;
+            VocabList v3 = null;
+            try {
+                v1 = vocabListService.getVocabListById(randomVocabLists.get(0));
+                v2 = vocabListService.getVocabListById(randomVocabLists.get(1));
+                v3 = vocabListService.getVocabListById(randomVocabLists.get(2));
+            } catch (VocabListObjectNotFoundException e) {
+                view.printMessage("Das hat leider nicht funktioniert. Probiere es noch einmal.");
+                System.exit(0);
+            }
 
             view.printMessage("Welche Vokabelliste möchtest du wählen? \n " +
-                    "1 - " + randomVocabLists.get(0).getName() + ",\n " +
-                    "2 - " + randomVocabLists.get(1).getName() + "oder \n " +
-                    "3 - " + randomVocabLists.get(2).getName() + "? \n " +
+                    "1 - " + v1.getName() + ",\n " +
+                    "2 - " + v2.getName() + "oder \n " +
+                    "3 - " + v3.getName() + "? \n " +
                     "4 - " + "Rückkehr ins Hauptmenü?");
 
             int input = view.userInputInt();
 
             if (input == 1) {
-                randomVocabList = randomVocabLists.get(0);
+                randomVocabList = v1;
             }
             if (input == 2) {
-                randomVocabList = randomVocabLists.get(1);
+                randomVocabList = v2;
             }
             if (input == 3) {
-                randomVocabList = randomVocabLists.get(2);
+                randomVocabList = v3;
             } else {
                 view.printMessage("Gib eine Zahl aus dem Menü ein.");
                 bol = true;
@@ -823,4 +674,4 @@ public class VokabellduellUiController implements VokabellduellUi {
     }
 
 
-}*/
+}

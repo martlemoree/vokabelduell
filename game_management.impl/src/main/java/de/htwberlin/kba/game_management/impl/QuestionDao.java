@@ -3,6 +3,7 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.vocab_management.export.Translation;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface QuestionDao {
     List<Question> getAllQuestions();
 
     void deleteQuestion(Question question);
+
+    Translation getRightAnswer(Long questionId);
 
 }

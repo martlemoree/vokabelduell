@@ -39,7 +39,7 @@ public class GameRestAdapter implements GameService
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>("parameters",headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>("parameters",headers);
 
         final String URL = localhost + "create/" + reqName + "/" + recName;
 //        return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Game.class).getBody();
@@ -66,7 +66,7 @@ public class GameRestAdapter implements GameService
 
     }
 
-    public List<Game> getGamesFromCurrentUser(String userName){
+    public List<Long> getGamesFromCurrentUser(String userName){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);

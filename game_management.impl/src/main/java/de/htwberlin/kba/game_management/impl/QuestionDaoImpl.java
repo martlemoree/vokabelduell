@@ -3,6 +3,7 @@ package de.htwberlin.kba.game_management.impl;
 import de.htwberlin.kba.game_management.export.CustomOptimisticLockExceptionGame;
 import de.htwberlin.kba.game_management.export.CustomObjectNotFoundException;
 import de.htwberlin.kba.game_management.export.Question;
+import de.htwberlin.kba.vocab_management.export.Translation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class QuestionDaoImpl implements QuestionDao{
 
     @Override
     public Question getQuestionById(Long questionId) throws CustomObjectNotFoundException {
-        Question question = null;
+        Question question;
         try {
             question = entityManager.find(Question.class, questionId);
         } catch (NoResultException e) {
@@ -44,6 +45,14 @@ public class QuestionDaoImpl implements QuestionDao{
         TypedQuery<Question> query = entityManager.createNamedQuery("getAllQuestions", Question.class);
         List<Question> allQuestions = query.getResultList();
         return allQuestions;
+    }
+
+    @Override
+    public Translation getRightAnswer(Long questionId) {
+        TypedQuery<Translation> query = entityManager.createNamedQuery("getRightAnswer", Translation.class);
+        query.setParameter("questionId", questionId);
+        Translation translation = query.getSingleResult();
+        return translation;
     }
 
     @Override

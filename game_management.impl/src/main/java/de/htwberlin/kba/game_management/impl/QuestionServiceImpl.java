@@ -113,12 +113,15 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
-    @Override
+    @Transactional
     public boolean answeredQuestion(String answer, Long questionId) throws CustomObjectNotFoundException {
 
         Question question = getQuestionById(questionId);
 
-        Translation rightAnswer = question.getRightAnswer();
+        Translation rightAnswer = questionDao.getRightAnswer(questionId);
+
+        Hibernate.initialize(rightAnswer.getVocabs());
+        Hibernate.initialize(rightAnswer.getTranslations());
         List<String> translations = rightAnswer.getTranslations();
 
         for (String translation : translations) {
@@ -158,6 +161,11 @@ public class QuestionServiceImpl implements QuestionService {
 
         Hibernate.initialize(question.getVocab().getVocabs());
         Hibernate.initialize(question.getVocab().getTranslations());
+        Hibernate.initialize(question.getVocab());
+        Hibernate.initialize(question.getRightAnswer().getVocabs());
+        Hibernate.initialize(question.getWrongA().getVocabs());
+        Hibernate.initialize(question.getWrongB().getVocabs());
+        Hibernate.initialize(question.getWrongC().getVocabs());
 
         List<Translation> translations = question.getVocab().getTranslations();
         for (Translation t: translations) {

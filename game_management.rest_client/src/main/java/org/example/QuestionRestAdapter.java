@@ -58,7 +58,7 @@ public class QuestionRestAdapter implements QuestionService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
         final String URL = localhost + "createQuestions/" + gameId + "/" + vocablistId + "/" + roundId;
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, List.class).getBody();
@@ -72,7 +72,8 @@ public class QuestionRestAdapter implements QuestionService {
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
 
         final String URL = localhost + "answeredQuestion" + "/" + answer +  "/"  + questionId;
-        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity,boolean.class).getBody();
+        boolean result = restTemplate.exchange(URL, HttpMethod.GET, requestEntity,boolean.class).getBody();
+        return result;
     }
 
 

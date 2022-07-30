@@ -7,7 +7,10 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 
 import javax.persistence.*;
 
-@NamedQuery(name="getAllQuestions", query="FROM Question AS questions")
+@NamedQueries ({
+        @NamedQuery(name="getAllQuestions", query="FROM Question AS questions"),
+        @NamedQuery(name="getRightAnswer", query="SELECT rightAnswer FROM Question AS questions WHERE questions.questionId = :questionId")
+})
 @Entity
 @Table(name = "questions")
 public class Question {

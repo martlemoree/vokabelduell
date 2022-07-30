@@ -79,12 +79,19 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException {
+    public List<Long> getGamesFromCurrentUser(String userName) throws UserNotFoundException {
         User user = userService.getUserByUserName(userName);
-        List<Game> gamesFromUser = gameDao.getAllGamesFromUser(user);
+        List<Long> gamesFromUser = gameDao.getAllGamesFromUser(user);
 
-        for (Game g:gamesFromUser ) {
-            if (g.getRounds().size() >= 6) {
+        for (Long g :gamesFromUser ) {
+            Game game = null;
+            try {
+                game = gameDao.getGameById(g);
+            } catch (CustomObjectNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (game.getRounds().size() >= 6) {
                 gamesFromUser.remove(g);
             }
         }
@@ -112,7 +119,7 @@ public class GameServiceImpl implements GameService {
                 // generate Questions
                 questions = questionService.createQuestions(game, vocabList, round);
             }
-        } else if (rounds==null || rounds.isEmpty() || rounds.size() == 0) {
+        } else if (rounds.size() == 0) {
             // if game has just been started (and contains no rounds) OR the last round of the game was played by both players
             // (happens in the if clause above)
             // new Round must be started
@@ -173,7 +180,7 @@ public class GameServiceImpl implements GameService {
         questionsStringList.add(question2);
         questionsStringList.add(question3);
 
-        return null;
+        return questionsStringList;
     }
 
     // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.

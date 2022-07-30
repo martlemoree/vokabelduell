@@ -7,6 +7,7 @@ import de.htwberlin.kba.user_management.export.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -54,11 +55,17 @@ public class GameDaoImpl implements GameDao{
     }
 
     @Override
-    public List<Game> getAllGamesFromUser(User user) {
+    public List<Long> getAllGamesFromUser(User user) {
         Long id = user.getUserId();
         TypedQuery<Game> query = entityManager.createNamedQuery("getAllGamesFromUser", Game.class);
         query.setParameter("userId", id);
         List<Game> allGamesFromUser = query.getResultList();
-        return allGamesFromUser;
+
+        List<Long> allGamesFromUserLong = new ArrayList<>();
+
+        for (Game game : allGamesFromUser) {
+            allGamesFromUserLong.add(game.getGameId());
+        }
+        return allGamesFromUserLong;
     }
 }

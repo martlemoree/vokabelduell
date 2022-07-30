@@ -79,7 +79,6 @@ public class GameServiceTest {
 
         vocabStrings.add("Vocab");
         vocabStrings.add("Vocab2");
-        translationString = "Translation";
         translation = new Translation(translationStrings);
         translations.add(translation);
 
@@ -204,10 +203,17 @@ public class GameServiceTest {
         // 2. Act
         // Mockito.when(gameDao.getAllGamesFromUser(Mockito.anyLong())).thenReturn(result_games);
         when(userService.getUserByUserName(Mockito.anyString())).thenReturn(user);
-        List<Game> gamesOfUser = gameService.getGamesFromCurrentUser(user.getUserName());
+        List<Long> gamesOfUser = gameService.getGamesFromCurrentUser(user.getUserName());
 
-        for (Game g:gamesOfUser) {
-            if (g.getRounds().size() >= 6){
+        for (Long g :gamesOfUser) {
+            Game game;
+            try {
+                game = gameDao.getGameById(g);
+            } catch (CustomObjectNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (game.getRounds().size() >= 6){
                 bol = false;
                 break;
             }

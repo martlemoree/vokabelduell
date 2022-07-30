@@ -35,7 +35,7 @@ public class GameController
     }
 
     @PostMapping(value = "/create/{reqName}/{recName}")
-    public ResponseEntity<Long> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException, URISyntaxException {
+    public ResponseEntity<Long> createGame(@PathVariable("reqName") String reqName, @PathVariable("recName") String recName) throws UserNotFoundException {
 
         User requester = userService.getUserByUserName(reqName);
         User receiver = userService.getUserByUserName(recName);
@@ -52,16 +52,15 @@ public class GameController
     }
 
     @GetMapping("/gamesOfUser/{name}")
-    public List<Game> getGamesFromCurrentUser(@PathVariable("name") String name) throws UserNotFoundException {
+    public List<Long> getGamesFromCurrentUser(@PathVariable("name") String name) throws UserNotFoundException {
         return gameService.getGamesFromCurrentUser(name);
     }
 
     @GetMapping("/getQuestions/{gameId}/{userName}/{vocablistId}")
     public ResponseEntity<Long> giveQuestions(@PathVariable("userName") String userName, @PathVariable("vocablistId") Long vocablistId,
-                                        @PathVariable Long gameId) throws UserNotFoundException, VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
+                                        @PathVariable Long gameId) throws VocabListObjectNotFoundException, CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
 
         HttpHeaders headers = new HttpHeaders();
-        User user = userService.getUserByUserName(userName);
         VocabList vlist = vocabListService.getVocabListById(vocablistId);
         List<List<String>> questions = gameService.giveQuestions(Long.valueOf(gameId), userName, vocablistId);
 
@@ -76,19 +75,19 @@ public class GameController
         headers.add("question1answer4", questions1.get(4));
         headers.add("questionId1", questions1.get(5));
 
-        headers.add("question2", questions1.get(0));
-        headers.add("question2answer1", questions1.get(1));
-        headers.add("question2answer2", questions1.get(2));
-        headers.add("question2answer3", questions1.get(3));
-        headers.add("question2answer4", questions1.get(4));
-        headers.add("questionId2", questions1.get(5));
+        headers.add("question2", questions2.get(0));
+        headers.add("question2answer1", questions2.get(1));
+        headers.add("question2answer2", questions2.get(2));
+        headers.add("question2answer3", questions2.get(3));
+        headers.add("question2answer4", questions2.get(4));
+        headers.add("questionId2", questions2.get(5));
 
-        headers.add("question3",questions1.get(0));
-        headers.add("question3answer1", questions1.get(1));
-        headers.add("question3answer2", questions1.get(2));
-        headers.add("question3answer3", questions1.get(3));
-        headers.add("question3answer4", questions1.get(4));
-        headers.add("questionId3", questions1.get(5));
+        headers.add("question3",questions3.get(0));
+        headers.add("question3answer1", questions3.get(1));
+        headers.add("question3answer2", questions3.get(2));
+        headers.add("question3answer3", questions3.get(3));
+        headers.add("question3answer4", questions3.get(4));
+        headers.add("questionId3", questions3.get(5));
 
 
         return ResponseEntity.ok().headers(headers).body(gameId);

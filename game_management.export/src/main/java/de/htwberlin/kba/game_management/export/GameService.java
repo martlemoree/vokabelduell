@@ -34,7 +34,7 @@ public interface GameService {
      * @return the games of the given user
      * @throws UserNotFoundException - is thrown when the given user does not exist
      */
-    List<Game> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
+    List<Long> getGamesFromCurrentUser(String userName) throws UserNotFoundException;
 
     /**
      * returns questions for current game for two cases:

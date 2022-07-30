@@ -19,6 +19,5 @@ public interface GameDao {
 
     void deleteGame(Game game);
 
-
-    List<Game> getAllGamesFromUser(User user);
+    List<Long> getAllGamesFromUser(User user);
 }
