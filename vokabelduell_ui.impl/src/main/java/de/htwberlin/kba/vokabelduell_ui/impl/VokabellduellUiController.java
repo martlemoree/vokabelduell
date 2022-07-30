@@ -238,9 +238,7 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     do {
                                         try {
                                             questions = gameService.giveQuestions(game.getGameId(), userName, vocabList.getVocabListId());
-                                        } catch (CustomOptimisticLockExceptionGame e) {
-                                            questionsChangedError=true;
-                                        } catch (CustomObjectNotFoundException | VocabListObjectNotFoundException e) {
+                                        } catch (CustomOptimisticLockExceptionGame | CustomObjectNotFoundException | VocabListObjectNotFoundException e) {
                                             view.printMessage("Es ist ein Fehler aufgetreten. Beginne das Spiel bitte von vorne");
                                             System.exit(0);
                                         }
@@ -630,6 +628,9 @@ public class VokabellduellUiController implements VokabellduellUi {
     }
 
     public VocabList chooseVocablist(List<Long> randomVocabLists) {
+
+        // Dieser Part funktioniert leider noch nicht reibungslos.
+        // Um einen Spielefluss zu gewährleisten haben wir beim Ausprobieren die VocabList mit der Id 2 verwendet
 
         boolean bol = false;
         VocabList randomVocabList = null;
