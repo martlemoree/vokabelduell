@@ -18,4 +18,6 @@ public interface TranslationDao {
 
     void deleteTranslation(Long translationId);
 
+    List<Translation> getTranslationStrings(Long translationId);
+
 }

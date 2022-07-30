@@ -74,13 +74,23 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
-    @Override
+    @Transactional
     public List<Translation> getAllAnswers(Question question) {
         List<Translation> translations = new ArrayList<> ();
-        translations.add(question.getRightAnswer());
-        translations.add(question.getWrongA ());
-        translations.add(question.getWrongB());
-        translations.add(question.getWrongC());
+
+        try {
+            translations.add(questionDao.getQuestionById(question.getQuestionId()).getRightAnswer());
+            translations.add(questionDao.getQuestionById(question.getQuestionId()).getWrongA ());
+            translations.add(questionDao.getQuestionById(question.getQuestionId()).getWrongB());
+            translations.add(questionDao.getQuestionById(question.getQuestionId()).getWrongC());
+        } catch (CustomObjectNotFoundException e) {
+            throw new RuntimeException();
+        }
+
+        for (Translation t: translations) {
+            Hibernate.initialize(t.getTranslations());
+            Hibernate.initialize(t.getVocabs());
+        }
 
         return translations;
     }

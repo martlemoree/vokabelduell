@@ -51,4 +51,12 @@ public class TranslationDaoImpl implements TranslationDao{
     public void deleteTranslation(Long translationId) {
         entityManager.remove(translationId);
     }
+
+    public List<Translation> getTranslationStrings(Long translationId) {
+        TypedQuery<Translation> query = entityManager.createNamedQuery("getAllTranslationStrings", Translation.class);
+        query.setParameter("translationId", translationId);
+        List<Translation> translationString = query.getResultList();
+
+        return translationString;
+    }
 }

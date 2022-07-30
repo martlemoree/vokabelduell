@@ -5,6 +5,7 @@ import de.htwberlin.kba.user_management.export.User;
 import de.htwberlin.kba.user_management.export.UserNotFoundException;
 import de.htwberlin.kba.user_management.export.UserService;
 import de.htwberlin.kba.vocab_management.export.*;
+import de.htwberlin.kba.vocab_management.impl.TranslationServiceImpl;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,18 @@ public class GameServiceImpl implements GameService {
     private UserService userService;
     private VocabListService vocabListService;
 
+    private TranslationService translationService;
+
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao, RoundService roundService, QuestionService questionService, UserService userService, VocabListService vocabListService) {
+    public GameServiceImpl(GameDao gameDao, RoundService roundService, QuestionService questionService, UserService userService, VocabListService vocabListService, TranslationService translationService) {
         super();
         this.gameDao = gameDao;
         this.roundService = roundService;
         this.questionService = questionService;
         this.userService = userService;
         this.vocabListService = vocabListService;
+        this.translationService = translationService;
     }
 
 
@@ -96,14 +100,19 @@ public class GameServiceImpl implements GameService {
 
         // if game has not just been created and the last round was not played by both players
         // the last existing round of the game is played
-        if (!(rounds==null)) {
+        if (rounds.size() != 0) {
             if (!rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
                 Round round = rounds.get(game.getRounds().size()-1);
 
                 round.setPlayedByTwo(true);
                 questions = round.getQuestions();
+            } else if (rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
+                Round round = roundService.startNewRound(game);
+
+                // generate Questions
+                questions = questionService.createQuestions(game, vocabList, round);
             }
-        } else if (rounds==null || rounds.get(rounds.size() - 1).getisPlayedByTwo()) {
+        } else if (rounds==null || rounds.isEmpty() || rounds.size() == 0) {
             // if game has just been started (and contains no rounds) OR the last round of the game was played by both players
             // (happens in the if clause above)
             // new Round must be started
@@ -113,7 +122,6 @@ public class GameServiceImpl implements GameService {
             questions = questionService.createQuestions(game, vocabList, round);
 
         }
-
 
         List<String> answerOptions1 = giveAnswerOptionsRandom(questions.get(0).getQuestionId());
         String vocabString1 = giveVocabStringRandom(questions.get(0).getQuestionId());
@@ -143,7 +151,7 @@ public class GameServiceImpl implements GameService {
         question2.add(question2answer2);
         question2.add(question2answer3);
         question2.add(question2answer4);
-        question1.add(questionId2);
+        question2.add(questionId2);
 
         List<String> answerOptions3 = giveAnswerOptionsRandom(questions.get(2).getQuestionId());
         String vocabString3 = giveVocabStringRandom(questions.get(2).getQuestionId());
@@ -158,14 +166,14 @@ public class GameServiceImpl implements GameService {
         question3.add(question3answer2);
         question3.add(question3answer3);
         question3.add(question3answer4);
-        question1.add(questionId3);
+        question3.add(questionId3);
 
         List<List<String>> questionsStringList = new ArrayList<>();
         questionsStringList.add(question1);
         questionsStringList.add(question2);
         questionsStringList.add(question3);
 
-        return questionsStringList;
+        return null;
     }
 
     // Hier wird ein Object übergeben und keine Liste, da sonst der sonst der API Call nicht funktioniert hat.
@@ -177,33 +185,62 @@ public class GameServiceImpl implements GameService {
         // create translations list to extract answer options randomly
         List<Translation> translations = questionService.getAllAnswers(question);
 
+
+
         // get Random Translation (if various possibilities)
         int index1 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings1 = translations.get(index1).getTranslations();
+
+        List<String> translationStrings1 = translationService.getAllTranslationStrings(translations.get(index1).getTranslationId());
+                //translations.get(index1).getTranslations();
 
         // get Random Translation String (if various possibilities)
-        int translationStringsindex1 = rand.nextInt(translationStrings1.size());
+        int translationStringsindex1 = 0;
+        if (translationStrings1.size() > 1) {
+            translationStringsindex1 = rand.nextInt(translationStrings1.size()-1);
+        }
 
         // add to answerOptionsList of Strings and remove entry from translations list
         answerOptions.add(translationStrings1.get(translationStringsindex1));
         translations.remove(index1);
 
+
+
+
+
         // das ganze 4 Mal, noch keine einfache Lösung gefunden das auszugliedern
         int index2 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings2 = translations.get(index2).getTranslations();
-        int translationStringsindex2 = rand.nextInt(translationStrings2.size());
+        List<String> translationStrings2 = translationService.getAllTranslationStrings(translations.get(index2).getTranslationId());
+
+        int translationStringsindex2 = 0;
+        if (translationStrings1.size() > 1) {
+            translationStringsindex2 = rand.nextInt(translationStrings2.size()-1);
+        }
 
         answerOptions.add(translationStrings2.get(translationStringsindex2));
         translations.remove(index2);
 
+
+
+
         int index3 = rand.nextInt(translations.size()-1);
-        List<String> translationStrings3 = translations.get(index3).getTranslations();
-        int translationStringsindex3 = rand.nextInt(translationStrings3.size());
+        List<String> translationStrings3 = translationService.getAllTranslationStrings(translations.get(index3).getTranslationId());
+
+        int translationStringsindex3 = 0;
+        if (translationStrings1.size() > 1) {
+            translationStringsindex3 = rand.nextInt(translationStrings3.size()-1);
+
+        }
         answerOptions.add(translationStrings3.get(translationStringsindex3));
         translations.remove(index3);
 
-        List<String> translationStrings4 = translations.get(0).getTranslations();
-        int translationStringsindex4 = rand.nextInt(translationStrings4.size());
+
+
+
+        List<String> translationStrings4 = translationService.getAllTranslationStrings(translations.get(0).getTranslationId());
+        int translationStringsindex4 = 0;
+        if (translationStrings1.size() > 1) {
+            translationStringsindex4 = rand.nextInt(translationStrings4.size()-1);
+        }
 
         answerOptions.add(translationStrings4.get(translationStringsindex4));
         translations.remove(0);
@@ -218,7 +255,11 @@ public class GameServiceImpl implements GameService {
         Vocab vocab = question.getVocab();
         Random rand = new Random();
 
-        int index = rand.nextInt(vocab.getVocabs().size()-1);
+        int index = 0;
+        if (vocab.getVocabs().size() > 1) {
+            index = rand.nextInt(vocab.getVocabs().size()-1);
+
+        }
         return vocab.getVocabs().get(index);
     }
 

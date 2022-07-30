@@ -4,10 +4,12 @@ import de.htwberlin.kba.vocab_management.export.Vocab;
 import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -42,7 +44,7 @@ public class VocabListRestAdapter implements VocabListService {
 
     }
 
-    public List<VocabList> getRandomVocabLists() {
+    public List<Long> getRandomVocabLists() {
         return null;
     }
 

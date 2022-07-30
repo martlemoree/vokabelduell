@@ -44,14 +44,12 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Transactional
-    @Override
     public void changeLastPlayer(Long gameId, String userName) throws CustomObjectNotFoundException, CustomOptimisticLockExceptionGame {
         Game game = gameDao.getGameById(gameId);
         game.getRounds().get(game.getRounds().size() - 1).setLastUserPlayedName(userName);
         gameDao.updateGame(game);
     }
 
-    @Override
     @Transactional
     public List<Round> getAllRounds(){
         List<Round> rounds = roundDao.getAllRounds();
@@ -62,7 +60,6 @@ public class RoundServiceImpl implements RoundService {
         return rounds;
     }
 
-    @Override
     @Transactional
     public Round getRoundById(Long id) throws CustomObjectNotFoundException {
         return roundDao.getRoundById(id);

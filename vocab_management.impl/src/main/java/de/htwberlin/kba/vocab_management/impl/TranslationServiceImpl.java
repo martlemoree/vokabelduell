@@ -36,4 +36,19 @@ public class TranslationServiceImpl implements TranslationService {
         // method not implemented and tested because it is not part of the game logic
         translationDao.deleteTranslation(translationId);
     }
+
+    @Transactional
+    public List<String> getAllTranslationStrings(Long translationId){
+        List<Translation> translations = translationDao.getTranslationStrings(translationId);
+        for (Translation t: translations){
+            Hibernate.initialize(t.getTranslations());
+            Hibernate.initialize(t.getVocabs());        }
+        List<String> translationStrings = translations.get(0).getTranslations();
+        return translationStrings;
+    }
+
+    @Transactional
+    public List<Translation> getAllTranslations() {
+        return translationDao.getAllTranslations();
+    }
 }

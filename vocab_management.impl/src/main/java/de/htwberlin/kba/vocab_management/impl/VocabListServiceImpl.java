@@ -224,7 +224,7 @@ public class VocabListServiceImpl implements VocabListService {
     }
 
     @Override
-    public List<VocabList> getRandomVocabLists() {
+    public List<Long> getRandomVocabLists() {
 
         List<VocabList> allVocabLists = getVocabLists();
 
@@ -233,11 +233,11 @@ public class VocabListServiceImpl implements VocabListService {
         int element2 = rand.nextInt(allVocabLists.size());
         int element3 = rand.nextInt(allVocabLists.size());
 
-        List<VocabList> random_lists = new ArrayList<>();
+        List<Long> random_lists = new ArrayList<>();
 
-        random_lists.add(allVocabLists.get(element1));
-        random_lists.add(allVocabLists.get(element2));
-        random_lists.add(allVocabLists.get(element3));
+        random_lists.add(allVocabLists.get(element1).getVocabListId());
+        random_lists.add(allVocabLists.get(element2).getVocabListId());
+        random_lists.add(allVocabLists.get(element3).getVocabListId());
 
         return random_lists;
     }

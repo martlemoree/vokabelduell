@@ -17,4 +17,17 @@ public interface TranslationService {
      * */
     void removeTranslation(Long translationId);
 
+    /**
+     * gives back list of strings with translations
+     * @param translationId id of translation
+     * @return string list with translations
+     */
+    List<String> getAllTranslationStrings(Long translationId);
+
+    /**
+     * method to get all existing translations from database
+     * @return list of all translations
+     */
+    List<Translation> getAllTranslations();
+
 }

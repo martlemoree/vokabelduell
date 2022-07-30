@@ -42,4 +42,21 @@ public class TranslationRestAdapter implements TranslationService {
         restTemplate.exchange(URL, HttpMethod.DELETE, httpEntity, String.class).getBody();
     }
 
+    public List<String> getAllTranslationStrings(Long translationId) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
+
+
+
+        final String URL = localhostTranslation + "getStrings/" + translationId;
+        return restTemplate.exchange(URL, HttpMethod.GET, requestEntity, List.class).getBody();
+    }
+
+    public List<Translation> getAllTranslations() {
+        final String URL = localhostTranslation + "all";
+        return restTemplate.exchange(URL, HttpMethod.GET, null, List.class).getBody();
+    }
+
 }

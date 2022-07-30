@@ -4,6 +4,8 @@ import de.htwberlin.kba.vocab_management.export.VocabList;
 import de.htwberlin.kba.vocab_management.export.VocabListObjectNotFoundException;
 import de.htwberlin.kba.vocab_management.export.VocabListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +33,18 @@ public class VocabListRestController {
         VocabList vocabList = vocabListService.getVocabListById(vocabListId);
         vocabListService.removeVocabList(vocabList);
         return "Vocab List was successfully deleted.";
+    }
+
+    @GetMapping(value = "/randomlists/{gameId}")
+    public ResponseEntity<Long> getRandomVocabLists(@PathVariable("gameId") Long gameId) {
+        List<Long> vocabListLists = vocabListService.getRandomVocabLists();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("vocabListLists1", String.valueOf(vocabListLists.get(0)));
+        headers.add("vocabListLists2", String.valueOf(vocabListLists.get(1)));
+        headers.add("vocabListLists3", String.valueOf(vocabListLists.get(1)));
+
+        return ResponseEntity.ok().headers(headers).body(gameId);
     }
 
     @GetMapping(value = "/all")

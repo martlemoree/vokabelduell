@@ -46,7 +46,7 @@ public interface VocabListService {
      * each round.
      * @return the list with three vocablists.
      */
-    List<VocabList> getRandomVocabLists();
+    List<Long> getRandomVocabLists();
 
     /**
      * holds logic to delete given vocablist

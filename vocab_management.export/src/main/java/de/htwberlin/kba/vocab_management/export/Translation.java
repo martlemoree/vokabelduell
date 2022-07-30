@@ -6,7 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
-@NamedQuery(name="getAllTranslations", query="FROM Translation AS translations")
+@NamedQueries({
+        @NamedQuery(name="getAllTranslationStrings", query="FROM Translation AS translations WHERE translations.translationId = :translationId"),
+        @NamedQuery(name="getAllTranslations", query="FROM Translation AS translations LEFT JOIN translations.translations WHERE translations.translationId = :translationId"),
+//        @NamedQuery(name="getAllTranslations", query="FROM Translation AS Translation_translations")
+
+
+})
+
 @Entity
 @Table(name = "translations")
 public class Translation {
