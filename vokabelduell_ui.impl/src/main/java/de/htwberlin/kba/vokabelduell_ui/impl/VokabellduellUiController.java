@@ -238,7 +238,9 @@ public class VokabellduellUiController implements VokabellduellUi {
                                     do {
                                         try {
                                             questions = gameService.giveQuestions(game.getGameId(), userName, vocabList.getVocabListId());
-                                        } catch (CustomOptimisticLockExceptionGame | CustomObjectNotFoundException | VocabListObjectNotFoundException e) {
+                                        } catch (CustomOptimisticLockExceptionGame e) {
+                                            questionsChangedError=true;
+                                        } catch (CustomObjectNotFoundException | VocabListObjectNotFoundException e) {
                                             view.printMessage("Es ist ein Fehler aufgetreten. Beginne das Spiel bitte von vorne");
                                             System.exit(0);
                                         }
